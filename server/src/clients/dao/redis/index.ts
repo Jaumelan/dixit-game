@@ -1,14 +1,16 @@
 import { Redis } from 'ioredis';
 import { config } from '../../../config';
 
-export class RedisClient {
+class RedisClient {
   private static instance: Redis;
 
   public static getInstance(): Redis {
     if (!RedisClient.instance) {
-      RedisClient.instance = new Redis(config.db);
+      const redis = new Redis(config.db);
+      RedisClient.instance = redis;
     }
 
     return RedisClient.instance;
   }
 }
+export default RedisClient;

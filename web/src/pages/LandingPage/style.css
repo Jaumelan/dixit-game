@@ -59,8 +59,12 @@ nav {
 #login{
     background-color: #FFCD45;
     border-radius: 25px;
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 900;
     height: 60px;
     width: 135px;
+    border: solid 3px black;
 }
 
 img {
@@ -113,7 +117,13 @@ li a {
 }
 
 #signUp {
-    width: 150px;
+    width: 155px;
     background-color: #FFCD45;
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 900;
     margin-top: 80px;
+    height: 60px;
+    border-radius: 25px;
+    border: solid 3px black;
 }

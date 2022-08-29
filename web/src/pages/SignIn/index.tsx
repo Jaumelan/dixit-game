@@ -1,11 +1,13 @@
 import GoogleLogin from "../../components/GoogleLogin";
 
 const SignIn = () => {
-  
+
   return (
+
+    
     <div>
-        <h1>Sign In</h1>
-        <GoogleLogin />
+      <h1>sign in</h1>
+      <GoogleLogin />
     </div>
   );
 };

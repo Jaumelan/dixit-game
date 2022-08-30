@@ -13,7 +13,10 @@ class User {
 
   public async get(id: string): Promise<any> {
     const redis = RedisClient.getInstance();
-    const result = await redis.get(id);
+    const result = await redis.get(id, async (err, jobs) => {
+      console.log(err);
+    });
+    console.log(result);
     return result;
   }
 

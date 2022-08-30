@@ -5,6 +5,7 @@ class User {
 
   public async insert(User: any): Promise<any> {
     const redis = RedisClient.getInstance();
+    console.log('user ', User);
     const { id } = User;
     const result = await redis.set(id, JSON.stringify(User));
     return result;

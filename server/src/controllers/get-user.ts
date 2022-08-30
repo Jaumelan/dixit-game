@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user-services';
 
-class CreateUserController {
+class GetUserController {
   private UserService = new UserService();
 
-  public async handle(request: Request, response: Response): Promise<Response> {
+  public async handle(
+    request: Request<string>,
+    response: Response,
+  ): Promise<Response> {
     try {
-      //console.log(request.body);
-      const result = await this.UserService.createUser(request.body);
+      console.log(request.params);
+      const result = await this.UserService.getUser(request.params);
       return response.status(201).json({ result });
     } catch (error: any) {
       return response.status(400).json({ error: error.message });
@@ -15,4 +18,4 @@ class CreateUserController {
   }
 }
 
-export { CreateUserController };
+export { GetUserController };

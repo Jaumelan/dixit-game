@@ -1,21 +1,14 @@
-import "./style.css"
+import { Navbar } from "../../components";
+import { LandingBox } from "../../components";
+import * as S from "./styles";
+//import "./style.css"
 
 const LandingPage = () => {
   return (
-
-    <div id="page">
-      <nav>
-        <ul>
-          <li><button id="home"></button></li>
-          <li><button id="gameRule"></button></li>
-        </ul>
-        <ul id="rightNav">
-          <li><button id="ptbr"></button></li>
-          <li><button id="login">LOGIN</button></li>
-        </ul>
-      </nav>
-
-      <div id="mainmain">
+    <S.Container>
+      <Navbar />
+      <LandingBox />
+      {/* <div id="mainmain">
         <div id="main">
           <div id="boxLeft">
             <img src="../../static/img/gameName.png" alt="" />
@@ -26,10 +19,8 @@ const LandingPage = () => {
             <img src="../../static/img/gameLogo.png" alt="" />
           </div>
         </div>
-      </div>
-
-
-    </div>
+      </div> */}
+    </S.Container>
   );
 };
 

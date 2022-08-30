@@ -1,13 +1,14 @@
+/*
 body {
     margin: 0;
 }
 
-nav {
+ nav {
     height: 90px;
     margin: 20px;
     display: flex;
     justify-content: space-between;
-}
+} 
 
 #page {
     height: 100vh;

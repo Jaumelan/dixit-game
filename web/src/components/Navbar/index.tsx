@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Home from "../../assets/images/home.svg";
 import GameRules from "../../assets/images/gameRule.svg";
 import Portuguese from "../../assets/images/ptbr.svg";
@@ -16,10 +17,12 @@ const Navbar = () => {
       </ul>
       <ul id="rightNav">
         <li>
-        <img src={Portuguese} alt="language-pt" />
+          <img src={Portuguese} alt="language-pt" />
         </li>
         <li>
-          <button id="login">LOGIN</button>
+          <Link to="/signin">
+            <S.LoginButton id="login">LOGIN</S.LoginButton>
+          </Link>
         </li>
       </ul>
     </S.Container>

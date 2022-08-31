@@ -3,27 +3,43 @@ import RedisClient from '.';
 class User {
   private static instance: RedisClient;
 
-  public async insert(User: any): Promise<any> {
+  public insert(User: any) {
     const redis = RedisClient.getInstance();
     console.log('user ', User);
-    const { id } = User;
-    const result = await redis.set(id, JSON.stringify(User));
+    const { id, username, email, password } = User;
+    const result = redis.hmset(id, {
+      username,
+      email,
+      password,
+    });
+
     return result;
   }
 
   public async get(id: string): Promise<any> {
     const redis = RedisClient.getInstance();
-    const result = await redis.get(id, async (err, jobs) => {
-      console.log(err);
+    return new Promise((resolve, reject) => {
+      redis.hgetall(id, (err, value) => {
+        if (err) reject(err);
+        else resolve(value);
+      });
     });
-    console.log(result);
-    return result;
+    /*
+    const result = await redis.hgetall(id, (err, res) => {
+      if (err) {
+        console.log(err);
+      }
+
+      return res;
+    });
+    return result; */
   }
 
   public async delete(id: string): Promise<any> {
     const redis = RedisClient.getInstance();
-    const result = await redis.del(id);
-    return result;
+    const keys = await redis.hkeys(id);
+    //const result = await redis.hdel(id, keys);
+    return keys; //result;
   }
 
   public async update(User: any): Promise<any> {

@@ -1,8 +1,8 @@
 import { UserNameValidator, PasswordValidator, EmailValidator } from './';
-import { User } from '../models';
+import { UserModel } from '../models';
 
 class UserDataValidator {
-  public user: User;
+  public user: UserModel;
   public errors: string;
 
   private NameValidator = UserNameValidator;
@@ -11,12 +11,12 @@ class UserDataValidator {
 
   private PasswordValidator = PasswordValidator;
 
-  public constructor(user: User) {
+  public constructor(user: UserModel) {
     this.errors = '';
     this.user = this.validate(user);
   }
 
-  private validate(user: User): User {
+  private validate(user: UserModel): UserModel {
     const { username, email, password } = user;
 
     const nameValidated = new this.NameValidator(username);
@@ -27,7 +27,7 @@ class UserDataValidator {
       nameValidated.errors + emailValidated.errors + passwordValidated.errors;
 
     // console.log("userdata ", this.errors);
-    const userValidated: User = {
+    const userValidated: UserModel = {
       username: nameValidated.userName,
       email: emailValidated.email,
       password: passwordValidated.password,

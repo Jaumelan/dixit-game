@@ -13,7 +13,13 @@ class UserService {
       throw new Error(`400: ${userValidated.errors}`);
     }
 
-    const result = await this.User.insert(userValidated);
+    const userExists = await this.User.get(User.email);
+
+    if (userExists) {
+      throw new Error(`400: User already exists`);
+    }
+
+    const result = await this.User.insert(userValidated.user);
 
     if (result) {
       const data = {

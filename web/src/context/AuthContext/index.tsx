@@ -13,6 +13,8 @@ const AuthContext = createContext({
   googleSignIn: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   logOut: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  emailSignInStart: ( _username: string, _email: string, _password: string  ) => {},
   user: {} || null,
 });
 
@@ -23,10 +25,19 @@ interface UserAuth {
 // eslint-disable-next-line react/prop-types
 export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const [user, setUser] = useState<IGoogleResponse | null>(null);
+  const [user, setUser] = useState<IGoogleResponse | {username: String, email:String, password:string} | null>(null);
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
+  };
+
+  const emailSignInStart = (
+    username: string,
+    email: string,
+    password: string
+  ) => {
+    console.log(username, email, password);
+    setUser({ username, email, password });
   };
 
   const logOut = () => {
@@ -36,21 +47,21 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        
-          setUser(user as unknown as IGoogleResponse);
-          console.log("User signed in", user);
-        }
-       else {
+        setUser(user as unknown as IGoogleResponse);
+        console.log("User signed in", user);
+      } else {
         setUser(null);
       }
     });
     return () => unsubscribe();
   }, []);
 
-  console.log('user', user);
+  console.log("user", user);
 
   return (
-    <AuthContext.Provider value={{ googleSignIn, logOut, user }}>
+    <AuthContext.Provider
+      value={{ googleSignIn, logOut, user, emailSignInStart }}
+    >
       {children}
     </AuthContext.Provider>
   );

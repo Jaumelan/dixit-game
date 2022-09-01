@@ -5,12 +5,12 @@ class GetUserController {
   private UserService = new UserService();
 
   public async handle(
-    request: Request<string>,
+    request: Request<{ id: string }>,
     response: Response,
   ): Promise<Response> {
     try {
-      console.log(request.params);
-      const result = await this.UserService.getUser(request.params);
+      const { id } = request.params;
+      const result = await this.UserService.getUser(id);
       return response.status(201).json({ result });
     } catch (error: any) {
       return response.status(400).json({ error: error.message });

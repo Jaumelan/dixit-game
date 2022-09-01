@@ -5,7 +5,7 @@ class User {
 
   public insert(User: any) {
     const redis = RedisClient.getInstance();
-    console.log('user ', User);
+    //console.log('user ', User);
     const { id, username, email, password } = User;
     const result = redis.hmset(id, {
       username,
@@ -16,10 +16,12 @@ class User {
     return result;
   }
 
-  public async get(id: string): Promise<any> {
+  public get(id: string): Promise<any> {
     const redis = RedisClient.getInstance();
     return new Promise((resolve, reject) => {
+      //console.log('id ', id);
       redis.hgetall(id, (err, value) => {
+        //console.log('value ', value);
         if (err) reject(err);
         else resolve(value);
       });

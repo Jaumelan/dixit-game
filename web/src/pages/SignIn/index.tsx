@@ -1,17 +1,14 @@
-import GoogleLogin from "../../components/GoogleLogin";
+import { Navbar } from "../../components";
+import { SignInForm } from "../../components";
 
 const SignIn = () => {
-
   return (
-
-    
     <div>
-      <h1>sign in</h1>
-      <GoogleLogin />
+      <Navbar />
+      <SignInForm />
+      {/* <GoogleLogin /> */}
     </div>
   );
 };
 
 export default SignIn;
-
-

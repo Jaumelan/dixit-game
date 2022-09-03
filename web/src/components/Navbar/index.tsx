@@ -1,30 +1,57 @@
 import { Link } from "react-router-dom";
-import Home from "../../assets/images/home.svg";
-import GameRules from "../../assets/images/gameRule.svg";
-import Portuguese from "../../assets/images/ptbr.svg";
+import { AiOutlineHome } from "react-icons/ai";
+import { RiFilePaper2Line } from "react-icons/ri";
+import { BsGearFill } from "react-icons/bs";
+import { UserAuth } from "../../context/AuthContext";
+import ProfileImg from "../../assets/images/profile.png";
 import * as S from "./styles";
 
 const Navbar = () => {
+  const { user } = UserAuth();
   return (
     <S.Container>
       <ul>
         <li>
-          <img src={Home} alt="home page" />
+          <S.IconContainer>
+            <AiOutlineHome size={40} color={"white"} />
+          </S.IconContainer>
+          {/* <img src={Home} alt="home page" /> */}
         </li>
         <li>
-          <img src={GameRules} alt="game rules" />
+          <S.IconContainer>
+            <RiFilePaper2Line size={40} color={"white"} />
+          </S.IconContainer>
+          {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
-      <ul id="rightNav">
-        <li>
-          <img src={Portuguese} alt="language-pt" />
-        </li>
-        <li>
-          <Link to="/signin">
-            <S.LoginButton id="login">LOGIN</S.LoginButton>
-          </Link>
-        </li>
-      </ul>
+      {(user && (
+        <ul>
+          <li>
+            <S.IconContainer>
+              <BsGearFill size={40} color={"white"} />
+            </S.IconContainer>
+          </li>
+
+          <li>
+            <S.IconContainer>
+              <S.ProfileImg src={ProfileImg} alt="user profile" />
+            </S.IconContainer>
+          </li>
+        </ul>
+      )) || (
+        <ul id="rightNav">
+          <li>
+            <S.IconContainer>
+              <BsGearFill size={40} color={"white"} />
+            </S.IconContainer>
+          </li>
+          <li>
+            <Link to="/signin">
+              <S.LoginButton id="login">LOGIN</S.LoginButton>
+            </Link>
+          </li>
+        </ul>
+      )}
     </S.Container>
   );
 };

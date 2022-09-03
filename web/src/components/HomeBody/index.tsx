@@ -1,29 +1,28 @@
-import * as S from "./styles";
-import Button from "../Button";
-import { BUTTON_TYPE_CLASSES } from "../Button";
-import BodyCards from "../BodyBoxCards";
-import { UserAuth } from "../../context/AuthContext";
+import { useState } from "react";
+import BoxInitialBody from "../HomeInitial";
+import SetGame from "../SetGame";
 
 const BoxBody = () => {
-  const { logOut } = UserAuth();
+  const [createGame, setCreateGame] = useState(false);
+  const [joinGame, setJoinGame] = useState(false);
 
-  const handleLogOut = async () => {
-    await logOut();
+  const handleCreateGame = () => {
+    setCreateGame((prev) => !prev);
   };
 
-  return (
-    <S.Container>
-      <S.CardsContainer>
-        <BodyCards />
-      </S.CardsContainer>
-      <S.ButtonContainer>
-        <Button>Criar um jogo</Button>
-        <Button>Entrar em um jogo</Button>
-        <Button buttonType={BUTTON_TYPE_CLASSES.logout} onClick={handleLogOut}>
-          Sair
-        </Button>
-      </S.ButtonContainer>
-    </S.Container>
+  const handleJoinGame = () => {
+    setJoinGame((prev) => !prev);
+  };
+
+  return createGame ? (
+    <SetGame close={handleCreateGame} />
+  ) : joinGame ? (
+    <div onClick={handleJoinGame}>Jogo</div>
+  ) : (
+    <BoxInitialBody
+      createGameModal={handleCreateGame}
+      joinGameModal={handleJoinGame}
+    />
   );
 };
 

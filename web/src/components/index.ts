@@ -5,3 +5,5 @@ export { default as BoxBody } from "./HomeBody";
 export { default as Button } from "./Button";
 export { default as Spinner } from "./Spinner";
 export { default as BodyCards } from "./BodyBoxCards";
+export { default as BoxInitialBody } from "./HomeInitial";
+export { default as SetGame } from "./SetGame";

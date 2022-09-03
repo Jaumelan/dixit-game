@@ -10,7 +10,7 @@ export const Container = styled.div`
   position: relative;
   border: 3px solid #000;
   border-radius: 10px;
-  background-color: #000062;
+  background-color: #3d303b;
 `;
 
 export const CardsContainer = styled.div`

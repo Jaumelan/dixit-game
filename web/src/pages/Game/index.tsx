@@ -1,9 +1,13 @@
+import { Navbar, GameBody } from "../../components";
+import * as S from "./styles";
+
 const Game = () => {
-    return (
-        <div>
-            <h1>Game </h1>
-        </div>
-    );
+  return (
+    <S.Container>
+      <Navbar />
+      <GameBody />
+    </S.Container>
+  );
 };
 
 export default Game;

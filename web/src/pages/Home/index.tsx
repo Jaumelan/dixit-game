@@ -5,8 +5,6 @@ const Home = () => {
   return (
     <S.Container>
       <Navbar />
-
-      <h1>Home</h1>
       <S.Body>
         <BoxBody />
       </S.Body>

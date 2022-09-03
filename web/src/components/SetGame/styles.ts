@@ -26,7 +26,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60%;
+  height: 75%;
   width: 39rem;
   position: relative;
   border: 3px solid #000;
@@ -53,6 +53,7 @@ export const GameRoom = styled.div`
   width: 60%;
   border: 1px solid #fff;
   background-color: #ffffff;
+  border-radius: 10px;
   font-size: 1.5rem;
 `;
 
@@ -62,6 +63,7 @@ export const SettersContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  padding: 1rem;
 `;
 
 export const IndividualSetter = styled.div`
@@ -78,18 +80,33 @@ export const PlayerNumberContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60%;
-  
+  width: 100%;
+  height: 8rem;
+  background-color: #ffffff;
+  border-radius: 10px;
   background-color: none;
   font-size: 1.5rem;
-  label {
+  padding: 0.2rem;
+  p {
     font-size: 1.2rem;
     width: 100%;
-    color: #fff;
+    color: #6c6c6c;
+    text-align: center;
     }
 
   input {
     width: 90%;
     height: 2rem;
+    background-color: transparent;
+    font-size: 2rem;
+    padding: 0.5rem;
+    line-height: 2.5rem;
+    border: none;
+    text-align: center;
+    height: 2.5rem;
+
+    &:focus {
+        outline: none;
+        -webkit-appearance: none; 
   }
 `;

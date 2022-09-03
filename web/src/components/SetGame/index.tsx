@@ -1,5 +1,7 @@
+import { FC, useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { FC } from "react";
+import Button from "../Button";
+import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
 type SetGameProps = {
@@ -7,37 +9,55 @@ type SetGameProps = {
 };
 
 const SetGame: FC<SetGameProps> = ({ close }) => {
+  const [game, setGame] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const gameId = Math.floor(Math.random() * 1001).toString();
+    setGame(gameId);
+  }, []);
+
+  const handleStartGame = () => {
+    navigate(`/game/${game}`);
+  };
+
   return (
     <S.Container>
       <S.TitleContainer>
         <h2>Novo Jogo</h2>
-        <AiOutlineCloseCircle size={28} onClick={close} />
+        <AiOutlineCloseCircle
+          size={28}
+          style={{ cursor: "pointer" }}
+          onClick={close}
+        />
       </S.TitleContainer>
       <S.GameRoom>
-        <h3>ID da Sala: XXXX</h3>
+        <h3>ID da Sala: {game}</h3>
       </S.GameRoom>
       <S.SettersContainer>
         <S.IndividualSetter>
           <S.PlayerNumberContainer>
-            <label>Número do Jogadores</label>
-            <input type="number" />
+            <p>Número do Jogadores</p>
+            <input type="number" placeholder="1" />
           </S.PlayerNumberContainer>
           <S.PlayerNumberContainer>
-            <label>Número do Jogadores</label>
-            <input type="number" />
+            <p>Pontos para a Vitória</p>
+            <input type="number" placeholder="200" />
           </S.PlayerNumberContainer>
         </S.IndividualSetter>
         <S.IndividualSetter>
           <S.PlayerNumberContainer>
-            <label>Número do Jogadores</label>
-            <input type="number" />
+            <p>Tempo por turno</p>
+            <input type="number" placeholder="10" />
           </S.PlayerNumberContainer>
           <S.PlayerNumberContainer>
-            <label>Número do Jogadores</label>
-            <input type="number" />
+            <p>Máximo de turnos</p>
+            <input type="number" placeholder="15" />
           </S.PlayerNumberContainer>
         </S.IndividualSetter>
       </S.SettersContainer>
+
+      <Button onClick={handleStartGame}>Iniciar Jogo</Button>
     </S.Container>
   );
 };

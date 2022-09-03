@@ -31,7 +31,9 @@ class UserService {
         messages: ['user created successfully'],
       } as APIResponse;
     } else {
-      throw new Error('400: user already exists');
+      throw new Error(
+        '500: an error occurred while inserting user on database',
+      );
     }
   }
 

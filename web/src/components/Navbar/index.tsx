@@ -13,9 +13,11 @@ const Navbar = () => {
       <ul>
         <li>
           <S.IconContainer>
+            <Link to="/">
             <AiOutlineHome size={40} color={"white"} />
+            </Link>
           </S.IconContainer>
-          {/* <img src={Home} alt="home page" /> */}
+         
         </li>
         <li>
           <S.IconContainer>

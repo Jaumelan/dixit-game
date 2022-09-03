@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
+import { useGameContext } from "../../context/GameContext";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
@@ -9,6 +10,7 @@ type SetGameProps = {
 };
 
 const SetGame: FC<SetGameProps> = ({ close }) => {
+  const { handleGameSetter } = useGameContext();
   const [game, setGame] = useState("");
   const navigate = useNavigate();
 
@@ -16,6 +18,12 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
     const gameId = Math.floor(Math.random() * 1001).toString();
     setGame(gameId);
   }, []);
+
+  useEffect(() => {
+    if (game !== "") {
+      handleGameSetter(game)
+    }
+  }, [game]);
 
   const handleStartGame = () => {
     navigate(`/game/${game}`);

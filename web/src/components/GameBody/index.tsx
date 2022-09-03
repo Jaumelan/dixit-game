@@ -10,16 +10,22 @@ type GameState = {
 };
 
 const GameBody = () => {
-    const { handleGameSetter } = useGameContext();
+  const { gameId } = useGameContext();
   const [gameState, setGameState] = useState<GameState>({ LOADING: "LOADING" });
-  const [game, setGame] = useState<GameType | null>(null);
+  const [game, setGame] = useState<string | null>(null);
+
+  const getDataMock = () => {
+    return { id: gameId };
+  };
 
   useEffect(() => {
     const GetGame = async () => {
       try {
-        const response = await fetch("http://localhost:3000/games/1");
-        const data = await response.json();
-        setGame(data);
+        //const response = await fetch(`http://localhost:3000/games/${gameId}`);
+        const { id } = getDataMock();
+        //const data = await response.json();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        setGame(id);
         setGameState({ LOADING: "LOADED" });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
@@ -40,11 +46,8 @@ const GameBody = () => {
 
   return (
     <Game
-      id={game?.id}
-      name={game?.name}
-      description={game?.description}
-      image={game?.image}
-      game={game?.game}
+      id={game}
+      
     />
   );
 };

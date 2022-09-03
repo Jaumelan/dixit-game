@@ -1,15 +1,17 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 export type GameType = {
-  id?: string;
-  name?: string;
-  description?: string;
-  image?: string;
-  game?: string;
+  id: string | null;
 };
 
-
 const Game: FC<GameType> = ({ id }) => {
-  return <div>{`Jogo: ${id}`}</div>;
+  const [players, setPlayers] = useState<string[]>([]);
+
+  return (
+    <div>
+      <div>{`Jogo: ${id}`}</div>
+      <div>{`Jogadores: ${players}`}</div>
+    </div>
+  );
 };
 
 export default Game;

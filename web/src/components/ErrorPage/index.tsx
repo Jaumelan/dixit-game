@@ -5,7 +5,7 @@ import SVG from "../../assets/images/error.svg";
 const ErrorPa = () => {
   return (
     <S.Main>
-      <img src={SVG} />
+      <S.SVGcon src={SVG} />
     </S.Main>
   );
 };

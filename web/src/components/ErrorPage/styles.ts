@@ -1,6 +1,16 @@
 import styled from "styled-components";
 
 export const Main = styled.div`
+  min-height: 700px;
+  margin: 0px auto;
+  width: auto;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SVGcon = styled.img`
   .fundo {
     animation: scales 3s alternate infinite;
     transform-origin: center;
@@ -67,16 +77,6 @@ export const Main = styled.div`
     0% {
       opacity: 0;
     }
-  }
-
-  .main {
-    min-height: 600px;
-    margin: 0px auto;
-    width: auto;
-    max-width: 460px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .path {

@@ -20,6 +20,7 @@ const convertImagesToBase64 = (imagesCount: string): any => {
         `../../src/assets/img/${imagesList[randomIndex]}`,
       ),
     );
+
     const imageBase64 = imageBuffer.toString('base64');
     result.push(imageBase64);
   }

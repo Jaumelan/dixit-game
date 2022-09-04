@@ -4,57 +4,81 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import ProfileImg from "../../assets/images/profile.png";
-import * as S from "./styles";
+import { FC } from "react";
 
-const Navbar = () => {
+import {
+  Container,
+  IconContainer,
+  LoginButton,
+  ProfileImgSty,
+  NavGame,
+} from "./styles";
+
+export enum NAVBAR_TYPE_CLASSES {
+  base = "base",
+  game = "game",
+}
+
+const getNavbar = (navbarType = NAVBAR_TYPE_CLASSES.base): typeof Container =>
+  ({
+    [NAVBAR_TYPE_CLASSES.base]: Container,
+    [NAVBAR_TYPE_CLASSES.game]: NavGame,
+  }[navbarType]);
+
+type NavbarProps = {
+  navbarType?: NAVBAR_TYPE_CLASSES;
+};
+
+const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
+
+  const CustomNavbar = getNavbar(navbarType);
   return (
-    <S.Container>
+    <CustomNavbar>
       <ul>
         <li>
-          <S.IconContainer>
+          <IconContainer>
             <Link to="/">
-            <AiOutlineHome size={40} color={"white"} />
+              <AiOutlineHome size={40} color={"white"} />
             </Link>
-          </S.IconContainer>
-         
+          </IconContainer>
         </li>
         <li>
-          <S.IconContainer>
+          <IconContainer>
             <RiFilePaper2Line size={40} color={"white"} />
-          </S.IconContainer>
+          </IconContainer>
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
       {(user && (
         <ul>
           <li>
-            <S.IconContainer>
+            <IconContainer>
               <BsGearFill size={40} color={"white"} />
-            </S.IconContainer>
+            </IconContainer>
           </li>
 
           <li>
-            <S.IconContainer>
-              <S.ProfileImg src={ProfileImg} alt="user profile" />
-            </S.IconContainer>
+            <IconContainer>
+              <ProfileImgSty src={ProfileImg} alt="user profile" />
+            </IconContainer>
           </li>
         </ul>
       )) || (
         <ul id="rightNav">
           <li>
-            <S.IconContainer>
+            <IconContainer>
               <BsGearFill size={40} color={"white"} />
-            </S.IconContainer>
+            </IconContainer>
           </li>
           <li>
             <Link to="/signin">
-              <S.LoginButton id="login">LOGIN</S.LoginButton>
+              <LoginButton id="login">LOGIN</LoginButton>
             </Link>
           </li>
         </ul>
       )}
-    </S.Container>
+    </CustomNavbar>
   );
 };
 

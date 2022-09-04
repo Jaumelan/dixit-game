@@ -11,3 +11,4 @@ export { default as Loading } from "./Loading";
 export { default as ErrorPage } from "./ErrorPage";
 export { default as Game } from "./Game";
 export { default as GameBody } from "./GameBody";
+export { default as PlayerSpinner } from "./PlayerSpinner";

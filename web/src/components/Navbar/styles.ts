@@ -40,8 +40,59 @@ export const LoginButton = styled.button`
   cursor: pointer;
 `;
 
-export const ProfileImg = styled.img`
+export const ProfileImgSty = styled.img`
   height: 4rem;
   width: 4rem;
   border-radius: 0.5rem;
+`;
+
+export const NavGame = styled.nav`
+  @-webkit-keyframes swing1-in-top-fwd {
+    0% {
+      -webkit-transform: rotateX(-100deg);
+      transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+      transform-origin: top;
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0deg);
+      transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+      transform-origin: top;
+      opacity: 1;
+    }
+  }
+  @keyframes swing1-in-top-fwd {
+    0% {
+      -webkit-transform: rotateX(-100deg);
+      transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+      transform-origin: top;
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0deg);
+      transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+      transform-origin: top;
+      opacity: 1;
+    }
+  }
+
+  -webkit-animation: swing1-in-top-fwd 0.5s
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  animation: swing1-in-top-fwd 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+
+  display: flex;
+  justify-content: space-between;
+  height: 8rem;
+  padding: 1rem 1.25rem 0 1.25rem;
+
+  box-shadow: 0 0 4px 4px #9394ce;
+  ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
 `;

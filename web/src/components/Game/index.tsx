@@ -3,11 +3,12 @@ import Player from "../Player";
 import GameCenter from "../GameCenter";
 import * as S from "./styles";
 
-export type GameType = {
+/* export type GameType = {
   id: string | null;
-};
+}; */
 
-const Game: FC<GameType> = ({ id }) => {
+const Game = () => {
+  const [waiting, setWaiting] = useState(true);
   const [players, setPlayers] = useState<string[]>(["jogador1", "jogador2"]);
 
   return (
@@ -19,7 +20,7 @@ const Game: FC<GameType> = ({ id }) => {
         ))}
       </S.SideContainer>
       <S.CenterContainer>
-        <GameCenter />
+        <GameCenter waiting={waiting} />
       </S.CenterContainer>
       <S.SideContainer>{`Jogadores: ${players}`}</S.SideContainer>
     </S.Container>

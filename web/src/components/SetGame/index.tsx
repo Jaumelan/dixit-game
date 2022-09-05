@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
-import { useGameContext } from "../../context/GameContext";
+import { GameDataType, useGameContext } from "../../context/GameContext";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
@@ -11,22 +11,44 @@ type SetGameProps = {
 
 const SetGame: FC<SetGameProps> = ({ close }) => {
   const { handleGameSetter } = useGameContext();
-  const [game, setGame] = useState("");
+  const [game, setGame] = useState({ id: "", players: 3, timePerTurn: 10 });
   const navigate = useNavigate();
 
   useEffect(() => {
     const gameId = Math.floor(Math.random() * 1001).toString();
-    setGame(gameId);
+    setGame({ ...game, id: gameId });
   }, []);
 
-  useEffect(() => {
-    if (game !== "") {
+  const handleGameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "players") {
+      if (Number(value) < 3 || Number(value) > 5) {
+        alert("Players must be between 3 and 5");
+        setGame({ ...game, players: 3 });
+        return;
+      }
+      setGame({ ...game, [name]: Number(value) });
+    }
+    if (name === "timePerTurn") {
+      if (Number(value) < 10 || Number(value) > 30) {
+        alert("Time per turn must be between 10s and 30s");
+        setGame({ ...game, timePerTurn: 10 });
+        return;
+      }
+      setGame({ ...game, [name]: Number(value) });
+    }
+  };
+
+  /* useEffect(() => {
+    if (game.id !== "") {
+      console.log("game in context", game);
       handleGameSetter(game)
     }
-  }, [game]);
+  }, [game]); */
 
   const handleStartGame = () => {
-    navigate(`/game/${game}`);
+    handleGameSetter(game);
+    navigate(`/game/${game.id}`);
   };
 
   return (
@@ -40,13 +62,18 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
         />
       </S.TitleContainer>
       <S.GameRoom>
-        <h3>ID da Sala: {game}</h3>
+        <h3>ID da Sala: {game.id}</h3>
       </S.GameRoom>
       <S.SettersContainer>
         <S.IndividualSetter>
           <S.PlayerNumberContainer>
             <p>Número do Jogadores</p>
-            <input type="number" placeholder="1" />
+            <input
+              type="number"
+              name="players"
+              value={game.players}
+              onChange={handleGameChange}
+            />
           </S.PlayerNumberContainer>
           <S.PlayerNumberContainer>
             <p>Pontos para a Vitória</p>
@@ -55,11 +82,16 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
         </S.IndividualSetter>
         <S.IndividualSetter>
           <S.PlayerNumberContainer>
-            <p>Tempo por turno</p>
-            <input type="number" placeholder="10" />
+            <p>Tempo por turno (seg)</p>
+            <input
+              type="number"
+              name="timePerTurn"
+              value={game.timePerTurn}
+              onChange={handleGameChange}
+            />
           </S.PlayerNumberContainer>
           <S.PlayerNumberContainer>
-            <p>Máximo de turnos</p>
+            <p>Máximo de turnos </p>
             <input type="number" placeholder="15" />
           </S.PlayerNumberContainer>
         </S.IndividualSetter>

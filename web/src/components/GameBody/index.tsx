@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
 import Game from "../Game";
-import { GameType } from "../Game";
+import { GameDataType } from "../../context/GameContext";
 import { useGameContext } from "../../context/GameContext";
 
 type GameState = {
@@ -10,23 +10,30 @@ type GameState = {
 };
 
 const GameBody = () => {
-  const { gameId } = useGameContext();
+  const { gameData } = useGameContext();
   const [gameState, setGameState] = useState<GameState>({ LOADING: "LOADING" });
-  const [game, setGame] = useState<string | null>(null);
+  const [game, setGame] = useState<GameDataType | null>(null);
 
   const getDataMock = () => {
-    return { id: gameId };
+    return {
+      id: gameData?.id,
+      players: gameData?.players,
+      timePerTurn: gameData?.timePerTurn,
+    };
   };
 
   useEffect(() => {
     const GetGame = async () => {
       try {
         //const response = await fetch(`http://localhost:3000/games/${gameId}`);
-        const { id } = getDataMock();
+        const data = getDataMock();
         //const data = await response.json();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        setGame(id);
-        setGameState({ LOADING: "LOADED" });
+        if (data) {
+          setGameState({ LOADING: "LOADED" });
+          setGame(data as GameDataType);
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setGameState({ LOADING: "ERROR" });
@@ -44,12 +51,7 @@ const GameBody = () => {
     return <ErrorPage />;
   }
 
-  return (
-    <Game
-      id={game}
-      
-    />
-  );
+  return <Game />;
 };
 
 export default GameBody;

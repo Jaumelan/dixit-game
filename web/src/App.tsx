@@ -1,4 +1,5 @@
 import { AuthContextProvider } from "./context/AuthContext";
+import { GameContextProvider } from "./context/GameContext";
 import { BrowserRouter } from "react-router-dom";
 import GlobalStyle from "./assets/styles/global";
 import RoutesConfig from "./routes";
@@ -7,14 +8,15 @@ import RoutesConfig from "./routes";
 function App() {
   return (
     <>
-    <GlobalStyle />
-    <AuthContextProvider>
-      <BrowserRouter>
-        <RoutesConfig />
-      </BrowserRouter>
-    </AuthContextProvider>
+      <GlobalStyle />
+      <AuthContextProvider>
+        <GameContextProvider>
+          <BrowserRouter>
+            <RoutesConfig />
+          </BrowserRouter>
+        </GameContextProvider>
+      </AuthContextProvider>
     </>
-    
   );
 }
 

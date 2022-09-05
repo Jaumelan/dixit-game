@@ -23,17 +23,19 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton =>
 export type ButtonProps = {
   buttonType?: BUTTON_TYPE_CLASSES;
   isLoading?: boolean;
+  
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<ButtonProps> = ({
   children,
   buttonType,
   isLoading,
+  
   ...otherProps
 }) => {
   const CustomButton = getButton(buttonType);
   return (
-    <CustomButton disabled={isLoading} {...otherProps}>
+    <CustomButton disabled={isLoading} {...otherProps} >
       {isLoading ? <ButtonSpinner /> : children}
     </CustomButton>
   );

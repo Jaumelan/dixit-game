@@ -4,10 +4,12 @@ import * as S from "./styles";
 import { Button } from "../../components";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import GoogleLogin from "../../components/GoogleLogin";
-import { Link } from "react-router-dom";
+import { BiShow, BiHide } from "react-icons/bi";
 
 const SigninBody = () => {
   const [register, setRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -27,13 +29,12 @@ const SigninBody = () => {
 
   const validateRegisterInput = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
+
     const emailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     let error = "";
     switch (name) {
       case "email":
-        console.log(value);
-        console.log('teste',emailRegex.test(value));
         error = emailRegex.test(value) ? "" : "Email não válido";
         break;
       case "password":
@@ -41,7 +42,6 @@ const SigninBody = () => {
           value.length < 6 ? "A senha deve conter pelo menos 6 caracteres" : "";
         break;
       case "confirmPassword":
-        
         error =
           value !== formValuesRegister.password ? "Senhas não conferem!" : "";
         break;
@@ -110,14 +110,28 @@ const SigninBody = () => {
                 onChange={handleInputChange}
               />
               <span>Password:</span>
-              <input
-                type="password"
-                name="password"
-                value={formValues.password}
-                onChange={handleInputChange}
-                placeholder="Senha"
-              />
-
+              <S.PasswordContainer>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formValues.password}
+                  onChange={handleInputChange}
+                  placeholder="Senha"
+                />
+                {showPassword ? (
+                  <BiHide
+                    onClick={() => setShowPassword(!showPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                ) : (
+                  <BiShow
+                    onClick={() => setShowPassword(!showPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                )}
+              </S.PasswordContainer>
               <Button
                 buttonType={BUTTON_TYPE_CLASSES.base}
                 onClick={handleSubmit}
@@ -148,28 +162,60 @@ const SigninBody = () => {
               <input
                 type="email"
                 name="email"
+                onBlur={validateRegisterInput}
                 value={formValuesRegister.email}
                 onChange={handleRegisterChange}
               />
+              {errors.email && <p>{errors.email}</p>}
               <span>Senha:</span>
-              <input
-                type="password"
-                name="password"
-                onBlur={validateRegisterInput}
-                value={formValuesRegister.password}
-                onChange={handleRegisterChange}
-              />
+              <S.PasswordContainer>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  onBlur={validateRegisterInput}
+                  value={formValuesRegister.password}
+                  onChange={handleRegisterChange}
+                />
+                {showPassword ? (
+                  <BiHide
+                    onClick={() => setShowPassword(!showPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                ) : (
+                  <BiShow
+                    onClick={() => setShowPassword(!showPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                )}
+              </S.PasswordContainer>
               {errors.password && <p>{errors.password}</p>}
               <span>Confirmar senha:</span>
-              <input
-                type="password"
-                name="confirmPassword"
-                onBlur={validateRegisterInput}
-                value={formValuesRegister.confirmPassword}
-                onChange={handleRegisterChange}
-              />
+              <S.PasswordContainer>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  onBlur={validateRegisterInput}
+                  value={formValuesRegister.confirmPassword}
+                  onChange={handleRegisterChange}
+                />
+                {showConfirmPassword ? (
+                  <BiHide
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                ) : (
+                  <BiShow
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    size={20}
+                    color="#000"
+                  />
+                )}
+              </S.PasswordContainer>
               {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-              
+
               <Button
                 buttonType={BUTTON_TYPE_CLASSES.base}
                 disabled

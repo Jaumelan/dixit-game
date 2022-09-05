@@ -66,3 +66,17 @@ export const Register = styled.div`
       color: #ffcd45;
   }
 `;
+
+export const PasswordContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  svg {
+    position: absolute;
+    right: 0;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+  `;

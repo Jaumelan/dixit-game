@@ -4,6 +4,7 @@ import { UserAuth } from "../context/AuthContext";
 import LandingPage from "../pages/LandingPage";
 import Home from "../pages/Home";
 import SignIn from "../pages/SignIn";
+import Signup from "../pages/Signup";
 import Game from "../pages/Game";
 
 interface IChildren {
@@ -45,6 +46,15 @@ const RoutesConfig = (): ReactElement => {
         element={
           <PublicRoute>
             <SignIn />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="signup"
+        element={
+          <PublicRoute>
+            <Signup />
           </PublicRoute>
         }
       />

@@ -1,16 +1,28 @@
-import { useState, createContext, useContext, FC } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  FC,
+  useEffect,
+} from "react";
 
 type GameContextType = {
   children: React.ReactNode;
 };
 
+export type GameDataType = {
+  id: string;
+  players: number;
+  timePerTurn: number;
+};
+
 type ContextType = {
-  gameId: string | null;
-  handleGameSetter: React.Dispatch<React.SetStateAction<string | null>>;
+  gameData: GameDataType | null;
+  handleGameSetter: (gameData: GameDataType) => void;
 };
 
 const defaultGameContext = {
-  gameId: "",
+  gameData: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleGameSetter: () => {},
 };
@@ -18,14 +30,22 @@ const defaultGameContext = {
 const GameContext = createContext<ContextType>(defaultGameContext);
 
 export const GameContextProvider: FC<GameContextType> = ({ children }) => {
-  const [gameId, setGameId] = useState<string | null>(null);
+  const [gameData, setGameData] = useState<GameDataType | null>(
+    defaultGameContext.gameData
+  );
 
-  const handleGameSetter = (id: string) => {
-    setGameId(id);
+  const handleGameSetter = (data: GameDataType) => {
+    console.log("data in context ", data);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setGameData(data);
   };
 
+  useEffect(() => {
+    console.log("gameId changed", gameData);
+  }, [gameData]);
+
   return (
-    <GameContext.Provider value={{ gameId, handleGameSetter }}>
+    <GameContext.Provider value={{ gameData, handleGameSetter }}>
       {children}
     </GameContext.Provider>
   );

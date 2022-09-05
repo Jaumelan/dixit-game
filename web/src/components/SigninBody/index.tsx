@@ -32,7 +32,7 @@ const SigninBody = () => {
     let error = "";
     switch (name) {
       case "email":
-        console.log(value)
+        console.log(value);
         console.log('teste',emailRegex.test(value));
         error = emailRegex.test(value) ? "" : "Email não válido";
         break;

@@ -1,4 +1,6 @@
-import GoogleButton from "react-google-button";
+import { Button } from "../../components";
+import { BUTTON_TYPE_CLASSES } from "../Button";
+
 import { UserAuth } from "../../context/AuthContext";
 
 const GoogleLogin = () => {
@@ -14,7 +16,10 @@ const GoogleLogin = () => {
 
   return (
     <div>
-      <GoogleButton label="" style={{"width":50, "margin-bottom":"20px"}} onClick={handleGoogleLogin} />
+      <Button
+        buttonType={BUTTON_TYPE_CLASSES.google}
+        onClick={handleGoogleLogin}
+      ></Button>
     </div>
   );
 };

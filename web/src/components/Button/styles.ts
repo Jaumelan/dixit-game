@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import Google from "../../assets/images/google.png";
 import { SpinnerContainer } from "../Spinner/styles";
 
 export const BaseButton = styled.button`
@@ -69,12 +69,17 @@ export const BaseButton = styled.button`
 `;
 
 export const GoogleSignInButton = styled(BaseButton)`
-  background-color: #4285f4;
-  color: white;
+  background-image: url(${Google});
+  width: 192px;
+  height: 47px;
+  background-size: fit;
+  color: none;
   font-size: 14px;
   line-height: 25px;
+  
+
   &:hover {
-    background-color: #357ae8;
+    background-color: none;
     border: none;
   }
 `;

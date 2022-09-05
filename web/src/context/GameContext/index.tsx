@@ -12,8 +12,9 @@ type GameContextType = {
 
 export type GameDataType = {
   id: string;
-  players: number;
+  numberOfPlayers: number;
   timePerTurn: number;
+  players?: string[];
 };
 
 type ContextType = {
@@ -39,10 +40,6 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setGameData(data);
   };
-
-  useEffect(() => {
-    console.log("gameId changed", gameData);
-  }, [gameData]);
 
   return (
     <GameContext.Provider value={{ gameData, handleGameSetter }}>

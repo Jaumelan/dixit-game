@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
-import { GameDataType, useGameContext } from "../../context/GameContext";
+import { useGameContext } from "../../context/GameContext";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
@@ -11,7 +11,7 @@ type SetGameProps = {
 
 const SetGame: FC<SetGameProps> = ({ close }) => {
   const { handleGameSetter } = useGameContext();
-  const [game, setGame] = useState({ id: "", players: 3, timePerTurn: 10 });
+  const [game, setGame] = useState({ id: "", numberOfPlayers: 3, timePerTurn: 10 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,10 +21,10 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
 
   const handleGameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "players") {
+    if (name === "numberOfPlayers") {
       if (Number(value) < 3 || Number(value) > 5) {
         alert("Players must be between 3 and 5");
-        setGame({ ...game, players: 3 });
+        setGame({ ...game, numberOfPlayers: 3 });
         return;
       }
       setGame({ ...game, [name]: Number(value) });
@@ -70,8 +70,8 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
             <p>Número do Jogadores</p>
             <input
               type="number"
-              name="players"
-              value={game.players}
+              name="numberOfPlayers"
+              value={game.numberOfPlayers}
               onChange={handleGameChange}
             />
           </S.PlayerNumberContainer>

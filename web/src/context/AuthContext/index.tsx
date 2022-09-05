@@ -8,12 +8,18 @@ import {
 import { auth } from "../../services/firebaseSetup";
 import { IGoogleResponse } from "../../@types/dixit";
 
-const AuthContext = createContext({
+type AuthContextType = {
+  user: string | null;
+  googleSignIn: () => void;
+  logOut: () => void;
+};
+
+const AuthContext = createContext<AuthContextType>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  googleSignIn: () => {},
+  googleSignIn: () =>  {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   logOut: () => {},
-  user: {} || null,
+  user: null,
 });
 
 interface UserAuth {
@@ -23,7 +29,7 @@ interface UserAuth {
 // eslint-disable-next-line react/prop-types
 export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const [user, setUser] = useState<IGoogleResponse | null>(null);
+  const [user, setUser] = useState<string | null>(null);
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -36,18 +42,19 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        const { providerData } = user;
+        const data = providerData[0].email;
+
+        setUser(data);
         
-          setUser(user as unknown as IGoogleResponse);
-          console.log("User signed in", user);
-        }
-       else {
+      } else {
         setUser(null);
       }
     });
     return () => unsubscribe();
   }, []);
 
-  console.log('user', user);
+  console.log("user", user);
 
   return (
     <AuthContext.Provider value={{ googleSignIn, logOut, user }}>

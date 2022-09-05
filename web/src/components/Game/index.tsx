@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import Player from "../Player";
 import GameCenter from "../GameCenter";
+import { useGameContext } from "../../context/GameContext";
 import * as S from "./styles";
 
 /* export type GameType = {
@@ -9,7 +10,20 @@ import * as S from "./styles";
 
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
-  const [players, setPlayers] = useState<string[]>(["jogador1", "jogador2"]);
+  const { gameData } = useGameContext();
+  const [players, setPlayers] = useState<string[]>([]);
+
+  const handlePlayers = (players: string[]) => {
+    gameData?.players?.push(...players);
+    setPlayers(gameData?.players || []);
+  };
+
+  useEffect(() => {
+    handlePlayers(gameData?.players || []);
+    if (gameData?.players?.length === gameData?.numberOfPlayers) {
+      setWaiting(false);
+    }
+  }, [gameData?.players]);
 
   return (
     <S.Container>

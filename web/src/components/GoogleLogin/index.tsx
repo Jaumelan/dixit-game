@@ -14,7 +14,7 @@ const GoogleLogin = () => {
 
   return (
     <div>
-      <GoogleButton onClick={handleGoogleLogin} />
+      <GoogleButton label="" style={{"width":50, "margin-bottom":"20px"}} onClick={handleGoogleLogin} />
     </div>
   );
 };

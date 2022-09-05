@@ -19,7 +19,12 @@ class UserService {
       throw new Error(`400: User already exists`);
     }
 
-    const result = await this.User.insert(userValidated.user);
+    const userComplete = {
+      ...userValidated.user,
+      profile: 'https://robohash.org/' + userValidated.user.username,
+    };
+
+    const result = await this.User.insert(userComplete);
 
     if (result) {
       const data = {

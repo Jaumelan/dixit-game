@@ -1,17 +1,18 @@
 import RedisClient from '.';
-import { UserModel } from '../../../models';
+import { UserRedis } from '../../../models';
 
 class User {
   private static instance: RedisClient;
 
-  public insert(User: UserModel) {
+  public insert(User: UserRedis) {
     const redis = RedisClient.getInstance();
     console.log('user ', User);
-    const { username, email, password } = User;
+    const { username, email, password, profile } = User;
     const result = redis.hmset(email, {
       username,
       email,
       password,
+      profile,
     });
 
     return result;

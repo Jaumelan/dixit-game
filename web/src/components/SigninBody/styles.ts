@@ -7,9 +7,10 @@ export const Container = styled.div`
   justify-content: center;
   height: auto;
   width: 39rem;
-  border: 3px solid #000;
+  border: 2px solid #555555;
   border-radius: 10px;
   background-color: #3d303b;
+  box-shadow: #26394d 0px 20px 30px -10px;
 `;
 
 export const Form = styled.form`
@@ -27,7 +28,7 @@ export const Form = styled.form`
   }
 
   span {
-    width: 50%;
+    width: 60%;
     font-size: 1.5rem;
     color: #d6d6d6;
     text-align: left;
@@ -37,12 +38,9 @@ export const Form = styled.form`
     height: 35px;
     width: 200px;
     border-radius: 12px;
-    
   }
   p {
     font-size: 1.5rem;
-    color: #ffcd45;
-    text-align: center;
   }
 `;
 
@@ -67,16 +65,42 @@ export const Register = styled.div`
   }
 `;
 
+export const EmailContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 1rem;
+  p {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    color: #ffcd45;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+`;
+
 export const PasswordContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-bottom: 1.5rem;
   svg {
     position: absolute;
     right: 0;
     margin-right: 1rem;
     cursor: pointer;
   }
-  `;
+  p {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    color: #ffcd45;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+`;

@@ -3,44 +3,24 @@ import Google from "../../assets/images/google.png";
 import { SpinnerContainer } from "../Spinner/styles";
 
 export const BaseButton = styled.button`
-  @-webkit-keyframes shadow-pop-tr {
+  @-webkit-keyframes scale-up-center {
     0% {
-      -webkit-box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
-        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-      box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
-        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-      -webkit-transform: translateX(0) translateY(0);
-      transform: translateX(0) translateY(0);
+      -webkit-transform: scale(0.5);
+      transform: scale(0.5);
     }
     100% {
-      -webkit-box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
-        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
-        8px -8px #3e3e3e;
-      box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
-        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
-        8px -8px #3e3e3e;
-      -webkit-transform: translateX(-8px) translateY(8px);
-      transform: translateX(-8px) translateY(8px);
+      -webkit-transform: scale(1);
+      transform: scale(1);
     }
   }
-  @keyframes shadow-pop-tr {
+  @keyframes scale-up-center {
     0% {
-      -webkit-box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
-        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-      box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
-        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-      -webkit-transform: translateX(0) translateY(0);
-      transform: translateX(0) translateY(0);
+      -webkit-transform: scale(0.5);
+      transform: scale(0.5);
     }
     100% {
-      -webkit-box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
-        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
-        8px -8px #3e3e3e;
-      box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
-        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
-        8px -8px #3e3e3e;
-      -webkit-transform: translateX(-8px) translateY(8px);
-      transform: translateX(-8px) translateY(8px);
+      -webkit-transform: scale(1);
+      transform: scale(1);
     }
   }
   min-width: 165px;
@@ -59,12 +39,10 @@ export const BaseButton = styled.button`
   cursor: pointer;
   display: flex;
   justify-content: center;
-  
+
   align-items: center;
   &:hover {
-    -webkit-animation: shadow-pop-tr 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
-      both;
-    animation: shadow-pop-tr 0.3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+    box-shadow: 0 0 2px 2px #000;
   }
 `;
 
@@ -76,7 +54,6 @@ export const GoogleSignInButton = styled(BaseButton)`
   color: none;
   font-size: 14px;
   line-height: 25px;
-  
 
   &:hover {
     background-color: none;
@@ -98,4 +75,11 @@ export const LogoutButton = styled(BaseButton)`
 export const ButtonSpinner = styled(SpinnerContainer)`
   width: 30px;
   height: 30px;
+`;
+
+export const BaseButtonDisabled = styled(BaseButton)`
+  background-color: #c0c0c0;
+  color: black;
+  border: none;
+  cursor: not-allowed;
 `;

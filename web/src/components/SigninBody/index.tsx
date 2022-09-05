@@ -10,6 +10,7 @@ const SigninBody = () => {
   const [register, setRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [enableButton, setEnableButton] = useState(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -27,6 +28,7 @@ const SigninBody = () => {
     confirmPassword: "",
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validateRegisterInput = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
 
@@ -52,6 +54,24 @@ const SigninBody = () => {
       ...prevErrors,
       [name]: error,
     }));
+    enableButtonRegister();
+  };
+
+  const enableButtonRegister = () => {
+    if (
+      formValuesRegister.name &&
+      formValuesRegister.email &&
+      formValuesRegister.password &&
+      formValuesRegister.confirmPassword &&
+      !errors.name &&
+      !errors.email &&
+      !errors.password &&
+      !errors.confirmPassword
+    ) {
+      setEnableButton(true);
+    } else {
+      setEnableButton(false);
+    }
   };
 
   const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,14 +179,18 @@ const SigninBody = () => {
               />
               {errors.name && <p>{errors.name}</p>}
               <span>Email:</span>
-              <input
-                type="email"
-                name="email"
-                onBlur={validateRegisterInput}
-                value={formValuesRegister.email}
-                onChange={handleRegisterChange}
-              />
-              {errors.email && <p>{errors.email}</p>}
+              <S.EmailContainer>
+                <input
+                  type="email"
+                  name="email"
+                  onBlur={validateRegisterInput}
+                  value={formValuesRegister.email}
+                  onChange={handleRegisterChange}
+                />
+
+                {errors.email && <p>{errors.email}</p>}
+              </S.EmailContainer>
+
               <span>Senha:</span>
               <S.PasswordContainer>
                 <input
@@ -189,8 +213,9 @@ const SigninBody = () => {
                     color="#000"
                   />
                 )}
+                {errors.password && <p>{errors.password}</p>}
               </S.PasswordContainer>
-              {errors.password && <p>{errors.password}</p>}
+
               <span>Confirmar senha:</span>
               <S.PasswordContainer>
                 <input
@@ -213,16 +238,23 @@ const SigninBody = () => {
                     color="#000"
                   />
                 )}
+                {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
               </S.PasswordContainer>
-              {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-
-              <Button
-                buttonType={BUTTON_TYPE_CLASSES.base}
-                disabled
-                onClick={handleRegisterSubmit}
-              >
-                Cadastrar
-              </Button>
+              {enableButton ? (
+                <Button
+                  buttonType={BUTTON_TYPE_CLASSES.base}
+                  onClick={handleRegisterSubmit}
+                >
+                  Cadastrar
+                </Button>
+              ) : (
+                <Button
+                  buttonType={BUTTON_TYPE_CLASSES.disabled}
+                  onClick={handleRegisterSubmit}
+                >
+                  Cadastrar
+                </Button>
+              )}
             </S.Form>
             <S.Register onClick={() => setRegister(!register)}>
               <h3>Já tem cadastro?</h3>

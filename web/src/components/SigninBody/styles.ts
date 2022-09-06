@@ -28,7 +28,7 @@ export const Form = styled.form`
   }
 
   span {
-    width: 60%;
+    width: 70%;
     font-size: 1.5rem;
     color: #d6d6d6;
     text-align: left;
@@ -36,7 +36,7 @@ export const Form = styled.form`
 
   input {
     height: 35px;
-    width: 200px;
+    width: 250px;
     border-radius: 12px;
     padding: 0 1rem;
   }
@@ -96,6 +96,23 @@ export const PasswordContainer = styled.div`
     margin-right: 1rem;
     cursor: pointer;
   }
+  p {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    color: #ffcd45;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+`;
+
+export const UsernameContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 1rem;
   p {
     position: absolute;
     top: 25px;

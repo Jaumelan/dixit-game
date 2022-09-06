@@ -36,6 +36,7 @@ const SigninBody = () => {
 
     const emailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
     let error = "";
     switch (name) {
       case "email":
@@ -48,6 +49,11 @@ const SigninBody = () => {
       case "confirmPassword":
         error =
           value !== formValuesRegister.password ? "Senhas não conferem!" : "";
+        break;
+      case "username":
+        error = onlyLettersRegex.test(value)
+          ? ""
+          : "Nome de usuário deve conter apenas letras";
         break;
       default:
         break;
@@ -197,14 +203,16 @@ const SigninBody = () => {
             <S.Form action="#">
               <h1>Cadastro</h1>
               <span>Nome:</span>
-              <input
-                type="text"
-                name="username"
-                onBlur={validateRegisterInput}
-                value={formValuesRegister.username}
-                onChange={handleRegisterChange}
-              />
-              {errors.username && <p>{errors.username}</p>}
+              <S.UsernameContainer>
+                <input
+                  type="text"
+                  name="username"
+                  onBlur={validateRegisterInput}
+                  value={formValuesRegister.username}
+                  onChange={handleRegisterChange}
+                />
+                {errors.username && <p>{errors.username}</p>}
+              </S.UsernameContainer>
               <span>Email:</span>
               <S.EmailContainer>
                 <input

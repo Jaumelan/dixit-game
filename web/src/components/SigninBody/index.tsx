@@ -5,8 +5,10 @@ import { Button } from "../../components";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import GoogleLogin from "../../components/GoogleLogin";
 import { BiShow, BiHide } from "react-icons/bi";
+import { UserAuth } from "../../context/AuthContext";
 
 const SigninBody = () => {
+  const { registerUser, loginUser } = UserAuth();
   const [register, setRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -89,6 +91,8 @@ const SigninBody = () => {
   const handleRegisterSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log(formValuesRegister);
+    registerUser(formValuesRegister);
+    /*
     fetch("http://localhost:8080/user/register", {
       method: "POST",
       headers: {
@@ -97,13 +101,19 @@ const SigninBody = () => {
       body: JSON.stringify(formValuesRegister),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data)
+
+      })
       .catch((err) => console.log(err));
+      */
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log(formValues);
+    loginUser(formValues);
+    /*
     fetch("http://localhost:8080/user/login", {
       method: "POST",
       headers: {
@@ -113,6 +123,7 @@ const SigninBody = () => {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
+      */
   };
 
   return (

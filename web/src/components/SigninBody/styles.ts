@@ -38,6 +38,7 @@ export const Form = styled.form`
     height: 35px;
     width: 200px;
     border-radius: 12px;
+    padding: 0 1rem;
   }
   p {
     font-size: 1.5rem;

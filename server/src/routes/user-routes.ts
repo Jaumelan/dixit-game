@@ -5,7 +5,7 @@ import { GetUserController } from '../controllers/get-user';
 const route = Router();
 
 route
-  .route('/user/')
+  .route('/user/register')
   .post(new CreateUserController().handle.bind(new CreateUserController()));
 route
   .route('/user/:id')

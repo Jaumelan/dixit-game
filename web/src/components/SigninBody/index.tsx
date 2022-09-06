@@ -18,13 +18,13 @@ const SigninBody = () => {
     password: "",
   });
   const [formValuesRegister, setFormValuesRegister] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -61,11 +61,11 @@ const SigninBody = () => {
 
   const enableButtonRegister = () => {
     if (
-      formValuesRegister.name &&
+      formValuesRegister.username &&
       formValuesRegister.email &&
       formValuesRegister.password &&
       formValuesRegister.confirmPassword &&
-      !errors.name &&
+      !errors.username &&
       !errors.email &&
       !errors.password &&
       !errors.confirmPassword
@@ -90,8 +90,14 @@ const SigninBody = () => {
 
   const handleRegisterSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(formValuesRegister);
-    registerUser(formValuesRegister);
+    //console.log(formValuesRegister);
+    const data = {
+      username: formValuesRegister.username,
+      email: formValuesRegister.email,
+      password: formValuesRegister.password,
+    };
+
+    registerUser(data);
     /*
     fetch("http://localhost:8080/user/register", {
       method: "POST",
@@ -193,12 +199,12 @@ const SigninBody = () => {
               <span>Nome:</span>
               <input
                 type="text"
-                name="name"
+                name="username"
                 onBlur={validateRegisterInput}
-                value={formValuesRegister.name}
+                value={formValuesRegister.username}
                 onChange={handleRegisterChange}
               />
-              {errors.name && <p>{errors.name}</p>}
+              {errors.username && <p>{errors.username}</p>}
               <span>Email:</span>
               <S.EmailContainer>
                 <input

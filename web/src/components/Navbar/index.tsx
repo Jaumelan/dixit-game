@@ -60,7 +60,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
 
           <li>
             <IconContainer>
-              <ProfileImgSty src={ProfileImg} alt="user profile" />
+              <ProfileImgSty src={user.profilePicture} alt="user profile" />
             </IconContainer>
           </li>
         </ul>

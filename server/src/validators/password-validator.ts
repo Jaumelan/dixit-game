@@ -16,8 +16,8 @@ class PasswordValidator {
       return '';
     }
 
-    if (password.length < 10) {
-      this.errors += 'password:A senha deve conter no mínimo 10 caracteres.|';
+    if (password.length < 6) {
+      this.errors += 'password:A senha deve conter no mínimo 6 caracteres.|';
       return '';
     }
 

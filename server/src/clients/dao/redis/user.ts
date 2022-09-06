@@ -4,26 +4,35 @@ import { UserRedis } from '../../../models';
 class User {
   private static instance: RedisClient;
 
-  public insert(User: UserRedis) {
+  public async insert(User: UserRedis) {
     const redis = RedisClient.getInstance();
     console.log('user ', User);
     const { username, email, password, profile } = User;
-    const result = redis.hmset(email, {
+    const result = await redis.hmset(email, {
       username,
       email,
       password,
       profile,
     });
 
-    return result;
+    return { result, User };
   }
 
   public async get(id: string): Promise<any> {
     const redis = RedisClient.getInstance();
+
+    const result = await redis.hgetall(id);
+    //console.log(Object.keys(result).length);
+    return result;
+  }
+  /*
     return new Promise((resolve, reject) => {
       redis.hgetall(id, (err, value) => {
         if (err) reject(err);
-        else resolve(value);
+        else {
+          console.log('value', value);
+          resolve(value);
+        }
       });
     });
     /*
@@ -34,8 +43,9 @@ class User {
 
       return res;
     });
-    return result; */
+    return result; 
   }
+  */
 
   public async delete(id: string): Promise<any> {
     const redis = RedisClient.getInstance();

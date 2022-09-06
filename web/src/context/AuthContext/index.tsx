@@ -6,13 +6,14 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../services/firebaseSetup";
-import { IGoogleResponse, IRegisterUser, ILoginUser } from "../../@types/dixit";
+import { IRegisterUser, ILoginUser } from "../../@types/dixit";
 
 type AuthContextType = {
-  user: string | null;
+  user: { email: string; profilePicture: string } | null;
   googleSignIn: () => void;
   registerUser: (user: IRegisterUser) => void;
   loginUser: (user: ILoginUser) => void;
+  logoutUser: () => void;
   logOut: () => void;
 };
 
@@ -25,6 +26,8 @@ const AuthContext = createContext<AuthContextType>({
   registerUser: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   loginUser: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  logoutUser: () => {},
   user: null,
 });
 
@@ -35,7 +38,10 @@ interface UserAuth {
 // eslint-disable-next-line react/prop-types
 export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<{
+    email: string;
+    profilePicture: string;
+  } | null>(null);
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -68,9 +74,17 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUser(data.email);
+      .then((response) => {
+        const { data } = response;
+        if (Object.keys(data).length > 0) {
+          setUser({
+            email: data.email,
+            profilePicture: data.profilePicture,
+          });
+        } else {
+          setUser(null);
+          //console.log("response", response);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -84,18 +98,34 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUser(data.email);
+      .then((response) => {
+        const { data } = response;
+        setUser({
+          email: data.email,
+          profilePicture: data.profile,
+        });
       })
       .catch((err) => console.log(err));
   };
 
-  console.log("user", user);
+  const logoutUser = () => {
+    setUser(null);
+  };
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <AuthContext.Provider
-      value={{ googleSignIn, logOut, user, registerUser, loginUser }}
+      value={{
+        googleSignIn,
+        logOut,
+        user,
+        registerUser,
+        loginUser,
+        logoutUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

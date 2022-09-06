@@ -14,9 +14,9 @@ export interface IGoogleResponse {
 }
 
 export interface IRegisterUser {
-  email: string;
+  username: string;
   password: string;
-  name: string;
+  email: string;
 }
 
 export interface ILoginUser {

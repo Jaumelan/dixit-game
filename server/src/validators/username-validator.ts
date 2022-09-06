@@ -3,8 +3,7 @@ class UserNameValidator {
 
   public userName: string;
 
-  private nameRegex =
-    /\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi;
+  private nameRegex = /^[a-zA-Z ]*$/;
 
   public constructor(userName: string) {
     this.errors = '';
@@ -30,8 +29,7 @@ class UserNameValidator {
     }
 
     if (!this.nameRegex.test(userName)) {
-      this.errors +=
-        'name:O nome de usuário deve conter apenas letras e espaços.|';
+      this.errors += 'name:O nome só pode conter letras.|';
       return '';
     }
 
@@ -41,6 +39,7 @@ class UserNameValidator {
       return '';
     }
 
+    //console.log('userName', userName);
     return userName.trim();
   }
 }

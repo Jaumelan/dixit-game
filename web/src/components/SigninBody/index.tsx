@@ -152,12 +152,22 @@ const SigninBody = () => {
                   />
                 )}
               </S.PasswordContainer>
-              <Button
-                buttonType={BUTTON_TYPE_CLASSES.base}
-                onClick={handleSubmit}
-              >
-                Entrar
-              </Button>
+              {formValues.email && formValues.password ? (
+                <Button
+                  buttonType={BUTTON_TYPE_CLASSES.base}
+                  onClick={handleSubmit}
+                >
+                  Entrar
+                </Button>
+              ) : (
+                <Button
+                  buttonType={BUTTON_TYPE_CLASSES.disabled}
+                  onClick={handleSubmit}
+                  disabled
+                >
+                  Entrar
+                </Button>
+              )}
 
               <GoogleLogin />
             </S.Form>

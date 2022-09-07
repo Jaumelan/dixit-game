@@ -42,6 +42,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     email: string;
     profilePicture: string;
   } | null>(null);
+  
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -54,6 +55,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user);
         const { providerData } = user;
         const data = providerData[0].email;
 

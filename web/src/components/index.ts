@@ -12,3 +12,5 @@ export { default as ErrorPage } from "./ErrorPage";
 export { default as Game } from "./Game";
 export { default as GameBody } from "./GameBody";
 export { default as PlayerSpinner } from "./PlayerSpinner";
+export { default as SignupForm } from "./Signup-Form";
+export { default as LoginForm } from "./LoginForm";

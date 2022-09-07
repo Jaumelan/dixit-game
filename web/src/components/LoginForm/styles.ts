@@ -1,18 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  width: 39rem;
-  border: 2px solid #555555;
-  border-radius: 10px;
-  background-color: #3d303b;
-  box-shadow: #26394d 0px 20px 30px -10px;
-`;
-
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -56,33 +43,6 @@ export const LoginButton = styled.button`
   cursor: pointer;
 `;
 
-export const Register = styled.div`
-  color: #fff;
-  font-size: 2rem;
-  cursor: pointer;
-  h3 {
-    &:hover {
-      color: #ffcd45;
-  }
-`;
-
-export const EmailContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 1rem;
-  p {
-    position: absolute;
-    top: 25px;
-    width: 100%;
-    color: #ffcd45;
-    text-align: center;
-    font-size: 1.2rem;
-  }
-`;
-
 export const PasswordContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -96,23 +56,6 @@ export const PasswordContainer = styled.div`
     margin-right: 1rem;
     cursor: pointer;
   }
-  p {
-    position: absolute;
-    top: 25px;
-    width: 100%;
-    color: #ffcd45;
-    text-align: center;
-    font-size: 1.2rem;
-  }
-`;
-
-export const UsernameContainer = styled.div`
-  display: flex;
-  flex-direction: row; 
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 1rem;
   p {
     position: absolute;
     top: 25px;

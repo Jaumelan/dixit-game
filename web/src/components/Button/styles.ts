@@ -50,12 +50,13 @@ export const BaseButton = styled.button`
 export const GoogleSignInButton = styled(BaseButton)`
   background-image: url(${Google});
   width: 192px;
-  height: 47px;
+  height: 46px;
+
   background-size: fit;
   color: none;
   font-size: 14px;
   line-height: 25px;
-
+  background-color: #fff;
   &:hover {
     background-color: none;
     border: none;

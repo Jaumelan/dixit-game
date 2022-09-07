@@ -5,47 +5,20 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60%;
+  height: auto;
   width: 39rem;
-  position: relative;
-  border: 3px solid #000;
+  border: 2px solid #555555;
   border-radius: 10px;
   background-color: #3d303b;
+  box-shadow: #26394d 0px 20px 30px -10px;
 `;
 
-export const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -11rem;
-  
-`;
-
-export const MainBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const BtnSignin = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: space-around;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-`;
-
-export const SignupButton = styled.button`
-  background-color: #ffcd45;
-  border-radius: 25px;
-  color: black; 
-  font-weight: 900;
-  height: 60px;
-  width: 135px;
-  border: solid 3px black;
+export const Register = styled.div`
+  color: #fff;
+  font-size: 2rem;
   cursor: pointer;
+  h3 {
+    &:hover {
+      color: #ffcd45;
+  }
 `;
-

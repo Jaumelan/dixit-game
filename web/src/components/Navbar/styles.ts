@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.nav`
   display: flex;
@@ -29,9 +30,16 @@ export const IconContainer = styled.div`
   }
 `;
 
+export const LinkT = styled(Link)`
+  text-decoration: none;
+  a {
+    text-decoration: none;
+  }
+`;
+
 export const LoginButton = styled.button`
   background-color: #ffcd45;
-  border-radius: 25px;
+  
   color: black;
   font-weight: 900;
   height: 60px;

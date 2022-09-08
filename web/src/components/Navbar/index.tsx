@@ -3,12 +3,13 @@ import { AiOutlineHome } from "react-icons/ai";
 import { RiFilePaper2Line } from "react-icons/ri";
 import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
-import ProfileImg from "../../assets/images/profile.png";
+import Button from "../Button";
 import { FC } from "react";
 
 import {
   Container,
   IconContainer,
+  LinkT,
   LoginButton,
   ProfileImgSty,
   NavGame,
@@ -72,9 +73,9 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
             </IconContainer>
           </li>
           <li>
-            <Link to="/signin">
-              <LoginButton id="login">LOGIN</LoginButton>
-            </Link>
+            <LinkT to="/signin">
+              <Button>LOGIN</Button>
+            </LinkT>
           </li>
         </ul>
       )}

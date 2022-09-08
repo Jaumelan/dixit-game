@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   display: flex;
@@ -7,12 +8,11 @@ export const Container = styled.div`
   width: 100%;
 `;
 
-export const Video = styled.video`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
+export const LinkT = styled(Link)`
+  text-decoration: none;
+  a {
+    text-decoration: none;
+  }
 `;
 
 export const BoxLeft = styled.div`
@@ -36,33 +36,33 @@ export const BoxLeft = styled.div`
 `; */
 
 export const Title = styled.h1`
-@-webkit-keyframes text-focus-in1 {
-  0% {
-    -webkit-filter: blur(12px);
-            filter: blur(12px);
-    opacity: 0;
+  @-webkit-keyframes text-focus-in1 {
+    0% {
+      -webkit-filter: blur(12px);
+      filter: blur(12px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-filter: blur(0px);
+      filter: blur(0px);
+      opacity: 1;
+    }
   }
-  100% {
-    -webkit-filter: blur(0px);
-            filter: blur(0px);
-    opacity: 1;
+  @keyframes text-focus-in1 {
+    0% {
+      -webkit-filter: blur(12px);
+      filter: blur(12px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-filter: blur(0px);
+      filter: blur(0px);
+      opacity: 1;
+    }
   }
-}
-@keyframes text-focus-in1 {
-  0% {
-    -webkit-filter: blur(12px);
-            filter: blur(12px);
-    opacity: 0;
-  }
-  100% {
-    -webkit-filter: blur(0px);
-            filter: blur(0px);
-    opacity: 1;
-  }
-}
 
-
-  -webkit-animation: text-focus-in1 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  -webkit-animation: text-focus-in1 1s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
   animation: text-focus-in1 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   font-size: 19rem;
   font-weight: 700;

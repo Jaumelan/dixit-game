@@ -11,10 +11,10 @@ type BoxInitialBodyProps = {
 };
 
 const BoxInitialBody: FC<BoxInitialBodyProps> = ({ createGameModal, joinGameModal }) => {
-  const { logOut } = UserAuth();
+  const { logoutUser } = UserAuth();
 
   const handleLogOut = async () => {
-    await logOut();
+    await logoutUser();
   };
 
   return (

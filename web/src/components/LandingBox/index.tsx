@@ -1,24 +1,27 @@
-import GameName from '../../assets/images/gameName.png';
-import GameLogo from '../../assets/images/gameLogo.png';
+import Boyboat from "../../assets/images/72.jpg";
+import Keys from "../../assets/images/73.jpg";
+import Painting from "../../assets/images/74.jpg";
 import { Link } from "react-router-dom";
 import * as S from "./styles";
 
 const LandingBox = () => {
   return (
     <S.Container>
-      <S.MainBox>
-        <S.BoxLeft>
-          <img src={GameName} alt="game name" />
-          <Link to="/signup">
-            <button id="signUp">Cadastre-se</button>
-          </Link>
+      {/* <S.MainBox> */}
+      <S.BoxLeft>
+        <S.Title>DIXIT</S.Title>
+        <Link to="/signup">
+          <button id="signUp">Cadastre-se</button>
+        </Link>
+      </S.BoxLeft>
 
-        </S.BoxLeft>
-
-        <S.BoxRight>
-          <img src={GameLogo} alt="game logo" />
-        </S.BoxRight>
-      </S.MainBox>
+      <S.BoxRight>
+        <S.FirstImg src={Boyboat} />
+        <S.SecondImg src={Keys} />
+        <S.ThirdImg src={Painting} />
+        {/* <img src={GameLogo} alt="game logo" /> */}
+      </S.BoxRight>
+      {/* </S.MainBox> */}
     </S.Container>
   );
 };

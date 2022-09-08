@@ -14,7 +14,7 @@ class UserService {
     }
 
     const userExists = await this.User.get(User.email);
-    console.log('userExists', userExists);
+    //console.log('userExists', userExists);
 
     if (Object.keys(userExists).length > 0) {
       throw new Error(`400: User already exists`);
@@ -26,7 +26,7 @@ class UserService {
     };
 
     const result = await this.User.insert(userComplete);
-    console.log(result);
+    //console.log(result);
 
     if (result.result === 'OK') {
       const { User } = result;

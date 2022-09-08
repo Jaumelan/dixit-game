@@ -7,6 +7,14 @@ export const Container = styled.div`
   width: 100%;
 `;
 
+export const Video = styled.video`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+`;
+
 export const BoxLeft = styled.div`
   width: 50%;
   display: flex;

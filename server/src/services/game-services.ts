@@ -18,7 +18,7 @@ class GameServices {
 
     const activeGames = await this.getActiveGames();
 
-    if (activeGames.includes(gameSessionValidated.gameSession.id)) {
+    if (activeGames.data.includes(gameSessionValidated.gameSession.id)) {
       throw new Error(
         `400: game session with id ${gameSessionValidated.gameSession.id} already exists`,
       );
@@ -30,12 +30,15 @@ class GameServices {
 
   public async getActiveGames() {
     const games = await this.game.getActiveGames();
-    return games;
+    return { data: games, messages: ['games retrieved successfully'] };
   }
 
   public async getGameSession(id: string) {
     const gameSession = await this.game.getGameSession(id);
-    return gameSession;
+    return {
+      data: gameSession,
+      messages: ['game session retrieved successfully'],
+    };
   }
 
   public async updatePlayers(id: string, players: string[]) {

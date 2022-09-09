@@ -1,5 +1,6 @@
 import { useState } from "react";
 import BoxInitialBody from "../HomeInitial";
+import EnterGameSession from "../EnterGameSession";
 import SetGame from "../SetGame";
 
 const BoxBody = () => {
@@ -17,7 +18,9 @@ const BoxBody = () => {
   return createGame ? (
     <SetGame close={handleCreateGame} />
   ) : joinGame ? (
-    <div onClick={handleJoinGame}>Jogo</div>
+    <div onClick={handleJoinGame}>
+      <EnterGameSession />
+    </div>
   ) : (
     <BoxInitialBody
       createGameModal={handleCreateGame}

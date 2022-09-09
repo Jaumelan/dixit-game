@@ -1,6 +1,7 @@
 import { AuthContextProvider } from "./context/AuthContext";
 import { GameContextProvider } from "./context/GameContext";
 import { BrowserRouter } from "react-router-dom";
+//import { SnackbarProvider } from "notistack";
 import GlobalStyle from "./assets/styles/global";
 import RoutesConfig from "./routes";
 //import "./App.css";

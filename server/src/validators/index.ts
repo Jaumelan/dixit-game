@@ -3,3 +3,8 @@ export { PasswordValidator } from './password-validator';
 export { UserNameValidator } from './username-validator';
 export { UserDataValidator } from './userdata-validator';
 export { LoginDataValidator } from './loginData-validator';
+export { GameIdValidator } from './game-id-validator';
+export { NumberOfPlayersValidator } from './players-number-validator';
+export { PlayersValidator } from './players-validator';
+export { TimePerTurnValidator } from './time-per-turn-validator';
+export { GameCreationValidator } from './game-creation-validator';

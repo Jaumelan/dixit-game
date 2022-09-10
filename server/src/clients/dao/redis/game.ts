@@ -8,6 +8,14 @@ class Game {
     const redis = RedisClient.getInstance();
     const { id, players, numberOfPlayers, timePerTurn } = gameSession;
     const status = GameStatus.waiting;
+
+    const gameSessionExists = await redis.hgetall(id);
+    //console.log('gameSessionExists', gameSessionExists);
+
+    if (Object.keys(gameSessionExists).length > 0) {
+      throw new Error('400: Já existe uma sessão com esse id');
+    }
+
     const gameSessionCreation = await redis.hmset(id, {
       numberOfPlayers,
       players,
@@ -21,10 +29,10 @@ class Game {
       id,
     };
 
-    if (gameSessionCreation === 'OK' && games === 1) {
+    if (gameSessionCreation === 'OK' && games > 1) {
       return {
         data,
-        messages: ['game session created successfully'],
+        messages: [],
       };
     } else {
       throw new Error(

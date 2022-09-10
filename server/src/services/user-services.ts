@@ -1,6 +1,6 @@
 import User from '../clients/dao/redis/user';
-import { UserDataValidator } from '../validators';
-import { UserModel, APIResponse, LoginRequisition } from '../models';
+import { UserDataValidator } from '../../src/validators';
+import { UserModel, APIResponse, LoginRequisition } from '../../src/models';
 
 class UserService {
   private User = new User();
@@ -37,7 +37,7 @@ class UserService {
 
       return {
         data,
-        messages: ['user created successfully'],
+        messages: [],
       } as APIResponse;
     } else {
       throw new Error(
@@ -50,7 +50,7 @@ class UserService {
     //console.log('User', User.email);
     const userExists = await this.User.get(User.email);
 
-    console.log('userExists', userExists);
+    //console.log('userExists', userExists);
 
     if (Object.keys(userExists).length === 0) {
       throw new Error(`400: User not found`);
@@ -70,7 +70,7 @@ class UserService {
 
     return {
       data,
-      messages: ['user logged successfully'],
+      messages: [],
     } as APIResponse;
   }
 

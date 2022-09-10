@@ -6,7 +6,7 @@ class User {
 
   public async insert(User: UserRedis) {
     const redis = RedisClient.getInstance();
-    console.log('user ', User);
+    //console.log('user ', User);
     const { username, email, password, profile } = User;
     const result = await redis.hmset(email, {
       username,

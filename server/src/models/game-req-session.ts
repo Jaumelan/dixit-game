@@ -1,6 +1,6 @@
 export interface GameSessionI {
   id: string;
   numberOfPlayers: number;
-  players: string[];
+  players: { username: string; email: string }[];
   timePerTurn: number;
 }

@@ -5,3 +5,4 @@ export { LoginUserController } from './login-user';
 export { CreateGameController } from './create-game';
 export { GetAvaliableGamesController } from './games-availables';
 export { GetGameData } from './get-game-data';
+export { GetRoomController } from './get-room';

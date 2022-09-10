@@ -30,14 +30,14 @@ class GameServices {
 
   public async getActiveGames() {
     const games = await this.game.getActiveGames();
-    return { data: games, messages: ['games retrieved successfully'] };
+    return { data: games, messages: [] };
   }
 
   public async getGameSession(id: string) {
     const gameSession = await this.game.getGameSession(id);
     return {
       data: gameSession,
-      messages: ['game session retrieved successfully'],
+      messages: [],
     };
   }
 
@@ -49,6 +49,16 @@ class GameServices {
   public async updateStatus(id: string, status: GameStatus) {
     const gameSession = await this.game.updateStatus(id, status);
     return gameSession;
+  }
+
+  public async sendNumber() {
+    const activeGames = await this.getActiveGames();
+    let number = Math.floor(Math.random() * 100) + 1;
+    while (activeGames.data.includes(number.toString())) {
+      number = Math.floor(Math.random() * 100) + 1;
+    }
+
+    return { data: number, messages: ['number generated successfully'] };
   }
 
   public async deleteGameSession(id: string) {

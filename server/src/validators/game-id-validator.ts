@@ -16,7 +16,7 @@ class GameIdValidator {
       return '';
     }
 
-    if (gameId.length !== 4) {
+    if (gameId.length > 4) {
       this.errors += 'gameId:O id do jogo deve conter 4 caracteres.|';
       return '';
     }

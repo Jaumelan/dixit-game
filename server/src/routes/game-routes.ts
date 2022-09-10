@@ -3,6 +3,7 @@ import {
   CreateGameController,
   GetAvaliableGamesController,
   GetGameData,
+  GetRoomController,
 } from '../controllers';
 
 const route = Router();
@@ -18,5 +19,8 @@ route
     ),
   );
 route.route('/game/:id').get(new GetGameData().handle.bind(new GetGameData()));
+route
+  .route('/room')
+  .get(new GetRoomController().handle.bind(new GetRoomController()));
 
 export default route;

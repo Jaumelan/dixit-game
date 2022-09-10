@@ -86,9 +86,9 @@ const EnterGameSession: FC<Props> = ({ close }) => {
             {gameSessions.map((gameSession) => (
               <S.SessionEnter key={gameSession}>
                 <h3>Sala {gameSession}</h3>
-                <Button buttonType={BUTTON_TYPE_CLASSES.LoginSession}>
-                  Entrar
-                </Button>
+                  <Button buttonType={BUTTON_TYPE_CLASSES.LoginSession}>
+                    Entrar
+                  </Button>
               </S.SessionEnter>
             ))}
           </S.SessionContainer>

@@ -1,8 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import Loading from "../Loading";
+import * as S from "./styles";
+import Button from "../Button";
+import { BUTTON_TYPE_CLASSES } from "../Button";
+import { IoCloseSharp } from "react-icons/io5";
 //import { useSnackbar } from "notistack";
 
-const EnterGameSession = () => {
+type Props = {
+  close: () => void;
+};
+
+const EnterGameSession: FC<Props> = ({ close }) => {
   const [gameSessions, setGameSessions] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -63,12 +71,28 @@ const EnterGameSession = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        gameSessions.map((gameSession) => (
-          <div key={gameSession}>
-            <h3>Sala {gameSession}</h3>
-            <button>Entrar</button>
-          </div>
-        ))
+        <S.Container>
+          <S.TitleContainer>
+            <S.Title>Selecione uma sessão</S.Title>
+            <IoCloseSharp
+              size={30}
+              color="black"
+              onClick={close}
+              style={{ cursor: "pointer" }}
+            />
+          </S.TitleContainer>
+
+          <S.SessionContainer>
+            {gameSessions.map((gameSession) => (
+              <S.SessionEnter key={gameSession}>
+                <h3>Sala {gameSession}</h3>
+                <Button buttonType={BUTTON_TYPE_CLASSES.LoginSession}>
+                  Entrar
+                </Button>
+              </S.SessionEnter>
+            ))}
+          </S.SessionContainer>
+        </S.Container>
       )}
     </div>
   );

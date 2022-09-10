@@ -52,7 +52,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     signOut(auth);
   };
 
-  useEffect(() => {
+ /*  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
@@ -65,7 +65,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, []); */
 
   const registerUser = async (data: IRegisterUser) => {
     fetch("http://localhost:8080/user/register", {

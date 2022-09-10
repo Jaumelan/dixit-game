@@ -16,27 +16,26 @@ const GameBody = () => {
   const [gameState, setGameState] = useState<GameState>({ LOADING: "LOADING" });
   const [game, setGame] = useState<GameDataType | null>(null);
 
-  const getDataMock = () => {
-    return {
-      id: gameData?.id,
-      numberOfPlayers: gameData?.numberOfPlayers,
-      timePerTurn: gameData?.timePerTurn,
-      players: [user],
-    };
-  };
-
   useEffect(() => {
     const GetGame = async () => {
       try {
-        //const response = await fetch(`http://localhost:3000/games/${gameId}`);
-        const data = getDataMock();
-        console.log()
-        //const data = await response.json();
+        const response = await fetch(`http://localhost:8080/game/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(gameData),
+        });
+        const data = await response.json();
+        console.log(data);
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        if (data) {
+        if (data.messages.length === 0) {
           setGameState({ LOADING: "LOADED" });
           setGame(data as GameDataType);
           handleGameSetter(data as GameDataType);
+        } else if (data.messages.length > 0) {
+          setGameState({ LOADING: "ERROR" });
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

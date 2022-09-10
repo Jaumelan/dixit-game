@@ -6,8 +6,8 @@ export const Container = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  background: rgb(0,6,40);
-background: linear-gradient(180deg, rgba(0,6,40,1) 0%, rgba(9,9,121,1) 56%, rgba(53,124,214,1) 100%);
+  /* background: rgb(0,6,40);
+background: linear-gradient(180deg, rgba(0,6,40,1) 0%, rgba(9,9,121,1) 56%, rgba(53,124,214,1) 100%); */
 `;
 
 export const Body = styled.div`
@@ -17,4 +17,11 @@ export const Body = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+`;
+export const Video = styled.video`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 `;

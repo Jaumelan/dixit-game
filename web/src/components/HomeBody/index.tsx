@@ -6,9 +6,19 @@ import SetGame from "../SetGame";
 const BoxBody = () => {
   const [createGame, setCreateGame] = useState(false);
   const [joinGame, setJoinGame] = useState(false);
+  const [gameId, setGameId] = useState('');
 
-  const handleCreateGame = () => {
-    setCreateGame((prev) => !prev);
+  const handleCreateGame = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/room");
+      const res = await response.json();
+      const id = res.data.toString()
+      setGameId(() => id);
+
+      setCreateGame((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleJoinGame = () => {
@@ -16,11 +26,9 @@ const BoxBody = () => {
   };
 
   return createGame ? (
-    <SetGame close={handleCreateGame} />
+    <SetGame close={handleCreateGame} gameID={gameId} />
   ) : joinGame ? (
-    <div onClick={handleJoinGame}>
-      <EnterGameSession />
-    </div>
+    <EnterGameSession close={handleJoinGame} />
   ) : (
     <BoxInitialBody
       createGameModal={handleCreateGame}

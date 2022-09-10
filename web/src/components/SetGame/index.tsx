@@ -1,23 +1,25 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
 import { useGameContext } from "../../context/GameContext";
+import { UserAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
 type SetGameProps = {
   close: () => void;
+  gameID: string;
 };
 
-const SetGame: FC<SetGameProps> = ({ close }) => {
+const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
+  const { user } = UserAuth();
   const { handleGameSetter } = useGameContext();
-  const [game, setGame] = useState({ id: "", numberOfPlayers: 3, timePerTurn: 10 });
+  const [game, setGame] = useState({
+    id: gameID,
+    numberOfPlayers: 3,
+    timePerTurn: 10,
+  });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const gameId = Math.floor(Math.random() * 1001).toString();
-    setGame({ ...game, id: gameId });
-  }, []);
 
   const handleGameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,9 +48,25 @@ const SetGame: FC<SetGameProps> = ({ close }) => {
     }
   }, [game]); */
 
-  const handleStartGame = () => {
-    handleGameSetter(game);
-    navigate(`/game/${game.id}`);
+  const handleStartGame = async () => {
+    const data = { ...game, players: [user?.email] };
+
+    try {
+      handleGameSetter(data as any);
+      /* const response = await fetch(`http://localhost:8080/game/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await response.json();
+      console.log("res", res); */
+
+      navigate(`/game/${game.id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

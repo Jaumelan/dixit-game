@@ -85,3 +85,8 @@ export const BaseButtonDisabled = styled(BaseButton)`
   border: none;
   cursor: not-allowed;
 `;
+
+export const LoginSessionButton = styled(BaseButton)`
+  min-width: 110px;
+  width: auto;
+`;

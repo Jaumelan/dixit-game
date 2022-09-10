@@ -18,9 +18,9 @@ export const Container = styled.div`
     }
   }
 
-  -webkit-animation: fade-appear-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1)
+  -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1)
     both;
-  animation: fade-appear-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 
   display: flex;
   flex-direction: column;

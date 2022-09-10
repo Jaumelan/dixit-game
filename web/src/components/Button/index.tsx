@@ -6,6 +6,7 @@ import {
   BaseButtonDisabled,
   LogoutButton,
   ButtonSpinner,
+  LoginSessionButton,
 } from './styles';
 
 export enum BUTTON_TYPE_CLASSES {
@@ -13,6 +14,7 @@ export enum BUTTON_TYPE_CLASSES {
   google = 'google-sign-in',
   logout = 'logout',
   disabled = 'disabled',
+  LoginSession= 'login-session',
 }
 
 const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton =>
@@ -21,6 +23,7 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton =>
     [BUTTON_TYPE_CLASSES.google]: GoogleSignInButton,
     [BUTTON_TYPE_CLASSES.logout]: LogoutButton,
     [BUTTON_TYPE_CLASSES.disabled]: BaseButtonDisabled,
+    [BUTTON_TYPE_CLASSES.LoginSession]: LoginSessionButton,
   }[buttonType]);
 
 export type ButtonProps = {

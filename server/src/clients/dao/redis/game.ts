@@ -42,6 +42,7 @@ class Game {
   public async getGameSession(id: string) {
     const redis = RedisClient.getInstance();
     const gameSession = await redis.hgetall(id);
+    //const games = await redis.flushall();
     return gameSession;
   }
 

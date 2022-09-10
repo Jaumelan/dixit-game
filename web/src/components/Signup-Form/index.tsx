@@ -63,7 +63,7 @@ const SignupForm = () => {
       case "username":
         error = onlyLettersRegex.test(value)
           ? ""
-          : "Nome de usuário deve conter apenas letras";
+          : "Use apenas letras, sem espaços";
         break;
       default:
         break;

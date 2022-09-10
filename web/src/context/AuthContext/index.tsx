@@ -3,13 +3,15 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-  onAuthStateChanged,
+  //onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../services/firebaseSetup";
 import { IRegisterUser, ILoginUser } from "../../@types/dixit";
+import { useSnackbar } from "notistack";
 
 type AuthContextType = {
   user: { email: string; profilePicture: string } | null;
+  error: string | null;
   googleSignIn: () => void;
   registerUser: (user: IRegisterUser) => void;
   loginUser: (user: ILoginUser) => void;
@@ -29,6 +31,7 @@ const AuthContext = createContext<AuthContextType>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   logoutUser: () => {},
   user: null,
+  error: null,
 });
 
 interface UserAuth {
@@ -42,7 +45,9 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     email: string;
     profilePicture: string;
   } | null>(null);
-  
+  const [error, setError] = useState<string | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
+
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -52,7 +57,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     signOut(auth);
   };
 
- /*  useEffect(() => {
+  /*  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
@@ -77,13 +82,14 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((response) => {
-        const { data } = response;
+        const { data, messages } = response;
         if (Object.keys(data).length > 0) {
           setUser({
             email: data.email,
             profilePicture: data.profilePicture,
           });
         } else {
+          setError(messages[0]);
           setUser(null);
           //console.log("response", response);
         }
@@ -101,11 +107,28 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((response) => {
-        const { data } = response;
-        setUser({
-          email: data.email,
-          profilePicture: data.profile,
-        });
+        console.log(response);
+        const { data, messages } = response;
+        if (Object.keys(data).length > 0) {
+          setUser({
+            email: data.email,
+            profilePicture: data.profile,
+          });
+        } else {
+          switch (messages[0]) {
+            case "User not found":
+              setError("Crie uma conta para jogar");
+              break;
+            case "Wrong password":
+              setError("Senha incorreta");
+              break;
+            default:
+              setError("Erro ao logar");
+              break;
+          }
+
+          setUser(null);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -118,6 +141,14 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     console.log(user);
   }, [user]);
 
+  useEffect(() => {
+    console.log("error ", error);
+    if (error) {
+      enqueueSnackbar(error, { variant: "error" });
+      setError(null);
+    }
+  }, [error]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -127,6 +158,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
         registerUser,
         loginUser,
         logoutUser,
+        error,
       }}
     >
       {children}

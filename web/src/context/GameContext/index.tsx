@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  createContext,
-  useContext,
-  FC,
-  useEffect,
-} from "react";
+import React, { useState, createContext, useContext, FC } from "react";
 
 type GameContextType = {
   children: React.ReactNode;
@@ -35,7 +29,7 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
     defaultGameContext.gameData
   );
 
-  const handleGameSetter = (data: GameDataType) => {
+  const handleGameSetter = (data: GameDataType | null) => {
     console.log("data in context ", data);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setGameData(data);

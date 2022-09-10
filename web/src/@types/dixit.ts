@@ -23,3 +23,19 @@ export interface ILoginUser {
   email: string;
   password: string;
 }
+
+export type PlayerType = {
+  username: string;
+  email: string;
+};
+
+export type GameContextType = {
+  children: React.ReactNode;
+};
+
+export type GameDataType = {
+  id: string;
+  numberOfPlayers: number;
+  timePerTurn: number;
+  players: PlayerType[];
+};

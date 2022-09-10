@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
 import Game from "../Game";
-import { GameDataType } from "../../context/GameContext";
+import { GameDataType } from "../../@types/dixit";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
+import { useSnackbar } from "notistack";
 
 type GameState = {
   LOADING: "LOADING" | "LOADED" | "ERROR";
@@ -12,21 +13,13 @@ type GameState = {
 
 const GameBody = () => {
   const { user } = UserAuth();
-  const { gameData, handleGameSetter } = useGameContext();
+  const { gameData } = useGameContext();
   const [gameState, setGameState] = useState<GameState>({ LOADING: "LOADING" });
   const [game, setGame] = useState<GameDataType | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const GetGame = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/game/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(gameData),
-      });
-      const data = await response.json();
-      console.log(data);
+  /* const GetGame = async () => {
+    
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       if (data.messages.length === 0) {
@@ -35,22 +28,21 @@ const GameBody = () => {
         handleGameSetter(data as GameDataType);
       } else if (data.messages.length > 0) {
         setGameState({ LOADING: "ERROR" });
+        enqueueSnackbar(data.messages[0], { variant: "error" });
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setGameState({ LOADING: "ERROR" });
     }
-  };
+  }; */
 
   useEffect(() => {
-    console.log(gameState);
     if (gameData) {
-      if (gameState.LOADING === "LOADING") {
-        GetGame();
-      }
+      setGameState({ LOADING: "LOADED" });
+      setGame(gameData);
     }
-  }, []);
+  }, [gameData]);
 
   if (gameState.LOADING === "LOADING") {
     return <Loading />;

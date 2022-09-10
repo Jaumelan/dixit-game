@@ -1,15 +1,6 @@
 import React, { useState, createContext, useContext, FC } from "react";
+import { GameContextType, GameDataType} from "../../@types/dixit";
 
-type GameContextType = {
-  children: React.ReactNode;
-};
-
-export type GameDataType = {
-  id: string;
-  numberOfPlayers: number;
-  timePerTurn: number;
-  players?: string[];
-};
 
 type ContextType = {
   gameData: GameDataType | null;

@@ -22,7 +22,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
       try {
         const response = await fetch("http://localhost:8080/game/availables");
         const res = await response.json();
-        console.log(res);
+        //console.log(res);
         if (res.data.length === 0) {
           setError("Nenhuma sessão disponível, para jogar crie uma sala");
         } else {

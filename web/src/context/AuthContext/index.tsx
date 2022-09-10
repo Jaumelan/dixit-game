@@ -10,7 +10,7 @@ import { IRegisterUser, ILoginUser } from "../../@types/dixit";
 import { useSnackbar } from "notistack";
 
 type AuthContextType = {
-  user: { email: string; profilePicture: string } | null;
+  user: { email: string; profilePicture: string, username: string } | null;
   error: string | null;
   googleSignIn: () => void;
   registerUser: (user: IRegisterUser) => void;
@@ -44,6 +44,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   const [user, setUser] = useState<{
     email: string;
     profilePicture: string;
+    username: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -87,6 +88,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
           setUser({
             email: data.email,
             profilePicture: data.profilePicture,
+            username: data.username,
           });
         } else {
           setError(messages[0]);
@@ -107,12 +109,13 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         const { data, messages } = response;
         if (Object.keys(data).length > 0) {
           setUser({
             email: data.email,
             profilePicture: data.profile,
+            username: data.username,
           });
         } else {
           switch (messages[0]) {
@@ -137,9 +140,6 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     setUser(null);
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   useEffect(() => {
     console.log("error ", error);

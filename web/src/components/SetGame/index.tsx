@@ -49,7 +49,17 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
   }, [game]); */
 
   const handleStartGame = async () => {
-    const data = { ...game, players: [user?.email] };
+    const playersArray = [{ username: user?.username, email: user?.email }];
+    for (let i = 0; i < game.numberOfPlayers; i++) {
+      if (!playersArray[i]) {
+        playersArray[i] = { username: "", email: "" };
+      }
+    }
+    //console.log("playersArray", playersArray);
+    const data = {
+      ...game,
+      players: playersArray,
+    };
 
     try {
       handleGameSetter(data as any);

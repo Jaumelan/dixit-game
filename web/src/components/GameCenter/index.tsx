@@ -1,17 +1,21 @@
 import { FC } from "react";
+import { useGameContext } from "../../context/GameContext";
 import * as S from "./styles";
+
 type GameContextType = {
   waiting: boolean;
 };
 
 const GameCenter: FC<GameContextType> = ({ waiting }) => {
+  const { gameData } = useGameContext();
+
   return (
     <S.Container>
       {waiting ? (
         <>
           <S.NotificationContainer>
             <S.NotificationText>
-              <h3>1/6 Jogadores Prontos</h3>
+              <h3>1/{gameData?.numberOfPlayers} Jogadores Prontos</h3>
             </S.NotificationText>
           </S.NotificationContainer>
           <S.GameContainer>

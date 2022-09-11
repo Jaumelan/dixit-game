@@ -19,16 +19,26 @@ class Game {
       throw new Error('400: Já existe uma sessão com esse id');
     }
 
+    let playersString = '';
+    players.forEach((item, index) => {
+      if (index === players.length) {
+        playersString += item.username + ':' + item.email;
+      } else {
+        playersString += item.username + ':' + item.email + ',';
+      }
+    });
+
+    //console.log('playersString', playersString);
     const gameSessionCreation = await redis.hmset(id, {
       numberOfPlayers,
-      players,
+      playersString,
       status,
       timePerTurn,
     });
 
     new this.webSocketServices(id);
 
-    console.log('id', id);
+    //console.log('id', id);
     this.addGameToGameList(id);
 
     const data = {

@@ -12,6 +12,7 @@ class WebSocketService {
   constructor(id: string) {
     this.wss = new websocket.Server({ server, path: id });
     this.wss.on('connection', (ws: websocket) => {
+      console.log('connection');
       this.clients.push(ws);
       ws.on('message', (message: string) => {
         this.clients.forEach((client: websocket) => {

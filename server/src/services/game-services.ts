@@ -15,6 +15,7 @@ class GameServices {
     if (gameSessionValidated.errors) {
       throw new Error(`400: ${gameSessionValidated.errors}`);
     }
+    console.log('gameSessionValidated');
 
     const activeGames = await this.getActiveGames();
 
@@ -25,11 +26,13 @@ class GameServices {
     }
 
     const gameSessionCreated = await this.game.insert(gameSession);
+
     return gameSessionCreated;
   }
 
   public async getActiveGames() {
     const games = await this.game.getActiveGames();
+
     return { data: games, messages: [] };
   }
 

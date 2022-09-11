@@ -8,3 +8,5 @@ export { NumberOfPlayersValidator } from './players-number-validator';
 export { PlayersValidator } from './players-validator';
 export { TimePerTurnValidator } from './time-per-turn-validator';
 export { GameCreationValidator } from './game-creation-validator';
+export { PlayerNameValidator } from './player-name-validator';
+export { PlayerEmailValidator } from './player-email-validator';

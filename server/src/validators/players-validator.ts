@@ -1,5 +1,5 @@
-import { UserNameValidator } from './username-validator';
-import { EmailValidator } from './email-validator';
+import { PlayerNameValidator } from './player-name-validator';
+import { PlayerEmailValidator } from './player-email-validator';
 
 class PlayersValidator {
   public errors: string;
@@ -8,9 +8,9 @@ class PlayersValidator {
 
   private emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-  private UserNameValidator = UserNameValidator;
+  private UserNameValidator = PlayerNameValidator;
 
-  private EmailValidator = EmailValidator;
+  private EmailValidator = PlayerEmailValidator;
 
   public constructor(players: { username: string; email: string }[]) {
     this.errors = '';
@@ -26,7 +26,7 @@ class PlayersValidator {
       const emailValidated = new this.EmailValidator(email);
       this.errors += usernameValidated.errors + emailValidated.errors;
       return {
-        username: usernameValidated.userName,
+        username: usernameValidated.playerName,
         email: emailValidated.email,
       };
     });

@@ -1,8 +1,11 @@
 import RedisClient from '.';
 import { GameSessionI, GameStatus, APIResponse } from '../../../models';
+import { WebSocketServices } from '../../../services';
 
 class Game {
   private static instance: RedisClient;
+
+  private webSocketServices = WebSocketServices;
 
   public async insert(gameSession: GameSessionI): Promise<APIResponse> {
     const redis = RedisClient.getInstance();
@@ -23,13 +26,16 @@ class Game {
       timePerTurn,
     });
 
-    const games = await redis.rpush('games', id);
+    new this.webSocketServices(id);
+
+    console.log('id', id);
+    this.addGameToGameList(id);
 
     const data = {
       id,
     };
 
-    if (gameSessionCreation === 'OK' && games > 1) {
+    if (gameSessionCreation === 'OK') {
       return {
         data,
         messages: [],
@@ -70,6 +76,12 @@ class Game {
     const redis = RedisClient.getInstance();
     const gameSession = await redis.del(id);
     return gameSession;
+  }
+
+  public async addGameToGameList(id: string) {
+    const redis = RedisClient.getInstance();
+    const games = await redis.rpush('games', id);
+    return games;
   }
 
   public async deleteGameFromList(id: string) {

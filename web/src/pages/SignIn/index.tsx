@@ -1,5 +1,4 @@
-import { Navbar } from "../../components";
-import SigninBody from "../../components/SigninBody";
+import { Navbar, SigninBody } from "../../components";
 import * as S from "./styles";
 import video from '../../assets/videos/background.mp4';
 

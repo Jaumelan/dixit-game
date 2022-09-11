@@ -7,10 +7,15 @@ export const Container = styled.div`
   justify-content: center;
   height: auto;
   width: 39rem;
-  border: 2px solid #555555;
+  //border: 2px solid #555555;
   border-radius: 10px;
-  background-color: #3d303b;
-  box-shadow: #26394d 0px 20px 30px -10px;
+
+  background: rgba(134, 138, 154, 0.2);
+  //border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(134, 138, 154, 0.3);
 `;
 
 export const Form = styled.form`
@@ -108,7 +113,7 @@ export const PasswordContainer = styled.div`
 
 export const UsernameContainer = styled.div`
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   position: relative;

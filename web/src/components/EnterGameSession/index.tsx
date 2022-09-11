@@ -5,6 +5,7 @@ import Button from "../Button";
 import { UserAuth } from "../../context/AuthContext";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import { IoCloseSharp } from "react-icons/io5";
+import { ImEnter } from "react-icons/im";
 //import { useSnackbar } from "notistack";
 
 type Props = {
@@ -139,7 +140,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
                   buttonType={BUTTON_TYPE_CLASSES.LoginSession}
                   onClick={() => handleEnterGameSession(gameSession)}
                 >
-                  Entrar
+                  <ImEnter size={20} />
                 </Button>
               </S.SessionEnter>
             ))}

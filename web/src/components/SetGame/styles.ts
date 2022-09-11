@@ -39,6 +39,7 @@ export const Container = styled.div`
   border-radius: 10px;
   //background-color: #3d303b;
   gap: 1rem;
+  
 `;
 
 export const TitleContainer = styled.div`
@@ -50,9 +51,9 @@ export const TitleContainer = styled.div`
   padding: 1rem;
 
   h2 {
-    color: #004080;
+    color: #000000;
     font-size: 2.4rem;
-    font-weight: bold;
+    font-weight: 900;
   }
   color: #004080;
   

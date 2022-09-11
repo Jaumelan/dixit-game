@@ -6,7 +6,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 58rem;
-
+  height: 50rem;
   background: rgba(154, 151, 226, 0.2);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -21,6 +21,7 @@ export const Container = styled.div`
   animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   //border: 3px solid #d3d3d3;
   gap: 1rem;
+  
   
 `;
 
@@ -56,6 +57,7 @@ export const SessionContainer = styled.div`
   height: auto;
   justify-content: center;
   gap: 2.5rem;
+  overflow-y: scroll;
 `;
 
 export const SessionEnter = styled.div`

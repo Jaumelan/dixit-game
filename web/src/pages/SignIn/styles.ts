@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import background from "../../assets/images/background.png";
-import { IframeHTMLAttributes } from "react";
 
 export const Container = styled.div`
   height: 100vh;

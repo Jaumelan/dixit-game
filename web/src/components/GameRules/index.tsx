@@ -3,7 +3,7 @@ import { useState } from "react";
 const GameRules = ({ closeGameRules }: any) => {
 
     const [isRules, setIsRules] = useState(false)
-    const [buttonText, setButtonText] = useState('Regras')
+    const [buttonText, setButtonText] = useState('1/2')
 
     const gameRulesText = () => {
         setIsRules(!isRules)

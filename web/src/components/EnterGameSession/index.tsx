@@ -23,23 +23,35 @@ const EnterGameSession: FC<Props> = ({ close }) => {
   const websocket = useRef<WebSocket | null>(null);
   //const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    const getGameSessions = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/game/availables");
-        const res = await response.json();
-        //console.log(res);
-        if (res.data.length === 0) {
-          setError("Nenhuma sessão disponível, para jogar crie uma sala");
-        } else {
-          setGameSessions(() => res.data);
-          //setIsLoading((prev) => !prev);
-        }
-      } catch (error) {
-        console.log(error);
+  const getGameSessions = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/game/availables");
+      const res = await response.json();
+      //console.log(res);
+      if (res.data.length === 0) {
+        setError("Nenhuma sessão disponível, para jogar crie uma sala");
+      } else {
+        setGameSessions(() => res.data);
+        //setIsLoading((prev) => !prev);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     getGameSessions();
+    websocket.current = new WebSocket(`ws://localhost:8080`);
+    websocket.current.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    websocket.current.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+    return () => {
+      websocket.current?.close();
+    };
   }, []);
 
   useEffect(() => {
@@ -73,44 +85,38 @@ const EnterGameSession: FC<Props> = ({ close }) => {
   */
 
   const handleEnterGameSession = (gameSessionId: string) => {
-    setSelectedGameSession(gameSessionId);
     
+    setSelectedGameSession(gameSessionId);
   };
-
 
   useEffect(() => {
     if (selectedGameSession !== "") {
-    websocket.current = new WebSocket(
-      `ws://localhost:8080/${selectedGameSession}`
-    );
-    websocket.current.onopen = () => {
-      console.log("connected");
-    };
-    websocket.current.onmessage = (e) => {
-      if (e.data instanceof Blob) {
-        const reader = new FileReader();
-        reader.readAsText(e.data);
-        reader.onload = () => {
-          console.log("reader", reader.result);
-        };
-      }
-    };
-    websocket.current.onclose = () => {
-      console.log("disconnected");
-    };
-    setSend(true);
-  }
-    return () => {
-      websocket.current?.close();
-    };
+      websocket.current = new WebSocket(`ws://localhost:8080`);
+
+      websocket.current.onmessage = (e) => {
+        if (e.data instanceof Blob) {
+          const reader = new FileReader();
+          reader.readAsText(e.data);
+          reader.onload = () => {
+            console.log("reader", reader.result);
+          };
+        }
+      };
+      setSend(true);
+    }
   }, [selectedGameSession]);
 
   useEffect(() => {
     if (send) {
       console.log("send");
-      websocket.current?.send(
-        JSON.stringify({ email: user?.email, username: user?.username })
-      );
+      const data = {
+        newPlayer: {
+          username: user?.username,
+          gameID: selectedGameSession,
+          email: user?.email,
+        },
+      };
+      websocket.current?.send(JSON.stringify(data));
     }
   }, [send]);
 

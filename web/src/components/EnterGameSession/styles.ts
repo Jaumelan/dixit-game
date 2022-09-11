@@ -57,7 +57,7 @@ export const SessionContainer = styled.div`
   height: auto;
   justify-content: center;
   gap: 2.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const SessionEnter = styled.div`

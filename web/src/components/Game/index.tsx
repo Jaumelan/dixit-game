@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Player from "../Player";
 import GameCenter from "../GameCenter";
 import { useGameContext } from "../../context/GameContext";
@@ -27,19 +27,11 @@ const Game = () => {
   }, [gameData]);
   
   useEffect(() => {
-    websocket.current = new WebSocket(`ws://localhost:8080/${gameData?.id}`);
+    websocket.current = new WebSocket(`ws://localhost:8080`);
     websocket.current.onopen = () => {
       console.log("connected");
     };
-    websocket.current.onmessage = (e) => {
-      if(e.data instanceof Blob) {
-        const reader = new FileReader();
-        reader.readAsText(e.data);
-        reader.onload = () => {
-          console.log("reader", reader.result);
-        }
-      }
-    };
+    
     websocket.current.onclose = () => {
       console.log("disconnected");
     };
@@ -54,6 +46,17 @@ const Game = () => {
   }; */
 /* 
   useEffect(() => {
+
+    websocket.current.onmessage = (e) => {
+      if(e.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.readAsText(e.data);
+        reader.onload = () => {
+          console.log("reader", reader.result);
+        }
+      }
+    };
+
     handlePlayers(gameData?.players || []);
     if (gameData?.players?.length === gameData?.numberOfPlayers) {
       setWaiting(false);

@@ -10,7 +10,7 @@ import { IRegisterUser, ILoginUser } from "../../@types/dixit";
 import { useSnackbar } from "notistack";
 
 type AuthContextType = {
-  user: { email: string; profilePicture: string, username: string } | null;
+  user: { email: string; profilePicture: string; username: string } | null;
   error: string | null;
   googleSignIn: () => void;
   registerUser: (user: IRegisterUser) => void;
@@ -90,6 +90,14 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
             profilePicture: data.profilePicture,
             username: data.username,
           });
+          sessionStorage.setItem(
+            "user",
+            JSON.stringify({
+              email: data.email,
+              profilePicture: data.profilePicture,
+              username: data.username,
+            })
+          );
         } else {
           setError(messages[0]);
           setUser(null);
@@ -117,6 +125,14 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
             profilePicture: data.profile,
             username: data.username,
           });
+          sessionStorage.setItem(
+            "user",
+            JSON.stringify({
+              email: data.email,
+              profilePicture: data.profile,
+              username: data.username,
+            })
+          );
         } else {
           switch (messages[0]) {
             case "User not found":
@@ -140,6 +156,12 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     setUser(null);
   };
 
+  useEffect(() => {
+    const checkUser = sessionStorage.getItem("user");
+    if (checkUser) {
+      setUser(JSON.parse(checkUser));
+    }
+  }, []);
 
   useEffect(() => {
     console.log("error ", error);

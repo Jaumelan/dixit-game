@@ -83,7 +83,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
   return (
     <S.Container>
       <S.TitleContainer>
-        <h2>Novo Jogo</h2>
+        <h2>CONFIGURE O JOGO</h2>
         <AiOutlineCloseCircle
           size={28}
           style={{ cursor: "pointer" }}

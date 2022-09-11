@@ -18,9 +18,15 @@ export const Container = styled.div`
     }
   }
 
-  -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1)
-    both;
+  -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+
+  background: rgba(134, 138, 154, 0.2);
+  //border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(134, 138, 154, 0.3);
 
   display: flex;
   flex-direction: column;
@@ -29,9 +35,9 @@ export const Container = styled.div`
   height: 75%;
   width: 39rem;
   position: relative;
-  border: 3px solid #000;
+  //border: 3px solid #000;
   border-radius: 10px;
-  background-color: #3d303b;
+  //background-color: #3d303b;
   gap: 1rem;
 `;
 
@@ -42,8 +48,14 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
   width: 90%;
   padding: 1rem;
-  color: #fff;
-  font-size: 1.4rem;
+
+  h2 {
+    color: #004080;
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+  color: #004080;
+  
 `;
 
 export const GameRoom = styled.div`

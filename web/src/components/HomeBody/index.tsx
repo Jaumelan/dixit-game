@@ -13,6 +13,7 @@ const BoxBody = () => {
       const response = await fetch("http://localhost:8080/room");
       const res = await response.json();
       const id = res.data.toString()
+      console.log('id do server', id);
       setGameId(() => id);
 
       setCreateGame((prev) => !prev);

@@ -1,16 +1,15 @@
-import React, { useState, createContext, useContext, FC } from "react";
-import { GameContextType, GameDataType} from "../../@types/dixit";
-
+import { useState, createContext, useContext, FC } from "react";
+import { GameContextType, GameDataType } from "../../@types/dixit";
 
 type ContextType = {
   gameData: GameDataType | null;
-  handleGameSetter: (gameData: GameDataType) => void;
+  handleGameSetter: (gameData: GameDataType | null) => void;
 };
 
 const defaultGameContext = {
   gameData: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  handleGameSetter: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  handleGameSetter: (data: GameDataType | null) => {},
 };
 
 const GameContext = createContext<ContextType>(defaultGameContext);

@@ -62,8 +62,9 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
     };
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       handleGameSetter(data as any);
-      /* const response = await fetch(`http://localhost:8080/game/create`, {
+      const response = await fetch(`http://localhost:8080/game/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +72,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      console.log("res", res); */
+      console.log("res", res);
 
       navigate(`/game/${game.id}`);
     } catch (error) {

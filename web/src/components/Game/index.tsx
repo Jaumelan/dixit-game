@@ -1,17 +1,15 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Player from "../Player";
 import GameCenter from "../GameCenter";
 import { useGameContext } from "../../context/GameContext";
+
 import * as S from "./styles";
 
-type PlayerType = {
-  username: string;
-  email: string;
-};
 
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
   const { gameData } = useGameContext();
+  const websocket = useRef<WebSocket | null>(null);
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
   useEffect(() => {
@@ -28,6 +26,27 @@ const Game = () => {
     }
   }, [gameData]);
   
+  useEffect(() => {
+    websocket.current = new WebSocket(`ws://localhost:8080/${gameData?.id}`);
+    websocket.current.onopen = () => {
+      console.log("connected");
+    };
+    websocket.current.onmessage = (e) => {
+      if(e.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.readAsText(e.data);
+        reader.onload = () => {
+          console.log("reader", reader.result);
+        }
+      }
+    };
+    websocket.current.onclose = () => {
+      console.log("disconnected");
+    };
+    return () => {
+      websocket.current?.close();
+    };
+  }, []);
 
   /* const handlePlayers = (players: PlayerType) => {
     gameData?.players?.push(...players);

@@ -3,7 +3,7 @@ import * as S from "./styles";
 import Button from "../Button";
 import { useGameContext } from "../../context/GameContext";
 import { useNavigate } from "react-router-dom";
-import SVG from "../../assets/images/error.svg";
+//import SVG from "../../assets/images/error.svg";
 
 const ErrorPa = () => {
   const { handleGameSetter } = useGameContext();
@@ -15,11 +15,11 @@ const ErrorPa = () => {
   };
 
   return (
-    <S.Main>
-      <S.SVGcon src={SVG} />
+    <S.Background>
+      {/* <S.SVGcon src={SVG} /> */}
       <h1>Oops! Something went wrong</h1>
       <Button onClick={handleGoBack}>Home</Button>
-    </S.Main>
+    </S.Background>
   );
 };
 

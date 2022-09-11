@@ -1,20 +1,17 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    margin-top: 25px;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 60rem;
-    height: 86rem;
-    background: rgba(154, 151, 226, 0.8);
+    height: 48rem;
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(154, 151, 226, 0.3);
-    padding: 1rem 2rem;
+    padding: 0rem 2rem;
 
     position: relative;
     z-index: 1;
@@ -25,7 +22,7 @@ export const Container = styled.div`
     gap: 1rem;
 
     h3 {
-        font-size: 40px;
+        font-size: 2rem;
     }
 
     li {
@@ -34,21 +31,20 @@ export const Container = styled.div`
 
     button {
         position: relative;
-        top: 20px;
-        left: 520px;
+        top: 1rem;
     }
 
 `;
 
 export const GameRulesContainer = styled.div`
     button {
-        border: 2px solid #d3d3d3;
+        border: none;
         background: linear-gradient(
         45deg,
         rgba(87, 0, 209, 1) 0%,
         rgba(178, 138, 235, 1) 100%
         );
-        border-radius: 10px;
+        border-radius: 0.8rem;
         width: 3rem;
         color: #d3d3d3;
     }

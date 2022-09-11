@@ -5,7 +5,7 @@ import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
 import { FC } from "react";
-import { GameRules } from "../index";
+import { GameRules, PlayerPerfil } from "../index";
 import { useState } from "react";
 
 import {
@@ -39,6 +39,8 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
 
   const [openGameRules, setOpenGameRules] = useState(false);
 
+  const [openPlayerPerfil, setOpenPlayerPerfil] = useState(false);
+
   return (
     <CustomNavbar>
       <ul>
@@ -57,6 +59,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         </li>
       </ul>
       {openGameRules && <GameRules closeGameRules={setOpenGameRules} />}
+      {openPlayerPerfil && <PlayerPerfil closePlayerPerfil={setOpenPlayerPerfil} />}
       {(user && (
         <ul>
           <li>
@@ -67,7 +70,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
 
           <li>
             <IconContainer>
-              <ProfileImgSty src={user.profilePicture} alt="user profile" />
+              <ProfileImgSty onClick={() => {setOpenPlayerPerfil(true)}} src={user.profilePicture} alt="user profile" />
             </IconContainer>
           </li>
         </ul>

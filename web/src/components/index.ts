@@ -16,4 +16,5 @@ export { default as SignupForm } from "./Signup-Form";
 export { default as LoginForm } from "./LoginForm";
 export { default as EnterGameSession } from "./EnterGameSession";
 export { default as GameRules } from "./GameRules";
+export { default as PlayerPerfil } from "./PlayerPerfil";
 export { default as SigninBody } from "./SigninBody";

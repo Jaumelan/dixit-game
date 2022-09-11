@@ -5,6 +5,8 @@ import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
 import { FC } from "react";
+import { GameRules, PlayerPerfil } from "../index";
+import { useState } from "react";
 
 import {
   Container,
@@ -34,6 +36,11 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
 
   const CustomNavbar = getNavbar(navbarType);
+
+  const [openGameRules, setOpenGameRules] = useState(false);
+
+  const [openPlayerPerfil, setOpenPlayerPerfil] = useState(false);
+
   return (
     <CustomNavbar>
       <ul>
@@ -46,11 +53,13 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         </li>
         <li>
           <IconContainer>
-            <RiFilePaper2Line size={40} color={"white"} />
+            <RiFilePaper2Line onClick={() => {setOpenGameRules(true)}} size={40} color={"white"} />
           </IconContainer>
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
+      {openGameRules && <GameRules closeGameRules={setOpenGameRules} />}
+      {openPlayerPerfil && <PlayerPerfil closePlayerPerfil={setOpenPlayerPerfil} />}
       {(user && (
         <ul>
           <li>
@@ -61,7 +70,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
 
           <li>
             <IconContainer>
-              <ProfileImgSty src={user.profilePicture} alt="user profile" />
+              <ProfileImgSty onClick={() => {setOpenPlayerPerfil(true)}} src={user.profilePicture} alt="user profile" />
             </IconContainer>
           </li>
         </ul>

@@ -5,6 +5,8 @@ import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
 import { FC } from "react";
+import { GameRules } from "../index";
+import { useState } from "react";
 
 import {
   Container,
@@ -34,6 +36,9 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
 
   const CustomNavbar = getNavbar(navbarType);
+
+  const [openGameRules, setOpenGameRules] = useState(false);
+
   return (
     <CustomNavbar>
       <ul>
@@ -46,11 +51,12 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         </li>
         <li>
           <IconContainer>
-            <RiFilePaper2Line size={40} color={"white"} />
+            <RiFilePaper2Line onClick={() => {setOpenGameRules(true)}} size={40} color={"white"} />
           </IconContainer>
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
+      {openGameRules && <GameRules closeGameRules={setOpenGameRules} />}
       {(user && (
         <ul>
           <li>

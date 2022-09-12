@@ -1,5 +1,5 @@
 import RedisClient from '.';
-import { UserRedis } from '../../../models';
+import { UserRedis, UpdateUserModel } from '../../../models';
 
 class User {
   private static instance: RedisClient;
@@ -54,11 +54,18 @@ class User {
     return keys; //result;
   }
 
-  public async update(User: any): Promise<any> {
+  public async update(User: UpdateUserModel): Promise<any> {
+    // console.log('User', User);
     const redis = RedisClient.getInstance();
-    const { id } = User;
-    const result = await redis.set(id, JSON.stringify(User));
-    return result;
+    const { email } = User;
+    if (User.username) {
+      const result = await redis.hset(email, 'username', User.username);
+      return result;
+    }
+    if (User.password) {
+      const result = await redis.hset(email, 'password', User.password);
+      return result;
+    }
   }
 }
 

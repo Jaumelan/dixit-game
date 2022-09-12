@@ -1,15 +1,39 @@
 import GameServices from './game-services';
 import Game from '../clients/dao/redis';
+import websocket from 'ws';
+import crypto from 'crypto';
 
 class WebSocketServices {
   public answer: any;
 
   private Game = Game;
 
+  public websocketClients: any = {};
+
+  public room: any = {};
+
   private GameServices = new GameServices();
 
   constructor(action: string, payload: any) {
     this.answer = this.validate(action, payload);
+  }
+
+  private createUserID(ws: websocket) {
+    const userID = crypto.randomUUID();
+    this.websocketClients[userID] = ws;
+    console.log(
+      'connected: ' +
+        userID +
+        ' in ' +
+        Object.getOwnPropertyNames(this.websocketClients),
+    );
+    return;
+  }
+
+  private createRoom(ws: websocket): string {
+    const roomID = crypto.randomUUID();
+    this.room[roomID] = ws;
+    return roomID;
   }
 
   private async validate(action: string, payload: any): Promise<any> {

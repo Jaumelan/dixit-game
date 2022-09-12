@@ -1,28 +1,50 @@
 import { app } from './server';
 import { config } from './config';
 import { WebSocketServices } from './services';
-
 import websocket from 'ws';
-//import { createServer } from 'http';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const server = require('http').createServer(app);
+import crypto from 'crypto';
 
 const wss = new websocket.Server({
   port: Number(config.port) + 1,
   host: 'localhost',
 });
 
+const websocketClients: any = {};
+const rooms: any = {};
+
 wss.on('connection', (ws: websocket) => {
   console.log('Client connected');
+
+  const userID = crypto.randomUUID();
+  websocketClients[userID] = ws;
+
+  console.log(
+    'connected: ' +
+      userID +
+      ' in ' +
+      Object.getOwnPropertyNames(websocketClients),
+  );
+
   ws.on('message', (message: string) => {
-    console.log('Message received: ' + message);
+    console.log('received from ' + userID + ': ' + message);
     const { action, payload } = JSON.parse(message);
+    const { id } = payload;
+    if (action === 'enter-room') {
+      if (rooms[id]) {
+        rooms[id].push(ws);
+      } else {
+        rooms[id] = [ws];
+      }
+      console.log('rooms', rooms);
+    }
     const answer = new WebSocketServices(action, payload);
 
-    ws.send(JSON.stringify(answer));
-    wss.clients.forEach((client: websocket) => {
-      client.send(message);
+    rooms[id].forEach((client: websocket) => {
+      client.send(JSON.stringify(answer));
+    });
+
+    wss.clients.forEach((client) => {
+      client.send(JSON.stringify(answer));
     });
   });
 

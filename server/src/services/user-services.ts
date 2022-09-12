@@ -1,6 +1,11 @@
 import User from '../clients/dao/redis/user';
 import { UserDataValidator } from '../../src/validators';
-import { UserModel, APIResponse, LoginRequisition } from '../../src/models';
+import {
+  UserModel,
+  APIResponse,
+  LoginRequisition,
+  UpdateUserModel,
+} from '../../src/models';
 
 class UserService {
   private User = new User();
@@ -84,7 +89,8 @@ class UserService {
     return result;
   }
 
-  public async updateUser(User: any): Promise<any> {
+  public async updateUser(User: UpdateUserModel): Promise<any> {
+    //const userValidated = new this.userValidator(User);
     const result = await this.User.update(User);
     return result;
   }

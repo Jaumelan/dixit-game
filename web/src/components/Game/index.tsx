@@ -27,7 +27,7 @@ const Game = () => {
   }, [gameData]);
   
   useEffect(() => {
-    websocket.current = new WebSocket(`ws://localhost:8080`);
+    websocket.current = new WebSocket(`ws://localhost:8081`);
     websocket.current.onopen = () => {
       console.log("connected");
     };

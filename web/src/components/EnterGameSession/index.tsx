@@ -2,6 +2,7 @@ import { useState, useEffect, FC, useRef } from "react";
 import Loading from "../Loading";
 import * as S from "./styles";
 import Button from "../Button";
+import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import { IoCloseSharp } from "react-icons/io5";
@@ -19,6 +20,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
   const [error, setError] = useState("");
   const [send, setSend] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   //const [isSuccess, setIsSuccess] = useState(false);
   const websocket = useRef<WebSocket | null>(null);
   //const { enqueueSnackbar } = useSnackbar();
@@ -41,7 +43,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
 
   useEffect(() => {
     getGameSessions();
-    websocket.current = new WebSocket(`ws://localhost:8080`);
+    websocket.current = new WebSocket(`ws://localhost:8081`);
     websocket.current.onopen = () => {
       console.log("WebSocket connection established");
     };
@@ -49,9 +51,9 @@ const EnterGameSession: FC<Props> = ({ close }) => {
     websocket.current.onclose = () => {
       console.log("WebSocket connection closed");
     };
-    return () => {
+    /* return () => {
       websocket.current?.close();
-    };
+    }; */
   }, []);
 
   useEffect(() => {
@@ -85,28 +87,32 @@ const EnterGameSession: FC<Props> = ({ close }) => {
   */
 
   const handleEnterGameSession = (gameSessionId: string) => {
-    
     setSelectedGameSession(gameSessionId);
   };
 
   useEffect(() => {
     if (selectedGameSession !== "") {
-      websocket.current = new WebSocket(`ws://localhost:8080`);
+      
+      websocket.current = new WebSocket(`ws://localhost:8081`);
+      websocket.current.onopen = () => {
+        const data = {
+          action: 'new-player',
+          payload: {
+            username: user?.username,
+            gameID: selectedGameSession,
+            email: user?.email,
+          },
+        };
+        console.log("entering game session");
+        websocket.current?.send(JSON.stringify(data));
 
-      websocket.current.onmessage = (e) => {
-        if (e.data instanceof Blob) {
-          const reader = new FileReader();
-          reader.readAsText(e.data);
-          reader.onload = () => {
-            console.log("reader", reader.result);
-          };
-        }
-      };
-      setSend(true);
+      }
+      navigate(`/game/${selectedGameSession}`);
+      
     }
   }, [selectedGameSession]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (send) {
       console.log("send");
       const data = {
@@ -118,7 +124,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
       };
       websocket.current?.send(JSON.stringify(data));
     }
-  }, [send]);
+  }, [send]); */
 
   return (
     <div>

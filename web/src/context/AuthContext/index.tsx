@@ -154,6 +154,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
 
   const logoutUser = () => {
     setUser(null);
+    sessionStorage.removeItem("user");
   };
 
   useEffect(() => {

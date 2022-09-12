@@ -1,49 +1,80 @@
-import websocket from 'ws';
-import express from 'express';
-import { createServer } from 'http';
+import GameServices from './game-services';
+import Game from '../clients/dao/redis';
 
-const app = express();
-const server = createServer(app);
+class WebSocketServices {
+  public answer: any;
 
-class WebSocketService {
-  private wss: websocket.Server;
-  private clients: websocket[] = [];
+  private Game = Game;
 
-  constructor(id: string) {
-    this.wss = new websocket.Server({ server, path: id });
-    this.wss.on('connection', (ws: websocket) => {
-      console.log('connection');
-      this.clients.push(ws);
-      ws.on('message', (message: string) => {
-        this.clients.forEach((client: websocket) => {
-          if (client.readyState === websocket.OPEN) {
-            client.send(message);
+  private GameServices = new GameServices();
+
+  constructor(action: string, payload: any) {
+    this.answer = this.validate(action, payload);
+  }
+
+  private async validate(action: string, payload: any): Promise<any> {
+    switch (action) {
+      case 'new-player':
+        const { gameID, username, email } = payload;
+        const players = await this.GameServices.getPlayersFromGameSession(
+          gameID,
+        );
+        const numberOfPlayers = players.reduce((accumulator, currentValue) => {
+          if (currentValue === ':') {
+            accumulator += 1;
+          }
+          return accumulator;
+        }, 0);
+
+        if (numberOfPlayers === 0) {
+          console.log('game full');
+          return {
+            action: 'new-player',
+            payload: {
+              message: 'Jogadores completos',
+            },
+          };
+        }
+
+        const checkPlayer = players.find((player: string) => {
+          return player.includes(email);
+        });
+
+        if (checkPlayer) {
+          console.log('player already exists');
+          return {
+            action: 'new-player',
+            payload: {
+              message: 'Jogador já existe',
+            },
+          };
+        }
+
+        let changed = false;
+        const newplayers = players.map((player) => {
+          if (player === ':') {
+            if (!changed) {
+              changed = true;
+              return `${username}:${email}`;
+            }
+            return player;
+          } else if (player !== ':') {
+            return player;
           }
         });
-      });
-    });
-    this.wss.on('close', () => {
-      this.clients = [];
-    });
-    this.wss.on('error', () => {
-      this.clients = [];
-    });
+        console.log('players', newplayers);
+        return this.GameServices.updatePlayers(gameID, newplayers as string[]);
+        break;
+      case 'card-played':
+        console.log('card-played');
+        break;
+      default:
+        return {
+          action: 'error',
+          payload: 'Action not found',
+        };
+    }
   }
 }
 
-export default WebSocketService;
-
-/*
- constructor(id: string) {
-    this.wss = new websocket.Server({ port: 8081, path: id });
-    this.wss.on('connection', (ws: websocket) => {
-      console.log('Client connected');
-      this.clients.push(ws);
-      ws.on('message', (message: string) => {
-        this.clients.forEach((client: websocket) => {
-          client.send(message);
-        });
-      });
-    });
-  }
-  */
+export default WebSocketServices;

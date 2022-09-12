@@ -20,11 +20,10 @@ class Game {
     }
 
     let playersString = '';
-    players.forEach((item, index) => {
-      if (index === players.length) {
-        playersString += item.username + ':' + item.email;
-      } else {
-        playersString += item.username + ':' + item.email + ',';
+    players.forEach((item: { username: string; email: string }, index) => {
+      playersString += `${item.username}:${item.email}`;
+      if (index < players.length - 1) {
+        playersString += ',';
       }
     });
 
@@ -36,7 +35,7 @@ class Game {
       timePerTurn,
     });
 
-    new this.webSocketServices(id);
+    //new this.webSocketServices(id);
 
     //console.log('id', id);
     this.addGameToGameList(id);
@@ -72,7 +71,18 @@ class Game {
 
   public async updatePlayers(id: string, players: string[]) {
     const redis = RedisClient.getInstance();
-    const gameSession = await redis.hmset(id, { players });
+    let playersString = '';
+
+    players.forEach((item: string, index) => {
+      playersString += item;
+      if (index < players.length - 1) {
+        playersString += ',';
+      }
+    });
+
+    console.log('playersString', playersString);
+
+    const gameSession = await redis.hset(id, 'playersString', playersString);
     return gameSession;
   }
 

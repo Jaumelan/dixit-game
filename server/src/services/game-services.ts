@@ -16,7 +16,7 @@ class GameServices {
     if (gameSessionValidated.errors) {
       throw new Error(`400: ${gameSessionValidated.errors}`);
     }
-    console.log('gameSessionValidated');
+    //console.log('gameSessionValidated');
 
     const activeGames = await this.getActiveGames();
 
@@ -43,6 +43,12 @@ class GameServices {
       data: gameSession,
       messages: [],
     };
+  }
+
+  public async getPlayersFromGameSession(id: string) {
+    const gameSession = await this.game.getGameSession(id);
+    const players = gameSession.playersString.split(',');
+    return players;
   }
 
   public async updatePlayers(id: string, players: string[]) {

@@ -9,7 +9,7 @@ class CreateGameController {
 
   public async handle(request: Request, response: Response): Promise<void> {
     try {
-      console.log(request.body);
+      //console.log(request.body);
       const result = await this.GameServices.createGameSession(request.body);
       this.responseWriter.success(response, 201, result);
       //return response.status(201).json({ result });

@@ -1,11 +1,26 @@
 import * as S from "./styles";
-
+import { useState } from "react";
 const GameRules = ({ closeGameRules }: any) => {
+
+    const [isRules, setIsRules] = useState(false)
+    const [buttonText, setButtonText] = useState('1/2')
+
+    const gameRulesText = () => {
+        setIsRules(!isRules)
+        if(isRules)
+            setButtonText('1/2')
+        else
+            setButtonText('2/2')
+    }
     return (
         <S.Container>
             <S.GameRulesContainer>
+                <button onClick={gameRulesText}>{buttonText}</button>
                 <button onClick={() => closeGameRules(false)}> X </button>
                 <S.Rules>
+                    {isRules
+                    ?  
+                    <>
                     <h3>Regras do Jogo</h3>
                     <ul>
                         <li>Cada Jogador recebe 6 Cartas aleatórias.</li>
@@ -15,6 +30,9 @@ const GameRules = ({ closeGameRules }: any) => {
                         <li>Após o contador de histórias realizar sua jogada, os demais jogadores devem escolher uma carta que melhor se assemelhe com a descrição da carta do contador de histórias.</li>
                         <li>Após todos terem jogado, os jogadores devem tentar adivinhar qual é a carta do contador de histórias.</li>
                     </ul>
+                    </>
+                    :
+                    <>
                     <h3>Pontuação</h3>
                     <ul>
                         <li>Caso todos jogadores ou nenhum deles acertem a carta do contador de histórias, este não receberá nenhum ponto e todos os demais recebem 2 pontos.</li>
@@ -22,6 +40,8 @@ const GameRules = ({ closeGameRules }: any) => {
                         <li>Os jogadores que escolheram a carta correta também ganham 3 pontos.</li>
                         <li>Os jogadores, com excessão ao contador de histórias, que tiveram sua carta escolhidas pelos demais jogadores ganham 1 ponto para cada escolha.</li>
                     </ul>
+                    </>
+                    }
                 </S.Rules>
             </S.GameRulesContainer>
         </S.Container>

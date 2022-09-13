@@ -12,6 +12,7 @@ class UserService {
   private userValidator = UserDataValidator;
 
   public async createUser(User: UserModel): Promise<APIResponse> {
+    console.log('User', User);
     const userValidated = new this.userValidator(User);
 
     if (userValidated.errors) {
@@ -38,6 +39,7 @@ class UserService {
       const data = {
         email: User.email,
         profilePicture: User.profile,
+        username: User.username,
       };
 
       return {

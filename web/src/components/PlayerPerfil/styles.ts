@@ -26,7 +26,6 @@ export const Container = styled.div`
 export const RulesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   h3 {
     font-size: 2rem;
@@ -40,8 +39,7 @@ export const RulesContainer = styled.div`
 export const Pontos = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
   h3 {
     font-size: 2rem;
     line-height: 2.2rem;
@@ -50,8 +48,7 @@ export const Pontos = styled.div`
 ul {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
     padding: 0;
     font-size: 1.5rem;
 }

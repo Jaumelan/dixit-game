@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import * as S from "./styles";
-import { useGameContext} from '../../context/GameContext'
+import { UserAuth} from '../../context/AuthContext'
 type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
@@ -91,12 +91,15 @@ const PlayerPerfil: FC<PlayerPerfilProps> = ({ closeGameRules }) => {
         </Box>
         <TabPanel value={value} index={0}>
           <S.RulesContainer>
-
+            <img src={UserAuth().user?.profilePicture}></img>  
           </S.RulesContainer>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <S.Pontos>
-
+            <ul>
+              <li><b>username:</b>{UserAuth().user?.username}</li>
+              <li><b>email:</b>{UserAuth().user?.email}</li>
+            </ul>
           </S.Pontos>
         </TabPanel>
       </Box>

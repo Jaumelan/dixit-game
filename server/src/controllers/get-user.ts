@@ -10,7 +10,7 @@ class GetUserController {
   ): Promise<Response> {
     try {
       const result = await this.UserService.getUser(request.params.id);
-      return response.status(201).json({ result });
+      return response.status(201).json({ ...result });
     } catch (error: any) {
       return response.status(400).json({ error: error.message });
     }

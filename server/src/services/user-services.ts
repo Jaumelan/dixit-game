@@ -83,7 +83,7 @@ class UserService {
 
   public async getUser(id: string): Promise<any> {
     const result = await this.User.get(id);
-    return result;
+    return { data: result, messages: [] };
   }
 
   public async deleteUser(id: string): Promise<any> {
@@ -91,10 +91,13 @@ class UserService {
     return result;
   }
 
-  public async updateUser(User: UpdateUserModel): Promise<any> {
+  public async updateUser(User: UpdateUserModel): Promise<APIResponse> {
     //const userValidated = new this.userValidator(User);
-    const result = await this.User.update(User);
-    return result;
+    await this.User.update(User);
+
+    const result = await this.User.get(User.email);
+    //console.log(result);
+    return { data: result, messages: [] };
   }
 }
 

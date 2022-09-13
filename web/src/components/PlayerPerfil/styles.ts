@@ -1,73 +1,59 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: left;
-    width: 60rem;
-    height: 86rem;
-    background: rgba(154, 151, 226, 0.8);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(154, 151, 226, 0.3);
-    padding: 1rem 2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 60rem;
+  height: 48rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 0rem 2rem;
+  position: relative;
+  z-index: 1;
+  -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  gap: 1rem;
 
-    position: relative;
-    z-index: 1;
-    // border-radius: 20px;
-    -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-    animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-    //border: 3px solid #d3d3d3;
-    gap: 1rem;
-
-    h3 {
-        font-size: 40px;
-    }
-
-    p {
-        font-size: 16px;
-    }
-
-    button {
-        position: relative;
-        top: 20px;
-        left: 480px;
-    }
-
+  li {
+    font-size: 16px;
+  }
 `;
 
-export const PlayerPerfilContainer = styled.div`
-    button {
-        border: 2px solid #d3d3d3;
-        background: linear-gradient(
-        45deg,
-        rgba(87, 0, 209, 1) 0%,
-        rgba(178, 138, 235, 1) 100%
-        );
-        border-radius: 10px;
-        width: 3rem;
-        color: #d3d3d3;
-    }
+export const RulesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    font-size: 2rem;
+    line-height: 2.2rem;
+  }
+  p {
+    font-size: 1.5rem;
+  }
 `;
 
-export const Perfil = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
+export const Pontos = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    font-size: 2rem;
+    line-height: 2.2rem;
+  }
 
-export const TopicContainer = styled.div`
+ul {
     display: flex;
     flex-direction: column;
-    align-itens: center;
     justify-content: center;
-    margin: 4rem;
-    padding 0.5rem;
-    width: 400px;
-    border: 1px solid black;
-    border-radius: 20px;
-    background: rgba(154, 151, 226, 1);
+    align-items: center;
+    padding: 0;
+    font-size: 1.5rem;
+}
+  
 `;

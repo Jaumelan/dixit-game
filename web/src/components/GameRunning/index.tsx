@@ -10,8 +10,10 @@ const GameRunning = () => {
   const { gameData } = useGameContext();
   const { user } = UserAuth();
   const { turn } = usePlayContext();
+  const [ turnCount, setTurnCount ] = useState<number>(0);
 
   useEffect(() => {
+
     if (turn) {
       const myTurn = turn.find((turn) => turn.played === false);
       if (myTurn?.username === user?.username) {
@@ -19,8 +21,15 @@ const GameRunning = () => {
       } else {
         setHigherMessage("Aguarde a vez de jogar");
       }
+      setTurnCount(prev => prev + 1);
     }
   }, [turn]);
+
+  useEffect(() => {
+    if (turnCount === gameData?.players.length) {
+      setHigherMessage("Acabou a rodada! Quer jogar novamente?");
+    }
+    }, [turnCount]);
 
   return (
     <>

@@ -22,7 +22,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(formValues);
+    //console.log(formValues);
     loginUser(formValues);
   };
 

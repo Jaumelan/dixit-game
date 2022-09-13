@@ -163,9 +163,9 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
       setUser(JSON.parse(checkUser));
     }
   }, []);
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("user ", user);
-  }, [user]);
+  }, [user]); */
 
   useEffect(() => {
     //console.log("error ", error);

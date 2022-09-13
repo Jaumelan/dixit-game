@@ -14,9 +14,12 @@ const Player: FC<PlayerProps> = ({ data, index }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("data", data);
     if (data.username !== "") {
+      //console.log("loading false");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       setLoading(false);
+    } else {
+      setLoading(true);
     }
   }, [data]);
 
@@ -24,9 +27,8 @@ const Player: FC<PlayerProps> = ({ data, index }) => {
     <PlayerSpinner />
   ) : (
     <S.Container>
-      <S.IndexContainer>{index+1}</S.IndexContainer>
+      <S.IndexContainer>{index + 1}</S.IndexContainer>
       <S.Name>{data.username}</S.Name>
-      
     </S.Container>
   );
 };

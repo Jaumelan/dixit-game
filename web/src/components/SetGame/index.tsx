@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from "react";
+import { FC, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
 import { useGameContext } from "../../context/GameContext";
@@ -20,7 +20,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
     numberOfPlayers: 3,
     timePerTurn: 10,
   });
-  const websocket = useRef<WebSocket | null>(null);
+  //const websocket = useRef<WebSocket | null>(null);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      handleGameSetter(data as any);
+
       const response = await fetch(`http://localhost:8080/game/create`, {
         method: "POST",
         headers: {
@@ -77,12 +77,13 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      console.log("res", res);
+      //console.log("res", res);
       if (res.messages.length > 0) {
         enqueueSnackbar(res.messages[0], { variant: "error" });
         return;
       }
-      
+      //console.log("res.data", res.data);
+      handleGameSetter({ ...data, cards: res.data.cardsSrc } as any);
       navigate(`/game/${game.id}`);
     } catch (error) {
       console.log(error);

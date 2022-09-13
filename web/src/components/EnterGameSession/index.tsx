@@ -112,7 +112,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
         websocket.current?.send(JSON.stringify(data));
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      websocket.current.onmessage = (event: any) => {
+       websocket.current.onmessage = (event: any) => {
         const answ = event.data;
         //console.log("do websoquete ", answ);
         if (answ instanceof Blob) {
@@ -140,10 +140,11 @@ const EnterGameSession: FC<Props> = ({ close }) => {
             players: players,
             numberOfPlayers: ans.data.numberOfPlayers,
             timePerTurn: ans.data.timePerTurn,
+            cards: ans.data.cards,
           };
           handleGameSetter(dataContext);
         }
-      };
+      }; 
       navigate(`/game/${selectedGameSession}`);
     }
   }, [selectedGameSession]);

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Player from "../Player";
-import { GameCenter } from "../../components";
+import { useNavigate } from "react-router-dom";
+import { GameCenter, Button } from "../../components";
+import { UserAuth } from "../../context/AuthContext";
 import { useGameContext } from "../../context/GameContext";
 import { PlayerType } from "../../@types/dixit";
 
@@ -8,8 +10,10 @@ import * as S from "./styles";
 
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
+  const { user } = UserAuth();
   const { gameData, handleGameSetter } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
+  const navigate = useNavigate();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
   useEffect(() => {
@@ -21,7 +25,6 @@ const Game = () => {
         }
       });
       if (complete) {
-        
         setWaiting(false);
       }
     }
@@ -34,6 +37,7 @@ const Game = () => {
         action: "enter-room",
         payload: {
           id: gameData?.id,
+          username: user?.username,
         },
       };
       console.log("entering game session");
@@ -52,33 +56,55 @@ const Game = () => {
       } else {
         const ans = JSON.parse(data);
         const players: PlayerType[] = [];
-        ans.data.playersString.split(",").forEach((player: string) => {
-          if (player !== ":") {
-            const p = player.split(":");
-            players.push({ username: p[0], email: p[1] });
-          } else {
-            players.push({ username: "", email: "" });
-          }
-        });
-        console.log("players ", players);
-        const dataContext = {
-          id: ans.data.id,
-          players: players,
-          numberOfPlayers: ans.data.numberOfPlayers,
-          timePerTurn: ans.data.timePerTurn,
-        };
-        handleGameSetter(dataContext);
+        if (ans.action === "new-player") {
+          ans.data.playersString.split(",").forEach((player: string) => {
+            if (player !== ":") {
+              const p = player.split(":");
+              players.push({ username: p[0], email: p[1] });
+            } else {
+              players.push({ username: "", email: "" });
+            }
+          });
+          console.log("players ", players);
 
+          handleGameSetter({ ...gameData, players } as any);
+        } else if (ans.action === "leave-room") {
+          if (ans.message) {
+            console.log(ans.message);
+          } else {
+            ans.data.playersString.split(",").forEach((player: string) => {
+              if (player !== ":") {
+                const p = player.split(":");
+                players.push({ username: p[0], email: p[1] });
+              } else {
+                players.push({ username: "", email: "" });
+              }
+            });
+            handleGameSetter({ ...gameData, players } as any);
+          }
+        }
         //console.log("do websoquete ", ans);
       }
     };
     websocket.current.onclose = () => {
-      console.log("disconnected");
+      console.log("closing websocket");
     };
     return () => {
       websocket.current?.close();
     };
   }, []);
+
+  const handleLeaveGame = () => {
+    const dataSocket = {
+      action: "leave-room",
+      payload: {
+        id: gameData?.id,
+        email: user?.email,
+      },
+    };
+    websocket.current?.send(JSON.stringify(dataSocket));
+    navigate("/");
+  };
 
   /* const handlePlayers = (players: PlayerType) => {
     gameData?.players?.push(...players);
@@ -114,7 +140,9 @@ const Game = () => {
       <S.CenterContainer>
         <GameCenter waiting={waiting} />
       </S.CenterContainer>
-      <S.SideContainer>{`Jogadores: ${gameData?.numberOfPlayers}`}</S.SideContainer>
+      <S.SideContainer>
+        <Button onClick={handleLeaveGame}>Sair do Jogo</Button>
+      </S.SideContainer>
     </S.Container>
   );
 };

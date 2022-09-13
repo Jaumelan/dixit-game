@@ -1,15 +1,13 @@
 import RedisClient from '.';
-import { GameSessionI, GameStatus, APIResponse } from '../../../models';
-import { WebSocketServices } from '../../../services';
+import { GameStatus, APIResponse, GameSessionDB } from '../../../models';
+import { images } from '../../../assets/images-src';
 
 class Game {
   private static instance: RedisClient;
 
-  private webSocketServices = WebSocketServices;
-
-  public async insert(gameSession: GameSessionI): Promise<APIResponse> {
+  public async insert(gameSession: GameSessionDB): Promise<APIResponse> {
     const redis = RedisClient.getInstance();
-    const { id, players, numberOfPlayers, timePerTurn } = gameSession;
+    const { id, players, numberOfPlayers, timePerTurn, cards } = gameSession;
     const status = GameStatus.waiting;
 
     const gameSessionExists = await redis.hgetall(id);
@@ -33,6 +31,14 @@ class Game {
       playersString,
       status,
       timePerTurn,
+      cards,
+    });
+
+    const numbersArray = cards.split(',');
+
+    const cardsSrc: string[] = [];
+    numbersArray.forEach((item) => {
+      cardsSrc.push(images[Number(item)]);
     });
 
     //new this.webSocketServices(id);
@@ -42,6 +48,7 @@ class Game {
     //await redis.flushall();
     const data = {
       id,
+      cardsSrc,
     };
 
     if (gameSessionCreation === 'OK') {
@@ -71,24 +78,45 @@ class Game {
 
   public async updatePlayers(id: string, players: string[]) {
     const redis = RedisClient.getInstance();
-    let playersString = '';
+    let playersEmpty = 0;
 
-    players.forEach((item: string, index) => {
-      playersString += item;
-      if (index < players.length - 1) {
-        playersString += ',';
+    players.forEach((item) => {
+      if (item === ':') {
+        playersEmpty += 1;
       }
     });
 
-    console.log('playersString', playersString);
+    if (playersEmpty === players.length) {
+      const deleteGame = await this.deleteGameSession(id);
 
-    const gameSession = await redis.hset(id, 'playersString', playersString);
-    return gameSession;
+      await this.deleteGameFromList(id);
+      return deleteGame;
+    } else {
+      let playersString = '';
+
+      players.forEach((item: string, index) => {
+        playersString += item;
+        if (index < players.length - 1) {
+          playersString += ',';
+        }
+      });
+
+      console.log('playersString', playersString);
+
+      const gameSession = await redis.hset(id, 'playersString', playersString);
+      return gameSession;
+    }
   }
 
   public async updateStatus(id: string, status: GameStatus) {
     const redis = RedisClient.getInstance();
     const gameSession = await redis.hmset(id, { status });
+    return gameSession;
+  }
+
+  public async updateCards(id: string, cards: string) {
+    const redis = RedisClient.getInstance();
+    const gameSession = await redis.hmset(id, { cards });
     return gameSession;
   }
 

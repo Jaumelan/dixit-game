@@ -33,7 +33,7 @@ class WebSocketServices {
   public async validate(
     action: string,
     payload: any,
-  ): Promise<{ data: any; message: string }> {
+  ): Promise<{ action: string; data: any; message: string }> {
     switch (action) {
       case 'new-player':
         const { id, username, email } = payload;
@@ -48,6 +48,7 @@ class WebSocketServices {
         if (numberOfPlayers === 0) {
           console.log('game full');
           return {
+            action: 'new-player',
             data: null,
             message: 'Jogadores completos',
           };
@@ -58,8 +59,9 @@ class WebSocketServices {
         });
 
         if (checkPlayer) {
-          console.log('player already exists');
+          //console.log('player already exists');
           return {
+            action: 'new-player',
             data: null,
             message: 'Jogador já existe',
           };
@@ -77,10 +79,14 @@ class WebSocketServices {
             return player;
           }
         });
-        console.log('players', newplayers);
+        //console.log('players', newplayers);
         await this.GameServices.updatePlayers(id, newplayers as string[]);
         const data = await this.GameServices.getGameSession(id);
-        return { data: { ...data.data, id }, message: '' };
+        return {
+          action: 'new-player',
+          data: { ...data.data, id },
+          message: '',
+        };
         break;
       case 'enter-room':
         const numberRegex = /\d+/g;
@@ -88,18 +94,70 @@ class WebSocketServices {
         if (roomID) {
           const data = await this.GameServices.getGameSession(roomID[0]);
           return {
+            action: 'enter-room',
             data: { ...data.data, id: roomID[0] },
             message: '',
           };
         } else {
           return {
+            action: 'enter-room',
             data: null,
             message: 'Room ID not found',
           };
         }
         break;
+      case 'leave-room':
+        const check = /\d+/g;
+        const leaveroomID = payload.id.match(check);
+        const userEmail = payload.email;
+        if (leaveroomID) {
+          const data = await this.GameServices.getGameSession(leaveroomID[0]);
+
+          const { playersString } = data.data;
+
+          const players = playersString.split(',');
+          //console.log(players);
+          const newPlayers = players.map((player) => {
+            if (player.includes(userEmail)) {
+              return ':';
+            }
+            return player;
+          });
+          //console.log(newPlayers);
+          if (newPlayers == players) {
+            return {
+              action: 'leave-room',
+              data: { ...data.data, id: leaveroomID[0] },
+              message: 'Player not found',
+            };
+          } else {
+            await this.GameServices.updatePlayers(
+              leaveroomID[0],
+              newPlayers as string[],
+            );
+            console.log(' data ', data);
+            return {
+              action: 'leave-room',
+              data: {
+                ...data.data,
+                playersString: newPlayers.join(','),
+                id: leaveroomID[0],
+              },
+              message: '',
+            };
+          }
+        } else {
+          return {
+            action: 'leave-room',
+            data: { id: leaveroomID[0] },
+            message: 'Room ID not found',
+          };
+        }
+        break;
+
       default:
         return {
+          action: 'error',
           data: null,
           message: 'Action not found',
         };

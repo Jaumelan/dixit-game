@@ -7,3 +7,4 @@ export { GetAvaliableGamesController } from './games-availables';
 export { GetGameData } from './get-game-data';
 export { GetRoomController } from './get-room';
 export { UpdateUserController } from './update-user';
+export { GetCardsController } from './get-cards';

@@ -1,5 +1,11 @@
-import { APIResponse, GameSessionI, GameStatus } from '../models';
+import {
+  APIResponse,
+  GameSessionI,
+  GameStatus,
+  GameSessionDB,
+} from '../models';
 import Game from '../clients/dao/redis/game';
+import { images } from '../assets/images-src';
 
 import { GameCreationValidator } from '../validators';
 
@@ -26,7 +32,13 @@ class GameServices {
       );
     }
 
-    const gameSessionCreated = await this.game.insert(gameSession);
+    const cards = await this.getCards(gameSession.numberOfPlayers);
+
+    gameSession.cards = cards.data;
+
+    const gameSessionCreated = await this.game.insert(
+      gameSession as GameSessionDB,
+    );
 
     return gameSessionCreated;
   }
@@ -49,6 +61,35 @@ class GameServices {
     const gameSession = await this.game.getGameSession(id);
     const players = gameSession.playersString.split(',');
     return players;
+  }
+
+  public async getCards(players: number /*, gameid: string */) {
+    // console.log('players', players);
+    if (players > 3 || players < 7) {
+      const numbersArray: number[] = [];
+      while (numbersArray.length < (6 + players) * players) {
+        const number: number = Math.floor(Math.random() * 53) + 1;
+        if (!numbersArray.includes(number)) {
+          numbersArray.push(number);
+        }
+      }
+
+      const cardsString = numbersArray.join(',');
+
+      return { data: cardsString, messages: [] };
+
+      /*
+        await this.game.updateCards(gameid, cardsString);
+
+        const cards: string[] = [];
+        numbersArray.forEach((item) => {
+          cards.push(images[item]);
+        });
+        return { data: { cardsString, cards }, messages: [] };
+        */
+    } else {
+      throw new Error('400: invalid number of players');
+    }
   }
 
   public async updatePlayers(id: string, players: string[]) {
@@ -78,3 +119,24 @@ class GameServices {
 }
 
 export default GameServices;
+
+/*
+if (quantity === 1) {
+      const numbersArray: number[] = [];
+      while (numbersArray.length < quantity * players) {
+        const number: number = Math.floor(Math.random() * 53) + 1;
+        if (!numbersArray.includes(number)) {
+          numbersArray.push(number);
+        }
+      }
+
+      const cardsString = numbersArray.join(',');
+      await this.game.updateCards(gameid, cardsString);
+      const cards: string[] = [];
+      numbersArray.forEach((item) => {
+        cards.push(images[item]);
+      });
+      return { data: { cardsString, cards }, messages: [] };
+    }
+    return { data: null, messages: [] };
+    */

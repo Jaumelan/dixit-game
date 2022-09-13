@@ -42,22 +42,30 @@ class WebSocketInitializer {
           if (action === 'enter-room') {
             //console.log('data id ', data);
             if (this.rooms[data.id]) {
-              console.log('sala já existe');
+              //console.log('sala já existe');
               this.rooms[data.id].push(ws);
             } else {
-              console.log('n tinha a sala');
+              //console.log('n tinha a sala');
               this.rooms[data.id] = [ws];
             }
           } else if (action === 'new-player') {
-            console.log('aqui');
+            //console.log('aqui');
             if (this.rooms[data.id]) {
               this.rooms[data.id].push(ws);
             }
+          } else if (action === 'leave-room') {
+            if (this.rooms[data.id]) {
+              const index = this.rooms[data.id].indexOf(ws);
+              this.rooms[data.id].splice(index, 1);
+            }
           }
-          console.log('rooms', this.rooms);
-          this.rooms[data.id].forEach((client: websocket) => {
-            client.send(JSON.stringify(answer));
-          });
+          //console.log('rooms', this.rooms);
+          if (this.rooms[data.id]) {
+            this.rooms[data.id].forEach((client: websocket) => {
+              //console.log('sending', answer);
+              client.send(JSON.stringify(answer));
+            });
+          }
           //console.log('data do answer', data);
         } else {
           console.log('message do answer', answer.message);
@@ -67,7 +75,8 @@ class WebSocketInitializer {
         }
       });
       ws.on('close', () => {
-        console.log('Client disconnected');
+        console.log('Client disconnected' + userID);
+        //delete this.websocketClients[userID];
       });
       ws.on('error', () => {
         console.log('Client error');

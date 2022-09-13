@@ -4,6 +4,7 @@ import {
   GetAvaliableGamesController,
   GetGameData,
   GetRoomController,
+  GetCardsController,
 } from '../controllers';
 
 const route = Router();
@@ -18,6 +19,9 @@ route
       new GetAvaliableGamesController(),
     ),
   );
+/* route
+  .route('/game/getcards/:quantity/:players/:gameid')
+  .get(new GetCardsController().handle.bind(new GetCardsController())); */
 route.route('/game/:id').get(new GetGameData().handle.bind(new GetGameData()));
 route
   .route('/room')

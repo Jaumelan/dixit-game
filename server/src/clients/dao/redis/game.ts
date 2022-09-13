@@ -39,7 +39,7 @@ class Game {
 
     //console.log('id', id);
     this.addGameToGameList(id);
-
+    //await redis.flushall();
     const data = {
       id,
     };

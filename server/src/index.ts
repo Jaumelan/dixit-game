@@ -1,5 +1,11 @@
 import { app } from './server';
 import { config } from './config';
+import { WebSocketInitializer } from './websocket';
+
+const webSocketInitializer = new WebSocketInitializer();
+webSocketInitializer.initialize();
+
+/*
 import { WebSocketServices } from './services';
 import websocket from 'ws';
 import crypto from 'crypto';
@@ -57,6 +63,7 @@ wss.on('connection', (ws: websocket) => {
   });
 });
 
+*/
 app.listen(config.port, () => {
   console.log(`Server is listening on port ${config.port}`);
 });

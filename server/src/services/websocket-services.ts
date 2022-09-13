@@ -4,8 +4,6 @@ import websocket from 'ws';
 import crypto from 'crypto';
 
 class WebSocketServices {
-  public answer: any;
-
   private Game = Game;
 
   public websocketClients: any = {};
@@ -13,10 +11,6 @@ class WebSocketServices {
   public room: any = {};
 
   private GameServices = new GameServices();
-
-  constructor(action: string, payload: any) {
-    this.answer = this.validate(action, payload);
-  }
 
   private createUserID(ws: websocket) {
     const userID = crypto.randomUUID();
@@ -36,13 +30,14 @@ class WebSocketServices {
     return roomID;
   }
 
-  private async validate(action: string, payload: any): Promise<any> {
+  public async validate(
+    action: string,
+    payload: any,
+  ): Promise<{ data: any; message: string }> {
     switch (action) {
       case 'new-player':
-        const { gameID, username, email } = payload;
-        const players = await this.GameServices.getPlayersFromGameSession(
-          gameID,
-        );
+        const { id, username, email } = payload;
+        const players = await this.GameServices.getPlayersFromGameSession(id);
         const numberOfPlayers = players.reduce((accumulator, currentValue) => {
           if (currentValue === ':') {
             accumulator += 1;
@@ -53,10 +48,8 @@ class WebSocketServices {
         if (numberOfPlayers === 0) {
           console.log('game full');
           return {
-            action: 'new-player',
-            payload: {
-              message: 'Jogadores completos',
-            },
+            data: null,
+            message: 'Jogadores completos',
           };
         }
 
@@ -67,10 +60,8 @@ class WebSocketServices {
         if (checkPlayer) {
           console.log('player already exists');
           return {
-            action: 'new-player',
-            payload: {
-              message: 'Jogador já existe',
-            },
+            data: null,
+            message: 'Jogador já existe',
           };
         }
 
@@ -87,15 +78,30 @@ class WebSocketServices {
           }
         });
         console.log('players', newplayers);
-        return this.GameServices.updatePlayers(gameID, newplayers as string[]);
+        await this.GameServices.updatePlayers(id, newplayers as string[]);
+        const data = await this.GameServices.getGameSession(id);
+        return { data: { ...data.data, id }, message: '' };
         break;
-      case 'card-played':
-        console.log('card-played');
+      case 'enter-room':
+        const numberRegex = /\d+/g;
+        const roomID = payload.id.match(numberRegex);
+        if (roomID) {
+          const data = await this.GameServices.getGameSession(roomID[0]);
+          return {
+            data: { ...data.data, id: roomID[0] },
+            message: '',
+          };
+        } else {
+          return {
+            data: null,
+            message: 'Room ID not found',
+          };
+        }
         break;
       default:
         return {
-          action: 'error',
-          payload: 'Action not found',
+          data: null,
+          message: 'Action not found',
         };
     }
   }

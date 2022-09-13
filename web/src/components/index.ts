@@ -19,3 +19,4 @@ export { default as GameRules } from "./GameRules";
 export { default as PlayerPerfil } from "./PlayerPerfil";
 export { default as SigninBody } from "./SigninBody";
 export { default as GameRunning } from "./GameRunning";
+export { default as GameCenter } from "./GameCenter";

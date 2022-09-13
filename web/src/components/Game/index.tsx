@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Player from "../Player";
-import GameCenter from "../GameCenter";
+import { GameCenter } from "../../components";
 import { useGameContext } from "../../context/GameContext";
 import { PlayerType } from "../../@types/dixit";
 
@@ -21,6 +21,7 @@ const Game = () => {
         }
       });
       if (complete) {
+        
         setWaiting(false);
       }
     }

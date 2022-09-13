@@ -39,3 +39,15 @@ export type GameDataType = {
   timePerTurn: number;
   players: PlayerType[];
 };
+
+export type TurnType = {
+  username: string;
+  played: boolean;
+  message: string;
+  card: string;
+};
+
+export type PlayContextType = {
+  turn: TurnType[] | null;
+  handleSetTurn: (data: TurnType[] | null) => void;
+};

@@ -1,5 +1,6 @@
 import { AuthContextProvider } from "./context/AuthContext";
 import { GameContextProvider } from "./context/GameContext";
+import { PlayContextProvider } from "./context/PlayContext";
 import { BrowserRouter } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import GlobalStyle from "./assets/styles/global";
@@ -18,9 +19,11 @@ function App() {
       >
         <AuthContextProvider>
           <GameContextProvider>
-            <BrowserRouter>
-              <RoutesConfig />
-            </BrowserRouter>
+            <PlayContextProvider>
+              <BrowserRouter>
+                <RoutesConfig />
+              </BrowserRouter>
+            </PlayContextProvider>
           </GameContextProvider>
         </AuthContextProvider>
       </SnackbarProvider>

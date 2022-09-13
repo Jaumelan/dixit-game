@@ -39,10 +39,10 @@ function a11yProps(index: number) {
 }
 
 type PlayerPerfilProps = {
-  closeGameRules: (d: boolean) => void;
+  closePlayerPerfil: (d: boolean) => void;
 };
 
-const PlayerPerfil: FC<PlayerPerfilProps> = ({ closeGameRules }) => {
+const PlayerPerfil: FC<PlayerPerfilProps> = ({ closePlayerPerfil }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -51,7 +51,7 @@ const PlayerPerfil: FC<PlayerPerfilProps> = ({ closeGameRules }) => {
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeGameRules(false);
+      if (e.key === "Escape") closePlayerPerfil(false);
     });
   }, []);
 
@@ -85,7 +85,7 @@ const PlayerPerfil: FC<PlayerPerfilProps> = ({ closeGameRules }) => {
           </Tabs>
           <AiOutlineCloseCircle
             size={29}
-            onClick={() => closeGameRules(false)}
+            onClick={() => closePlayerPerfil(false)}
             style={{ cursor: "pointer" }}
           />
         </Box>

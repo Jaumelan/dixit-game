@@ -3,15 +3,17 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import * as S from "./styles";
 import { UserAuth } from "../../context/AuthContext";
+import { useSnackbar } from "notistack";
 
 type Props = {
   closePlayerPerfil: (d: boolean) => void;
 };
 
 const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
-  const { user } = UserAuth();
+  const { user, handleSetUser } = UserAuth();
   const [update, setUpdate] = useState<boolean>(false);
   const [username, setUsername] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -27,9 +29,28 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
     setUsername(e.target.value);
   };
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log(username);
+    fetch("http://localhost:8080/user/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: user?.email, username }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data);
+        if (data.messages.length === 0) {
+          setUpdate(false);
+          handleSetUser({
+            email: data.data.email,
+            username: data.data.username,
+          });
+        } else {
+          enqueueSnackbar(data.messages[0], { variant: "error" });
+        }
+      });
   };
 
   return (
@@ -62,8 +83,14 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
               />
             </S.UpdateTitleHolder>
 
-            <S.UpdateInput type="text" value={username} onChange={handleUsername} />
-            <S.UpdateButton type="button" onClick={handleSubmit}>Atualizar</S.UpdateButton>
+            <S.UpdateInput
+              type="text"
+              value={username}
+              onChange={handleUsername}
+            />
+            <S.UpdateButton type="button" onClick={handleSubmit}>
+              Atualizar
+            </S.UpdateButton>
           </S.UpdateContainer>
         ) : (
           <>

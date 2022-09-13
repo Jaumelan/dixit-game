@@ -24,6 +24,12 @@ export interface ILoginUser {
   password: string;
 }
 
+export type UpdateUserType = {
+  email: string;
+  username: string;
+  //password?: string;
+};
+
 export type PlayerType = {
   username: string;
   email: string;

@@ -6,7 +6,7 @@ import {
   //onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../services/firebaseSetup";
-import { IRegisterUser, ILoginUser } from "../../@types/dixit";
+import { IRegisterUser, ILoginUser, UpdateUserType } from "../../@types/dixit";
 import { useSnackbar } from "notistack";
 
 type AuthContextType = {
@@ -16,6 +16,7 @@ type AuthContextType = {
   registerUser: (user: IRegisterUser) => void;
   loginUser: (user: ILoginUser) => void;
   logoutUser: () => void;
+  handleSetUser: (user: UpdateUserType) => void;
   logOut: () => void;
 };
 
@@ -30,6 +31,8 @@ const AuthContext = createContext<AuthContextType>({
   loginUser: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   logoutUser: () => {},
+   // eslint-disable-next-line @typescript-eslint/no-empty-function
+  handleSetUser: () => {},
   user: null,
   error: null,
 });
@@ -57,21 +60,6 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   const logOut = () => {
     signOut(auth);
   };
-
-  /*  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        const { providerData } = user;
-        const data = providerData[0].email;
-
-        setUser(data);
-      } else {
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []); */
 
   const registerUser = async (data: IRegisterUser) => {
     fetch("http://localhost:8080/user/register", {
@@ -157,6 +145,20 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     sessionStorage.removeItem("user");
   };
 
+  const handleSetUser = (data: UpdateUserType) => {
+    if (data.username && user) {
+      setUser({ ...user, username: data.username });
+
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          username: data.username,
+        })
+      );
+    }
+  };
+
   useEffect(() => {
     const checkUser = sessionStorage.getItem("user");
     if (checkUser) {
@@ -185,6 +187,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
         loginUser,
         logoutUser,
         error,
+        handleSetUser,
       }}
     >
       {children}

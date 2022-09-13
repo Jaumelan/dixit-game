@@ -68,7 +68,7 @@ export const InfoContainer = styled.div`
   width: 100%;
   height: 25rem;
   background: rgba(91, 45, 216, 0.4);
-  border-radius: 16px;
+  border-radius: 0 0 16px 16px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
 `;

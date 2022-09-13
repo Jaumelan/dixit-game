@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -39,7 +39,11 @@ function a11yProps(index: number) {
   };
 }
 
-const GameRules = ({ closeGameRules }: any) => {
+type GameRulesProps = {
+  closeGameRules: (d: boolean) => void;
+};
+
+const GameRules: FC<GameRulesProps> = ({ closeGameRules }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

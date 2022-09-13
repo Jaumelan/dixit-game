@@ -1,9 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useState, useRef } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import * as S from "./styles";
 
 type SetGameProps = {
@@ -19,6 +20,8 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
     numberOfPlayers: 3,
     timePerTurn: 10,
   });
+  const websocket = useRef<WebSocket | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   const handleGameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +64,8 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
       players: playersArray,
     };
 
+    console.log("data enviado ", data);
+
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       handleGameSetter(data as any);
@@ -73,7 +78,11 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
       });
       const res = await response.json();
       console.log("res", res);
-
+      if (res.messages.length > 0) {
+        enqueueSnackbar(res.messages[0], { variant: "error" });
+        return;
+      }
+      
       navigate(`/game/${game.id}`);
     } catch (error) {
       console.log(error);

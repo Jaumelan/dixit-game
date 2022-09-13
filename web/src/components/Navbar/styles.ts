@@ -102,5 +102,6 @@ export const NavGame = styled.nav`
     display: flex;
     gap: 1.5rem;
     list-style: none;
+    
   }
 `;

@@ -4,7 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 58rem;
   height: 50rem;
   background: rgba(154, 151, 226, 0.2);
@@ -16,13 +16,11 @@ export const Container = styled.div`
   padding: 1rem 2rem;
 
   position: relative;
- // border-radius: 20px;
+  // border-radius: 20px;
   -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   //border: 3px solid #d3d3d3;
   gap: 1rem;
-  
-  
 `;
 
 export const ExitButton = styled.div`
@@ -39,6 +37,14 @@ export const TitleContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  background: rgb(154, 151, 226);
+  background: linear-gradient(
+    103deg,
+    rgba(154, 151, 226, 0) 0%,
+    rgba(154, 151, 226, 0.8211659663865546) 10%,
+    rgba(154, 151, 226, 0) 61%
+  );
+  border-radius: 1.5rem;
 `;
 
 export const Title = styled.h1`
@@ -93,5 +99,19 @@ export const SessionEnter = styled.div`
     border-radius: 10px;
     width: 1rem;
     color: #d3d3d3;
+  }
+`;
+
+export const NoRooms = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000040;
   }
 `;

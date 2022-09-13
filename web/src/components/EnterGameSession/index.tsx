@@ -7,6 +7,8 @@ import { UserAuth } from "../../context/AuthContext";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import { IoCloseSharp } from "react-icons/io5";
 import { ImEnter } from "react-icons/im";
+import { PlayerType } from "../../@types/dixit";
+import { useGameContext } from "../../context/GameContext";
 //import { useSnackbar } from "notistack";
 
 type Props = {
@@ -16,9 +18,10 @@ type Props = {
 const EnterGameSession: FC<Props> = ({ close }) => {
   const [gameSessions, setGameSessions] = useState<string[]>([]);
   const { user } = UserAuth();
+  const { handleGameSetter } = useGameContext();
   const [selectedGameSession, setSelectedGameSession] = useState<string>("");
-  const [error, setError] = useState("");
-  const [send, setSend] = useState(false);
+  //const [error, setError] = useState("");
+  const [noRooms, setNoRooms] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   //const [isSuccess, setIsSuccess] = useState(false);
@@ -31,7 +34,8 @@ const EnterGameSession: FC<Props> = ({ close }) => {
       const res = await response.json();
       //console.log(res);
       if (res.data.length === 0) {
-        setError("Nenhuma sessão disponível, para jogar crie uma sala");
+        setIsLoading((prev) => !prev);
+        setNoRooms("Nenhuma sessão disponível, para jogar crie uma sala");
       } else {
         setGameSessions(() => res.data);
         //setIsLoading((prev) => !prev);
@@ -92,39 +96,57 @@ const EnterGameSession: FC<Props> = ({ close }) => {
 
   useEffect(() => {
     if (selectedGameSession !== "") {
-      
-      websocket.current = new WebSocket(`ws://localhost:8081`);
+      websocket.current = new WebSocket(
+        `ws://localhost:8081/${selectedGameSession}`
+      );
       websocket.current.onopen = () => {
         const data = {
-          action: 'new-player',
+          action: "new-player",
           payload: {
             username: user?.username,
-            gameID: selectedGameSession,
+            id: selectedGameSession,
             email: user?.email,
           },
         };
         console.log("entering game session");
         websocket.current?.send(JSON.stringify(data));
-
-      }
+      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      websocket.current.onmessage = (event: any) => {
+        const answ = event.data;
+        //console.log("do websoquete ", answ);
+        if (answ instanceof Blob) {
+          const reader = new FileReader();
+          reader.readAsText(answ);
+          reader.onload = () => {
+            const received = JSON.parse(reader.result as string);
+            console.log("from websocket ", received);
+          };
+        } else {
+          const ans = JSON.parse(answ);
+          console.log("from websocket ", ans);
+          const players: PlayerType[] = [];
+          ans.data.playersString.split(",").forEach((player: string) => {
+            if (player !== ":") {
+              const p = player.split(":");
+              players.push({ username: p[0], email: p[1] });
+            } else {
+              players.push({ username: "", email: "" });
+            }
+          });
+          console.log("players ", players);
+          const dataContext = {
+            id: ans.data.id,
+            players: players,
+            numberOfPlayers: ans.data.numberOfPlayers,
+            timePerTurn: ans.data.timePerTurn,
+          };
+          handleGameSetter(dataContext);
+        }
+      };
       navigate(`/game/${selectedGameSession}`);
-      
     }
   }, [selectedGameSession]);
-
-  /* useEffect(() => {
-    if (send) {
-      console.log("send");
-      const data = {
-        newPlayer: {
-          username: user?.username,
-          gameID: selectedGameSession,
-          email: user?.email,
-        },
-      };
-      websocket.current?.send(JSON.stringify(data));
-    }
-  }, [send]); */
 
   return (
     <div>
@@ -143,20 +165,25 @@ const EnterGameSession: FC<Props> = ({ close }) => {
               />
             </S.ExitButton>
           </S.TitleContainer>
-
-          <S.SessionContainer>
-            {gameSessions.map((gameSession) => (
-              <S.SessionEnter key={gameSession}>
-                <h3>Sala {gameSession}</h3>
-                <Button
-                  buttonType={BUTTON_TYPE_CLASSES.LoginSession}
-                  onClick={() => handleEnterGameSession(gameSession)}
-                >
-                  <ImEnter size={20} />
-                </Button>
-              </S.SessionEnter>
-            ))}
-          </S.SessionContainer>
+          {noRooms ? (
+            <S.NoRooms>
+              <h2>{noRooms}</h2>
+            </S.NoRooms>
+          ) : (
+            <S.SessionContainer>
+              {gameSessions.map((gameSession) => (
+                <S.SessionEnter key={gameSession}>
+                  <h3>Sala {gameSession}</h3>
+                  <Button
+                    buttonType={BUTTON_TYPE_CLASSES.LoginSession}
+                    onClick={() => handleEnterGameSession(gameSession)}
+                  >
+                    <ImEnter size={20} />
+                  </Button>
+                </S.SessionEnter>
+              ))}
+            </S.SessionContainer>
+          )}
         </S.Container>
       )}
     </div>

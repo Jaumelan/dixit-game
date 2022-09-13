@@ -163,9 +163,12 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
       setUser(JSON.parse(checkUser));
     }
   }, []);
+  useEffect(() => {
+    console.log("user ", user);
+  }, [user]);
 
   useEffect(() => {
-    console.log("error ", error);
+    //console.log("error ", error);
     if (error) {
       enqueueSnackbar(error, { variant: "error" });
       setError(null);

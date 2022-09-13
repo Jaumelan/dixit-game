@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import Player from "../Player";
 import GameCenter from "../GameCenter";
 import { useGameContext } from "../../context/GameContext";
+import { PlayerType } from "../../@types/dixit";
 
 import * as S from "./styles";
 
-
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
-  const { gameData } = useGameContext();
+  const { gameData, handleGameSetter } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -25,13 +25,52 @@ const Game = () => {
       }
     }
   }, [gameData]);
-  
+
   useEffect(() => {
-    websocket.current = new WebSocket(`ws://localhost:8081`);
+    websocket.current = new WebSocket(`ws://localhost:8081/${gameData?.id}`);
     websocket.current.onopen = () => {
-      console.log("connected");
+      const dataSocket = {
+        action: "enter-room",
+        payload: {
+          id: gameData?.id,
+        },
+      };
+      console.log("entering game session");
+      websocket.current?.send(JSON.stringify(dataSocket));
     };
-    
+
+    websocket.current.onmessage = (event) => {
+      const data = event.data;
+      if (data instanceof Blob) {
+        const reader = new FileReader();
+        reader.readAsText(data);
+        reader.onload = () => {
+          const received = JSON.parse(reader.result as string);
+          console.log("from websocket ", received);
+        };
+      } else {
+        const ans = JSON.parse(data);
+        const players: PlayerType[] = [];
+        ans.data.playersString.split(",").forEach((player: string) => {
+          if (player !== ":") {
+            const p = player.split(":");
+            players.push({ username: p[0], email: p[1] });
+          } else {
+            players.push({ username: "", email: "" });
+          }
+        });
+        console.log("players ", players);
+        const dataContext = {
+          id: ans.data.id,
+          players: players,
+          numberOfPlayers: ans.data.numberOfPlayers,
+          timePerTurn: ans.data.timePerTurn,
+        };
+        handleGameSetter(dataContext);
+
+        //console.log("do websoquete ", ans);
+      }
+    };
     websocket.current.onclose = () => {
       console.log("disconnected");
     };
@@ -44,7 +83,7 @@ const Game = () => {
     gameData?.players?.push(...players);
     setPlayers(gameData?.players || []);
   }; */
-/* 
+  /* 
   useEffect(() => {
 
     websocket.current.onmessage = (e) => {

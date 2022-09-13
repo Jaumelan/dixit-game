@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useGameContext } from "../../context/GameContext";
+import GameRunning from "../GameRunning";
 import * as S from "./styles";
 
 type GameContextType = {
@@ -34,8 +35,7 @@ const GameCenter: FC<GameContextType> = ({ waiting }) => {
         </>
       ) : (
         <>
-          <S.NotificationContainer></S.NotificationContainer>
-          <S.GameContainer></S.GameContainer>
+          <GameRunning />
         </>
       )}
     </S.Container>

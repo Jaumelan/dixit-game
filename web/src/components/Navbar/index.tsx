@@ -12,7 +12,6 @@ import {
   Container,
   IconContainer,
   LinkT,
-  LoginButton,
   ProfileImgSty,
   NavGame,
 } from "./styles";
@@ -53,13 +52,22 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         </li>
         <li>
           <IconContainer>
-            <RiFilePaper2Line onClick={() => {setOpenGameRules(true)}} size={40} color={"white"} />
+            <RiFilePaper2Line
+              onClick={() => {
+                setOpenGameRules(true);
+              }}
+              size={40}
+              color={"white"}
+            />
           </IconContainer>
+          
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
       {openGameRules && <GameRules closeGameRules={setOpenGameRules} />}
-      {openPlayerPerfil && <PlayerPerfil closePlayerPerfil={setOpenPlayerPerfil} />}
+      {openPlayerPerfil && (
+        <PlayerPerfil closePlayerPerfil={setOpenPlayerPerfil} />
+      )}
       {(user && (
         <ul>
           <li>
@@ -70,7 +78,13 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
 
           <li>
             <IconContainer>
-              <ProfileImgSty onClick={() => {setOpenPlayerPerfil(true)}} src={user.profilePicture} alt="user profile" />
+              <ProfileImgSty
+                onClick={() => {
+                  setOpenPlayerPerfil(true);
+                }}
+                src={user.profilePicture}
+                alt="user profile"
+              />
             </IconContainer>
           </li>
         </ul>

@@ -12,7 +12,7 @@ class UserService {
   private userValidator = UserDataValidator;
 
   public async createUser(User: UserModel): Promise<APIResponse> {
-    console.log('User', User);
+    //console.log('User', User);
     const userValidated = new this.userValidator(User);
 
     if (userValidated.errors) {

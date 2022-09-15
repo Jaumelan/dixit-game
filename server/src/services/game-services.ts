@@ -3,9 +3,10 @@ import {
   GameSessionI,
   GameStatus,
   GameSessionDB,
+  UpdateGame,
 } from '../models';
-import Game from '../clients/dao/redis/game';
 import { images } from '../assets/images-src';
+import Game from '../clients/dao/redis/game';
 
 import { GameCreationValidator } from '../validators';
 
@@ -55,6 +56,71 @@ class GameServices {
       data: gameSession,
       messages: [],
     };
+  }
+
+  public async updateGameSession(
+    id: string,
+    gameSession: UpdateGame,
+  ): Promise<APIResponse> {
+    const gameData = await this.game.getGameSession(id);
+
+    if (!gameData) {
+      throw new Error(`400: game session with id ${id} does not exists`);
+    }
+
+    if (gameData.status !== GameStatus.waiting) {
+      throw new Error(
+        `400: game session with id ${id} is not in waiting status`,
+      );
+    }
+
+    const players = gameData.playersString.split(',');
+
+    players.forEach((player) => {
+      if (player.includes(gameSession.email)) {
+        throw new Error(
+          `400: player with email ${gameSession.email} already exists in game session with id ${id}`,
+        );
+      }
+    });
+
+    let playersComplete = true;
+    players.find((player) => {
+      if (player === ':') {
+        playersComplete = false;
+      }
+    });
+
+    if (playersComplete) {
+      throw new Error(`400: game session with id ${id} is full`);
+    }
+
+    let changed = false;
+    const newPlayers = players.map((player) => {
+      if (player === ':') {
+        if (!changed) {
+          changed = true;
+          return `${gameSession.username}:${gameSession.email}`;
+        }
+        return player;
+      }
+      return player;
+    });
+
+    console.log(newPlayers);
+
+    await this.game.updatePlayers(id, newPlayers);
+
+    const gameUpdated = await this.game.getGameSession(id);
+
+    const cardsArray = gameUpdated.cards.split(',');
+    const cardsSrc: string[] = [];
+    cardsArray.forEach((item) => {
+      cardsSrc.push(images[Number(item)]);
+    });
+
+    return { data: { ...gameUpdated, cards: cardsSrc }, messages: [] };
+    //const players = sessionExists.data.playersString.split(',');
   }
 
   public async getPlayersFromGameSession(id: string) {

@@ -6,3 +6,4 @@ export { GameSessionI } from './game-req-session';
 export { GameStatus } from './game-status';
 export { UpdateUserModel } from './update-user-req';
 export { GameSessionDB } from './game-session';
+export { UpdateGame } from './update-game';

@@ -2,6 +2,7 @@ import GameServices from './game-services';
 import Game from '../clients/dao/redis';
 import websocket from 'ws';
 import crypto from 'crypto';
+import { images } from '../assets/images-src';
 
 class WebSocketServices {
   private Game = Game;
@@ -36,66 +37,24 @@ class WebSocketServices {
   ): Promise<{ action: string; data: any; message: string }> {
     switch (action) {
       case 'new-player':
-        const { id, username, email } = payload;
-        const players = await this.GameServices.getPlayersFromGameSession(id);
-        const numberOfPlayers = players.reduce((accumulator, currentValue) => {
-          if (currentValue === ':') {
-            accumulator += 1;
-          }
-          return accumulator;
-        }, 0);
+        const { id, players } = payload;
 
-        if (numberOfPlayers === 0) {
-          console.log('game full');
-          return {
-            action: 'new-player',
-            data: null,
-            message: 'Jogadores completos',
-          };
-        }
-
-        const checkPlayer = players.find((player: string) => {
-          return player.includes(email);
-        });
-
-        if (checkPlayer) {
-          //console.log('player already exists');
-          return {
-            action: 'new-player',
-            data: null,
-            message: 'Jogador já existe',
-          };
-        }
-
-        let changed = false;
-        const newplayers = players.map((player) => {
-          if (player === ':') {
-            if (!changed) {
-              changed = true;
-              return `${username}:${email}`;
-            }
-            return player;
-          } else if (player !== ':') {
-            return player;
-          }
-        });
-        //console.log('players', newplayers);
-        await this.GameServices.updatePlayers(id, newplayers as string[]);
-        const data = await this.GameServices.getGameSession(id);
         return {
           action: 'new-player',
-          data: { ...data.data, id },
+          data: { players, id },
           message: '',
         };
         break;
-      case 'enter-room':
+      case 'creator':
         const numberRegex = /\d+/g;
         const roomID = payload.id.match(numberRegex);
         if (roomID) {
           const data = await this.GameServices.getGameSession(roomID[0]);
+          console.log('data enter room', data);
+          //console.log('enter room data', data);
           return {
             action: 'enter-room',
-            data: { ...data.data, id: roomID[0] },
+            data: { id: roomID[0] },
             message: '',
           };
         } else {
@@ -123,12 +82,23 @@ class WebSocketServices {
             }
             return player;
           });
+          const noPlayers = newPlayers.filter((player) => {
+            return player !== ':';
+          });
+          console.log('noPlayers', noPlayers);
           //console.log(newPlayers);
           if (newPlayers == players) {
             return {
               action: 'leave-room',
               data: { ...data.data, id: leaveroomID[0] },
               message: 'Player not found',
+            };
+          } else if (noPlayers.length === 0) {
+            await this.GameServices.deleteGameSession(leaveroomID[0]);
+            return {
+              action: 'leave-room',
+              data: { ...data.data, id: leaveroomID[0] },
+              message: '',
             };
           } else {
             await this.GameServices.updatePlayers(

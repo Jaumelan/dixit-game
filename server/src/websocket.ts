@@ -37,9 +37,9 @@ class WebSocketInitializer {
         const { action, payload } = JSON.parse(message);
         const answer = await this.websocketservices.validate(action, payload);
         const { data } = answer;
-        console.log('answer data', data);
+        //console.log('answer data', data);
         if (answer.message === '') {
-          if (action === 'enter-room') {
+          if (action === 'creator') {
             //console.log('data id ', data);
             if (this.rooms[data.id]) {
               //console.log('sala já existe');

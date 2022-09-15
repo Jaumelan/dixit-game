@@ -7,8 +7,9 @@ import { UserAuth } from "../../context/AuthContext";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import { IoCloseSharp } from "react-icons/io5";
 import { ImEnter } from "react-icons/im";
-import { PlayerType } from "../../@types/dixit";
+import { PLAYERTYPE, PlayerType } from "../../@types/dixit";
 import { useGameContext } from "../../context/GameContext";
+import { useSnackbar } from "notistack";
 //import { useSnackbar } from "notistack";
 
 type Props = {
@@ -18,12 +19,14 @@ type Props = {
 const EnterGameSession: FC<Props> = ({ close }) => {
   const [gameSessions, setGameSessions] = useState<string[]>([]);
   const { user } = UserAuth();
-  const { handleGameSetter } = useGameContext();
+  const { handleGameSetter, handleSetError, handlePlayerSetter } =
+    useGameContext();
   const [selectedGameSession, setSelectedGameSession] = useState<string>("");
-  //const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const [noRooms, setNoRooms] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   //const [isSuccess, setIsSuccess] = useState(false);
   const websocket = useRef<WebSocket | null>(null);
   //const { enqueueSnackbar } = useSnackbar();
@@ -47,18 +50,13 @@ const EnterGameSession: FC<Props> = ({ close }) => {
 
   useEffect(() => {
     getGameSessions();
-    websocket.current = new WebSocket(`ws://localhost:8081`);
-    websocket.current.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    websocket.current.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-    /* return () => {
-      websocket.current?.close();
-    }; */
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      handleSetError(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (gameSessions.length > 0) {
@@ -66,86 +64,62 @@ const EnterGameSession: FC<Props> = ({ close }) => {
     }
   }, [gameSessions]);
 
-  /*const onSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    setIsLoading(true);
-    const response = await fetch("/api/game-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ gameSessionId }),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      setIsSuccess(true);
-      enqueueSnackbar("Game session created!", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    } else {
-      setError(data.message);
-    }
-    setIsLoading(false);
-  };
-  */
-
   const handleEnterGameSession = (gameSessionId: string) => {
     setSelectedGameSession(gameSessionId);
   };
 
+  const handleJoinGameSession = async () => {
+    try {
+      const updateGameSession = {
+        username: user?.username,
+        email: user?.email,
+      };
+      const response = await fetch(
+        `http://localhost:8080/update/${selectedGameSession}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateGameSession),
+        }
+      );
+      const res = await response.json();
+      if (res.messages.length > 0) {
+        enqueueSnackbar(res.messages[0], {
+          variant: "error",
+        });
+      } else {
+        const playersArray = res.data.playersString.split(",");
+        const players: PlayerType[] = [];
+        playersArray.forEach((player: string) => {
+          const playerArray = player.split(":");
+          const data = {
+            username: playerArray[0] === undefined ? "" : playerArray[0],
+            email: playerArray[1] === undefined ? "" : playerArray[1],
+          };
+          players.push(data);
+        });
+
+        const game = {
+          id: selectedGameSession,
+          players: players,
+          numberOfPlayers: res.data.numberOfPlayers,
+          cards: res.data.cards,
+          timePerTurn: res.data.timePerTurn,
+        };
+        handleGameSetter(game);
+        handlePlayerSetter("NEW-PLAYER");
+        navigate(`/game/${selectedGameSession}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (selectedGameSession !== "") {
-      websocket.current = new WebSocket(
-        `ws://localhost:8081/${selectedGameSession}`
-      );
-      websocket.current.onopen = () => {
-        const data = {
-          action: "new-player",
-          payload: {
-            username: user?.username,
-            id: selectedGameSession,
-            email: user?.email,
-          },
-        };
-        console.log("entering game session");
-        websocket.current?.send(JSON.stringify(data));
-      };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-       websocket.current.onmessage = (event: any) => {
-        const answ = event.data;
-        //console.log("do websoquete ", answ);
-        if (answ instanceof Blob) {
-          const reader = new FileReader();
-          reader.readAsText(answ);
-          reader.onload = () => {
-            const received = JSON.parse(reader.result as string);
-            console.log("from websocket ", received);
-          };
-        } else {
-          const ans = JSON.parse(answ);
-          console.log("from websocket ", ans);
-          const players: PlayerType[] = [];
-          ans.data.playersString.split(",").forEach((player: string) => {
-            if (player !== ":") {
-              const p = player.split(":");
-              players.push({ username: p[0], email: p[1] });
-            } else {
-              players.push({ username: "", email: "" });
-            }
-          });
-          console.log("players ", players);
-          const dataContext = {
-            id: ans.data.id,
-            players: players,
-            numberOfPlayers: ans.data.numberOfPlayers,
-            timePerTurn: ans.data.timePerTurn,
-            cards: ans.data.cards,
-          };
-          handleGameSetter(dataContext);
-        }
-      }; 
-      navigate(`/game/${selectedGameSession}`);
+      handleJoinGameSession();
     }
   }, [selectedGameSession]);
 

@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { GameCenter, Button } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
 import { useGameContext } from "../../context/GameContext";
-import { PlayerType } from "../../@types/dixit";
+import { PLAYERTYPE, PlayerType } from "../../@types/dixit";
 
 import * as S from "./styles";
 
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
+  const [open, setOpen] = useState(false);
   const { user } = UserAuth();
-  const { gameData, handleGameSetter } = useGameContext();
+  const { gameData, handleGameSetter, player } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
   const navigate = useNavigate();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
@@ -33,6 +34,10 @@ const Game = () => {
   useEffect(() => {
     websocket.current = new WebSocket(`ws://localhost:8081/${gameData?.id}`);
     websocket.current.onopen = () => {
+      //console.log("WebSocket connection established em Game");
+      setOpen(true);
+    };
+    /*  websocket.current.onopen = () => {
       const dataSocket = {
         action: "enter-room",
         payload: {
@@ -42,7 +47,7 @@ const Game = () => {
       };
       console.log("entering game session");
       websocket.current?.send(JSON.stringify(dataSocket));
-    };
+    }; */
 
     websocket.current.onmessage = (event) => {
       const data = event.data;
@@ -55,23 +60,16 @@ const Game = () => {
         };
       } else {
         const ans = JSON.parse(data);
-        const players: PlayerType[] = [];
-        if (ans.action === "new-player") {
-          ans.data.playersString.split(",").forEach((player: string) => {
-            if (player !== ":") {
-              const p = player.split(":");
-              players.push({ username: p[0], email: p[1] });
-            } else {
-              players.push({ username: "", email: "" });
-            }
-          });
-          console.log("players ", players);
 
-          handleGameSetter({ ...gameData, players } as any);
+        if (ans.action === "new-player") {
+          //console.log("players ", ans.data.players);
+
+          handleGameSetter({ ...gameData, players: ans.data.players } as any);
         } else if (ans.action === "leave-room") {
           if (ans.message) {
-            console.log(ans.message);
+            //console.log(ans.message);
           } else {
+            const players: { username: string; email: string }[] = [];
             ans.data.playersString.split(",").forEach((player: string) => {
               if (player !== ":") {
                 const p = player.split(":");
@@ -94,6 +92,42 @@ const Game = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (player === "NEW-PLAYER") {
+      //console.log("useEffect new player");
+      if (open) {
+        if (websocket.current?.readyState === 1) {
+          //console.log("entrou new player");
+          const data = {
+            action: "new-player",
+            payload: {
+              players: gameData?.players,
+              id: gameData?.id,
+            },
+          };
+
+          websocket.current?.send(JSON.stringify(data));
+        }
+      }
+    } else if (player === "CREATOR") {
+      if (open) {
+        //console.log("useEffect creator", websocket.current?.readyState);
+        if (websocket.current?.readyState === 1) {
+          const data = {
+            action: "creator",
+            payload: {
+              username: user?.username,
+              id: gameData?.id,
+              email: user?.email,
+            },
+          };
+          //console.log("entering game session");
+          websocket.current?.send(JSON.stringify(data));
+        }
+      }
+    }
+  }, [player, open]);
+
   const handleLeaveGame = () => {
     const dataSocket = {
       action: "leave-room",
@@ -105,29 +139,6 @@ const Game = () => {
     websocket.current?.send(JSON.stringify(dataSocket));
     navigate("/");
   };
-
-  /* const handlePlayers = (players: PlayerType) => {
-    gameData?.players?.push(...players);
-    setPlayers(gameData?.players || []);
-  }; */
-  /* 
-  useEffect(() => {
-
-    websocket.current.onmessage = (e) => {
-      if(e.data instanceof Blob) {
-        const reader = new FileReader();
-        reader.readAsText(e.data);
-        reader.onload = () => {
-          console.log("reader", reader.result);
-        }
-      }
-    };
-
-    handlePlayers(gameData?.players || []);
-    if (gameData?.players?.length === gameData?.numberOfPlayers) {
-      setWaiting(false);
-    }
-  }, [gameData?.players]); */
 
   return (
     <S.Container>

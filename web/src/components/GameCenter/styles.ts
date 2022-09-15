@@ -445,8 +445,9 @@ export const GameLoading = styled.div`
 export const Loading = styled.div`
   animation: fadeIn 1s linear forwards;
   text-align: center;
-  font-size: 2em;
-  color: #ffffff;
+  font-size: 4rem;
+  color: #000040;
+  font-weight: 700;
   span {
     animation: appear1 1s 1s steps(1, start) infinite;
     display: inline-block;

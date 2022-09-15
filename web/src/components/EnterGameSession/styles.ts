@@ -50,7 +50,7 @@ export const TitleContainer = styled.div`
 export const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: 700;
-  color: #d3d3d3;
+  color: #000040;
   margin-right: 10rem;
   margin-bottom: 1rem;
 `;

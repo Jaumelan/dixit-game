@@ -36,6 +36,7 @@ function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
+    "color": "#000040",
   };
 }
 
@@ -88,6 +89,7 @@ const GameRules: FC<GameRulesProps> = ({ closeGameRules }) => {
             size={29}
             onClick={() => closeGameRules(false)}
             style={{ cursor: "pointer" }}
+            color='#000040'
           />
         </Box>
         <TabPanel value={value} index={0}>

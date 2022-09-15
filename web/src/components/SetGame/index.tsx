@@ -4,6 +4,7 @@ import Button from "../Button";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { PLAYERTYPE } from "../../@types/dixit";
 import { useSnackbar } from "notistack";
 import * as S from "./styles";
 
@@ -14,7 +15,7 @@ type SetGameProps = {
 
 const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
   const { user } = UserAuth();
-  const { handleGameSetter } = useGameContext();
+  const { handleGameSetter, handlePlayerSetter } = useGameContext();
   const [game, setGame] = useState({
     id: gameID,
     numberOfPlayers: 3,
@@ -84,6 +85,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
       }
       //console.log("res.data", res.data);
       handleGameSetter({ ...data, cards: res.data.cardsSrc } as any);
+      handlePlayerSetter('CREATOR');
       navigate(`/game/${game.id}`);
     } catch (error) {
       console.log(error);

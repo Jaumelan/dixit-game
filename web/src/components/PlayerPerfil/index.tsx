@@ -2,6 +2,7 @@ import { useState, useEffect, FC } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import * as S from "./styles";
+import { Button } from "../../components"
 import { UserAuth } from "../../context/AuthContext";
 import { useSnackbar } from "notistack";
 

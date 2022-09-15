@@ -14,8 +14,8 @@ export const Container = styled.div`
   padding: 0rem 2rem;
   position: relative;
   z-index: 1;
-  -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  -webkit-animation: fade-appear-in 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-appear-in 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   gap: 1rem;
 
   li {
@@ -31,6 +31,7 @@ export const RulesContainer = styled.div`
   h3 {
     font-size: 2rem;
     line-height: 2.2rem;
+    color: #000040;
   }
   p {
     font-size: 1.5rem;
@@ -45,6 +46,7 @@ export const Pontos = styled.div`
   h3 {
     font-size: 2rem;
     line-height: 2.2rem;
+    color: #000040;
   }
 
 ul {

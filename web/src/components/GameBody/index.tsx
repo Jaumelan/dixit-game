@@ -13,7 +13,7 @@ type GameState = {
 
 const GameBody = () => {
   const { user } = UserAuth();
-  const { gameData } = useGameContext();
+  const { gameData, error } = useGameContext();
   const [gameState, setGameState] = useState<GameState>({ LOADING: "LOADING" });
   const [game, setGame] = useState<GameDataType | null>(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -38,9 +38,18 @@ const GameBody = () => {
   }; */
 
   useEffect(() => {
+    if (error) {
+      console.log("error de gamebody", error);
+      setGameState({ LOADING: "ERROR" });
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (gameData) {
-      setGameState({ LOADING: "LOADED" });
-      setGame(gameData);
+      if (gameData.players.length > 0) {
+        setGameState({ LOADING: "LOADED" });
+        setGame(gameData);
+      }
     }
   }, [gameData]);
 

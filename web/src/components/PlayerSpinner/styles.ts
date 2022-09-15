@@ -50,7 +50,7 @@ export const Block = styled.div`
     position: absolute;
     height: 1rem;
     width: 1rem;
-    background: #fff;
+    background: #ffffff;
     animation: move1 2s linear infinite;
 
     &:nth-of-type(1) {

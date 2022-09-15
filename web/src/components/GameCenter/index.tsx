@@ -23,6 +23,9 @@ const GameCenter: FC<GameContextType> = ({ waiting }) => {
       return total - missing;
     }
   };
+  useEffect(() => {
+    console.log("waiting ", waiting);
+  }, [waiting]);
 
   useEffect(() => {
     if (gameData) {
@@ -58,7 +61,7 @@ const GameCenter: FC<GameContextType> = ({ waiting }) => {
         </>
       ) : (
         <>
-          <GameRunning />
+          <GameRunning missing={missingPlayers} />
         </>
       )}
     </S.Container>

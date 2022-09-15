@@ -24,7 +24,7 @@ export const IconContainer = styled.div`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background-color: #9394ce;
+    background-color: #8080ff;
     border-color: #9394ce;
     box-shadow: 0 0 3px 1px #9394ce;
   }

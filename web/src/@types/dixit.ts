@@ -54,7 +54,15 @@ export type TurnType = {
   card: string;
 };
 
+export enum PLAYERTYPE {
+  "CREATOR",
+  "NEW-PLAYER",
+  "NULL",
+}
+
 export type PlayContextType = {
   turn: TurnType[] | null;
+  cards: { username: string; hand: string[] }[] | null;
   handleSetTurn: (data: TurnType[] | null) => void;
+  handleSetCards: (data: { username: string; hand: string[] }[]) => void;
 };

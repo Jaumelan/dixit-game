@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
 import { usePlayContext } from "../../context/PlayContext";
 import Carrousel from "../Carrousel";
 import * as S from "./styles";
 
-const GameRunning = () => {
+type Props = {
+  missing: number | undefined;
+};
+
+const GameRunning: FC<Props> = ({ missing }) => {
   const [higherMessage, setHigherMessage] = useState<string>("");
   const { gameData } = useGameContext();
   const { user } = UserAuth();
-  const { turn, handleSetTurn } = usePlayContext();
+  const { turn, handleSetTurn, handleSetCards } = usePlayContext();
   const [turnCount, setTurnCount] = useState<number>(0);
 
   useEffect(() => {
@@ -21,6 +25,7 @@ const GameRunning = () => {
         setHigherMessage("Aguarde a vez de jogar");
       }
       setTurnCount((prev) => prev + 1);
+      getInitialCards();
     }
   }, [turn]);
 
@@ -44,15 +49,30 @@ const GameRunning = () => {
   };
 
   const getInitialCards = () => {
-    fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=6")
-      .then((response) => response.json())
-      .then((data) => {
-        const cards = data.cards.map((card: { image: any }) => card.image);
-        console.log(cards);
-      });
-  };
+    const playedCards = [];
+    if (gameData) {
+      for (let i = 0; i < gameData?.players.length; i++) {
+        const cards: { username: string; hand: string[] } = {
+          username: "",
+          hand: [],
+        };
 
-  
+        cards.username = gameData?.players[i].username;
+
+        if (gameData?.numberOfPlayers) {
+          for (
+            let j = (6 + Number(gameData?.numberOfPlayers)) * i;
+            j < (6 + Number(gameData?.numberOfPlayers)) * (i + 1);
+            j++
+          ) {
+            cards.hand.push(gameData?.cards[j]);
+          }
+          playedCards.push(cards);
+        }
+        handleSetCards(playedCards);
+      }
+    }
+  };
 
   return (
     <>
@@ -62,7 +82,6 @@ const GameRunning = () => {
         </S.NotificationText>
       </S.NotificationContainer>
       <S.GameContainer>
-        <button onClick={getInitialCards}>Get cards</button>
         <div>
           <Carrousel />
         </div>

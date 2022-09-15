@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Background from "../../assets/images/gamebackground.jpg";
 
 export const Container = styled.div`
   display: flex;
@@ -7,13 +8,13 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  background: rgb(16, 5, 31);
+  /* background: rgb(16, 5, 31);
   background: linear-gradient(
     180deg,
     rgba(16, 5, 31, 1) 0%,
     rgba(43, 21, 124, 1) 56%,
     rgba(53, 124, 214, 1) 100%
-  );
+  ); */
 `;
 
 export const SideContainer = styled.div`

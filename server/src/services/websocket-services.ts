@@ -2,7 +2,6 @@ import GameServices from './game-services';
 import Game from '../clients/dao/redis';
 import websocket from 'ws';
 import crypto from 'crypto';
-import { images } from '../assets/images-src';
 
 class WebSocketServices {
   private Game = Game;

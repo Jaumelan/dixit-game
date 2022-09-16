@@ -1,5 +1,8 @@
 import User from '../clients/dao/redis/user';
 import { UserDataValidator } from '../../src/validators';
+import bcrypt from 'bcrypt';
+import { config } from '../config';
+import jwt from 'jsonwebtoken';
 import {
   UserModel,
   APIResponse,
@@ -26,13 +29,20 @@ class UserService {
       throw new Error(`400: User already exists`);
     }
 
+    const hashedPassword = await bcrypt.hash(User.password, 10);
+
     const userComplete = {
       ...userValidated.user,
+      password: hashedPassword,
       profile: 'https://robohash.org/' + userValidated.user.email,
     };
 
     const result = await this.User.insert(userComplete);
     //console.log(result);
+
+    const accessToken = jwt.sign({ email: User.email }, config.jwt.secret, {
+      expiresIn: '1h',
+    });
 
     if (result.result === 'OK') {
       const { User } = result;
@@ -40,6 +50,7 @@ class UserService {
         email: User.email,
         profilePicture: User.profile,
         username: User.username,
+        accessToken,
       };
 
       return {
@@ -63,9 +74,18 @@ class UserService {
       throw new Error(`400: User not found`);
     }
 
-    if (userExists.password !== User.password) {
+    const passwordMatch = await bcrypt.compare(
+      User.password,
+      userExists.password,
+    );
+
+    if (!passwordMatch) {
       throw new Error(`400: Invalid password`);
     }
+
+    const accessToken = jwt.sign({ email: User.email }, config.jwt.secret, {
+      expiresIn: '1h',
+    });
 
     const { username, email, profile } = userExists;
 
@@ -73,6 +93,7 @@ class UserService {
       username,
       email,
       profile,
+      accessToken,
     };
 
     return {

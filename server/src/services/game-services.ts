@@ -5,6 +5,7 @@ import {
   GameSessionDB,
   UpdateGame,
 } from '../models';
+import AuthService from '../middleware/auth';
 import { images } from '../assets/images-src';
 import Game from '../clients/dao/redis/game';
 

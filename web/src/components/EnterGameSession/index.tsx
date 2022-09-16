@@ -33,15 +33,26 @@ const EnterGameSession: FC<Props> = ({ close }) => {
 
   const getGameSessions = async () => {
     try {
-      const response = await fetch("http://localhost:8080/game/availables");
-      const res = await response.json();
-      //console.log(res);
-      if (res.data.length === 0) {
-        setIsLoading((prev) => !prev);
-        setNoRooms("Nenhuma sessão disponível, para jogar crie uma sala");
-      } else {
-        setGameSessions(() => res.data);
-        //setIsLoading((prev) => !prev);
+      if (user) {
+        const response = await fetch(
+          `http://localhost:8080/game/availables/${user.email}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": user?.accessToken,
+            },
+          }
+        );
+        const res = await response.json();
+        //console.log(res);
+        if (res.data.length === 0) {
+          setIsLoading((prev) => !prev);
+          setNoRooms("Nenhuma sessão disponível, para jogar crie uma sala");
+        } else {
+          setGameSessions(() => res.data);
+          //setIsLoading((prev) => !prev);
+        }
       }
     } catch (error) {
       console.log(error);

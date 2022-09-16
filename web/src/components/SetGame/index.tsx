@@ -63,30 +63,33 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
     const data = {
       ...game,
       players: playersArray,
+      email: user?.email,
     };
 
-    console.log("data enviado ", data);
+    //console.log("data enviado ", data);
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-      const response = await fetch(`http://localhost:8080/game/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const res = await response.json();
-      //console.log("res", res);
-      if (res.messages.length > 0) {
-        enqueueSnackbar(res.messages[0], { variant: "error" });
-        return;
+      if (user) {
+        const response = await fetch(`http://localhost:8080/game/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": user?.accessToken,
+          },
+          body: JSON.stringify(data),
+        });
+        const res = await response.json();
+        //console.log("res", res);
+        if (res.messages.length > 0) {
+          enqueueSnackbar(res.messages[0], { variant: "error" });
+          return;
+        }
+        //console.log("res.data", res.data);
+        handleGameSetter({ ...data, cards: res.data.cardsSrc } as any);
+        handlePlayerSetter("CREATOR");
+        navigate(`/game/${game.id}`);
       }
-      //console.log("res.data", res.data);
-      handleGameSetter({ ...data, cards: res.data.cardsSrc } as any);
-      handlePlayerSetter('CREATOR');
-      navigate(`/game/${game.id}`);
     } catch (error) {
       console.log(error);
     }

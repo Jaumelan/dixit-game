@@ -2,7 +2,7 @@ import { useState, useEffect, FC } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import * as S from "./styles";
-import { Button } from "../../components"
+import { Button } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
 import { useSnackbar } from "notistack";
 
@@ -32,26 +32,29 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    fetch("http://localhost:8080/user/update", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: user?.email, username }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.data);
-        if (data.messages.length === 0) {
-          setUpdate(false);
-          handleSetUser({
-            email: data.data.email,
-            username: data.data.username,
-          });
-        } else {
-          enqueueSnackbar(data.messages[0], { variant: "error" });
-        }
-      });
+    if (user) {
+      fetch("http://localhost:8080/user/update", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": user?.accessToken,
+        },
+        body: JSON.stringify({ email: user?.email, username }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.data);
+          if (data.messages.length === 0) {
+            setUpdate(false);
+            handleSetUser({
+              email: data.data.email,
+              username: data.data.username,
+            });
+          } else {
+            enqueueSnackbar(data.messages[0], { variant: "error" });
+          }
+        });
+    }
   };
 
   return (

@@ -16,6 +16,7 @@ type Props = {
 
 const Carrousel = () => {
   const [items, setItems] = useState<Item | null>(null);
+  const [ numberOfCards, setNumberOfCards ] = useState(6);
   const [active, setActive] = useState(0);
   const { cards } = usePlayContext();
   const { user } = UserAuth();
@@ -27,13 +28,29 @@ const Carrousel = () => {
     }
   }, [cards]);
 
+  const handleCardsToDisplay = () => {
+    if (items) {
+      const cardsToDisplay = [];
+      for (let i = 0; i < numberOfCards; i++) {
+        cardsToDisplay.push(items.hand[i]);
+      }
+      return cardsToDisplay;
+    }
+  }
+
   return (
     <S.CarrouselContainer>
-      {items?.hand.map((item, index) => (
-        <S.CarrouselContent key={index}>
-          <S.CarrouselItem src={item} alt="card" />
-        </S.CarrouselContent>
-      ))}
+      
+        {items && handleCardsToDisplay()?.map((item, index) => (
+          <S.CarrouselContent
+            key={index}
+            /* active={active === index}
+            onClick={() => setActive(index)} */
+          >
+            <S.CarrouselItem src={item} />
+          </S.CarrouselContent>
+        ))}
+      
     </S.CarrouselContainer>
   );
 };

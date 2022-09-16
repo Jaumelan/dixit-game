@@ -10,7 +10,12 @@ import { IRegisterUser, ILoginUser, UpdateUserType } from "../../@types/dixit";
 import { useSnackbar } from "notistack";
 
 type AuthContextType = {
-  user: { email: string; profilePicture: string; username: string } | null;
+  user: {
+    email: string;
+    profilePicture: string;
+    username: string;
+    accessToken: string;
+  } | null;
   error: string | null;
   googleSignIn: () => void;
   registerUser: (user: IRegisterUser) => void;
@@ -31,7 +36,7 @@ const AuthContext = createContext<AuthContextType>({
   loginUser: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   logoutUser: () => {},
-   // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleSetUser: () => {},
   user: null,
   error: null,
@@ -48,6 +53,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
     email: string;
     profilePicture: string;
     username: string;
+    accessToken: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -77,6 +83,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
             email: data.email,
             profilePicture: data.profilePicture,
             username: data.username,
+            accessToken: data.accessToken,
           });
           sessionStorage.setItem(
             "user",
@@ -84,6 +91,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
               email: data.email,
               profilePicture: data.profilePicture,
               username: data.username,
+              accessToken: data.accessToken,
             })
           );
         } else {
@@ -92,6 +100,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
           //console.log("response", response);
         }
       })
+
       .catch((err) => console.log(err));
   };
 
@@ -112,6 +121,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
             email: data.email,
             profilePicture: data.profile,
             username: data.username,
+            accessToken: data.accessToken,
           });
           sessionStorage.setItem(
             "user",
@@ -119,6 +129,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
               email: data.email,
               profilePicture: data.profile,
               username: data.username,
+              accessToken: data.accessToken,
             })
           );
         } else {

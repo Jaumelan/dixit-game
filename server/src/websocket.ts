@@ -74,10 +74,43 @@ class WebSocketInitializer {
           });
         }
       });
-      ws.on('close', () => {
-        console.log('Client disconnected' + userID);
+      ws.on('close', async (ws) => {
+        console.log('Client closed ' + userID);
+        const findRoomWithClient = Object.keys(this.rooms).find((room) => {
+          return this.rooms[room].includes(this.websocketClients[userID]);
+        });
+        console.log('room with client ', findRoomWithClient);
+        if (findRoomWithClient) {
+          const index = this.rooms[findRoomWithClient].indexOf(ws);
+          this.rooms[findRoomWithClient].splice(index, 1);
+          if (this.rooms[findRoomWithClient].length === 0) {
+            console.log('deletando sala');
+            delete this.rooms[findRoomWithClient];
+            await this.websocketservices.deleteGameSession(findRoomWithClient);
+          }
+        }
+        delete this.websocketClients[userID];
         //delete this.websocketClients[userID];
       });
+      ws.on('disconnect', async () => {
+        console.log('Client disconnected ' + userID);
+
+        const findRoomWithClient = Object.keys(this.rooms).find((room) => {
+          return this.rooms[room].includes(ws);
+        });
+        console.log('room with client ', findRoomWithClient);
+        if (findRoomWithClient) {
+          const index = this.rooms[findRoomWithClient].indexOf(ws);
+          this.rooms[findRoomWithClient].splice(index, 1);
+          if (this.rooms[findRoomWithClient].length === 0) {
+            console.log('deletando sala');
+            delete this.rooms[findRoomWithClient];
+            await this.websocketservices.deleteGameSession(findRoomWithClient);
+          }
+        }
+        delete this.websocketClients[userID];
+      });
+
       ws.on('error', () => {
         console.log('Client error');
       });

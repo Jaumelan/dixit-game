@@ -93,7 +93,8 @@ class WebSocketServices {
               message: 'Player not found',
             };
           } else if (noPlayers.length === 0) {
-            await this.GameServices.deleteGameSession(leaveroomID[0]);
+            await this.GameServices.deleteGameSession(payload.id);
+            console.log('delete game session');
             return {
               action: 'leave-room',
               data: { ...data.data, id: leaveroomID[0] },
@@ -123,7 +124,31 @@ class WebSocketServices {
           };
         }
         break;
-
+      case 'update-turn':
+        //const { turn } = payload;
+        console.log('payload ', payload);
+        return {
+          action: 'update-turn',
+          data: { ...payload },
+          message: '',
+        };
+        break;
+      case 'update-cards-played':
+        //console.log('cardsPlayed', cardsPlayed);
+        return {
+          action: 'update-cards-played',
+          data: { ...payload },
+          message: '',
+        };
+        break;
+      case 'discover':
+        //console.log('cardsPlayed', cardsPlayed);
+        return {
+          action: 'discover',
+          data: { ...payload },
+          message: '',
+        };
+        break;
       default:
         return {
           action: 'error',
@@ -131,6 +156,10 @@ class WebSocketServices {
           message: 'Action not found',
         };
     }
+  }
+
+  public async deleteGameSession(id: string) {
+    await this.GameServices.deleteGameSession(id);
   }
 }
 

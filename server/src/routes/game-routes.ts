@@ -4,7 +4,6 @@ import {
   GetAvaliableGamesController,
   GetGameData,
   GetRoomController,
-  GetCardsController,
   UpdateGameController,
 } from '../controllers';
 

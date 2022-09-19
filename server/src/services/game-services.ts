@@ -181,6 +181,8 @@ class GameServices {
 
   public async deleteGameSession(id: string) {
     const gameSession = await this.game.deleteGameSession(id);
+    await this.game.deleteGameFromList(id);
+    console.log('gameSession', gameSession);
     return gameSession;
   }
 }

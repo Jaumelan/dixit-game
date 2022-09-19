@@ -25,13 +25,3 @@ export const Video = styled.video`
   object-fit: cover;
   z-index: -1;
 `;
-
-/*
-{/* src="https://giphy.com/embed/l4KihuqeuJEi9qLSM"
-              width="100%"
-              height="100%"
-              style="position:absolute"
-              frameBorder="0"
-              class="giphy-embed"
-              allowFullScreen 
-              */

@@ -51,12 +51,12 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
             setMyTurn(() => true);
             handleSetPlaying(false);
           } else {
-            setHigherMessage("Aguarde a vez de jogar");
+            setHigherMessage("Aguarde sua vez de jogar");
             setMyTurn(() => false);
             handleSetPlaying(false);
           }
           setTurnCount((prev) => prev + 1);
-          getInitialCards();
+          //getInitialCards();
         }
       }
     }
@@ -149,9 +149,9 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
     setDixitMessage(e.target.value);
   };
 
-  const getInitialCards = () => {
+  /*const getInitialCards = () => {
     //const playedCards = [];
-    /*if (gameData) {
+    if (gameData) {
       for (let i = 0; i < gameData?.players.length; i++) {
         const cards: { username: string; hand: string[] } = {
           username: "",
@@ -174,7 +174,7 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
       }
     }
 
-    */
+    
     if (gameSetter) {
       if (gameData) {
         const newGameSet: TurnType[] = [];
@@ -200,11 +200,12 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
       }
     }
   };
+  */
 
   const handleSubmitDixit = () => {
     if (user) {
       const data = {
-        username: user?.username,
+        email: user?.email,
         cardsPlayed: cardSelected,
         message: dixitMessage,
         //played: true,

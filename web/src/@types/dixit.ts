@@ -60,7 +60,7 @@ export type TurnType = {
 };
 
 export type UpdateGameSetterType = {
-  username: string;
+  email: string;
   cardsPlayed: string;
   message: string;
 };
@@ -95,4 +95,5 @@ export type PlayContextType = {
   handleOtherPlayersChose: (data: boolean) => void;
   handleUpdateDiscover: (data: { email: string; choosenCard: string }) => void;
   handleSetSendDiscover: (data: boolean) => void;
+  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string) => void;
 };

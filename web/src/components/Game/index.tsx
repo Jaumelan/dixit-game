@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Player from "../Player";
 import { useNavigate } from "react-router-dom";
-import { GameCenter, Button } from "../../components";
+import { GameCenter, Button, ChatAccordion } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
 import { useGameContext } from "../../context/GameContext";
 import { usePlayContext } from "../../context/PlayContext";
@@ -20,6 +20,10 @@ const Game = () => {
     handleSendData,
     handleSetComplete,
     sendData,
+    myMessage,
+    sendMessSocket,
+    handleChatSocket,
+    handleSetChatMessages,
   } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
   const navigate = useNavigate();
@@ -33,6 +37,7 @@ const Game = () => {
     sendDiscover,
     handleOtherPlayersChose,
     handleSetSendDiscover,
+    UpdateOtherPlayersWithoutSwitch,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -91,13 +96,17 @@ const Game = () => {
             handleGameDataSetter({ ...gameData, players } as any);
           }
         } else if (ans.action === "update-turn") {
+          console.log("update turn ", ans.data);
           handleSetGame(ans.data.gameSetter);
           handlePlayersSelectCards(true);
           //handleTurnUpdated(false);
         } else if (ans.action === "update-cards-played") {
-          handleSetGame(ans.data.gameSetter);
+          const { email, cardsPlayed } = ans.data;
+          UpdateOtherPlayersWithoutSwitch(email, cardsPlayed);
         } else if (ans.action === "discover") {
           handleSetGame(ans.data.gameSetter);
+        } else if( ans.action === 'chat-message') {
+          handleSetChatMessages(ans.data.message)
         }
         //console.log("do websoquete ", ans);
       }
@@ -123,10 +132,27 @@ const Game = () => {
           setWebsocketSend(() => false);
           setWaiting(false);
           handleSetComplete(true);
+        } else {
+          handleSetComplete(false);
+          setWaiting(true);
         }
       }
     }
   }, [gameData, websocketSend]);
+
+  useEffect(() => {
+    if (sendMessSocket) {
+      const dataSocket = {
+        action: "chat-message",
+        payload: {
+          id: gameData?.id,
+          message: myMessage,
+        },
+      };
+      websocket.current?.send(JSON.stringify(dataSocket));
+      handleChatSocket(false);
+    }
+  }, [sendMessSocket]);
 
   useEffect(() => {
     if (sendData) {
@@ -173,16 +199,21 @@ const Game = () => {
     if (otherPlayersChose) {
       if (open) {
         if (websocket.current?.readyState === 1) {
+          //enviar minha carta para o servidor
+          const myCard = gameSetter?.find(
+            (p) => p.email === user?.email
+          )?.cardsPlayed;
+
           const data = {
             action: "update-cards-played",
             payload: {
               id: gameData?.id,
-              gameSetter: gameSetter,
+              email: user?.email,
+              cardsPlayed: myCard,
             },
           };
           websocket.current?.send(JSON.stringify(data));
           handleOtherPlayersChose(false);
-          
         }
       }
     }
@@ -198,11 +229,12 @@ const Game = () => {
               payload: { gameSetter: gameSetter, id: gameData.id },
             })
           );
+          console.log("update turn sent");
           handleDixitPlayed(false);
         }
       }
     }
-  }, [dixitPlayed]);
+  }, [dixitPlayed, gameSetter]);
 
   useEffect(() => {
     if (gameData) {
@@ -239,9 +271,13 @@ const Game = () => {
         {gameData?.players.map((player, index) => (
           <Player key={`${index}-${player}`} data={player} index={index} />
         ))}
-        <div>
-          <h2>Chat</h2>
-        </div>
+        {!waiting ? (
+          <div>
+            <ChatAccordion />
+          </div>
+        ) : (
+          <div></div>
+        )}
       </S.SideContainer>
       <S.CenterContainer>
         <GameCenter waiting={waiting} />

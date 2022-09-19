@@ -35,7 +35,7 @@ const defaultPlayContext = {
   handleSetPlaying: (data: boolean) => {},
 
   handlePlayersSelectCards: (data: boolean) => {},
-
+  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string) => {},
   handleSetPlayersName: (data: string) => {},
   handleSetSendDiscover: (data: boolean) => {},
   handleOtherPlayersChose: (data: boolean) => {},
@@ -54,6 +54,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const [playing, setPlaying] = useState(false);
   const [sendDiscover, setSendDiscover] = useState(false);
   const [otherPlayersChose, setOtherPlayersChose] = useState(false);
+  //switch to true when dixit played chose card and message
   const [dixitPlayed, setDixitPlayed] = useState(false);
   const [playersSelectCards, setPlayersSelectCards] = useState<boolean>(false);
   const [discoverCard, setDiscoverCard] = useState<boolean>(false);
@@ -61,30 +62,45 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
 
   useEffect(() => {
     if (gameData) {
-      if(complete) {
-      let completePlayContext = true;
-      gameData.players.forEach((player) => {
-        if (player.username === "") {
-          completePlayContext = false;
+      if (complete) {
+        //check if all players are ready
+        let completePlayContext = true;
+        gameData.players.forEach((player) => {
+          if (player.username === "") {
+            completePlayContext = false;
+          }
+        });
+
+        if (completePlayContext) {
+          const gameSet: TurnType[] = [];
+          gameData.players.forEach((player, index) => {
+            const handPlayer = [];
+
+            for (
+              let j = (6 + Number(gameData.numberOfPlayers)) * index;
+              j < (6 + Number(gameData.numberOfPlayers)) * (index + 1);
+              j++
+            ) {
+              handPlayer.push(gameData.cards[j]);
+            }
+            const playerData = {
+              username: player.username,
+              email: player.email,
+              played: false,
+              messages: [],
+              cardsPlayed: [],
+              choseCard: false,
+              choosenCard: "",
+              hand: handPlayer,
+              score: 0,
+            };
+            gameSet.push(playerData);
+          });
+          setGameSetter(gameSet);
+          setPlaying(() => true);
         }
-      });
-      if (completePlayContext) {
-        const turn = gameData.players.map((player) => ({
-          username: player.username,
-          email: player.email,
-          played: false,
-          messages: [],
-          cardsPlayed: [],
-          choseCard: false,
-          choosenCard: "",
-          hand: [],
-          score: 0,
-        }));
-        setGameSetter(turn);
-        setPlaying(() => true);
       }
     }
-  }
   }, [gameData, complete]);
 
   useEffect(() => {
@@ -158,7 +174,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const handleUpdateGameSetter = (data: UpdateGameSetterType) => {
     if (gameSetter) {
       const newTurn = gameSetter.map((item) => {
-        if (item.username === data.username) {
+        if (item.email === data.email) {
           return {
             ...item,
             cardsPlayed: [...item.cardsPlayed, data.cardsPlayed],
@@ -205,6 +221,25 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
     setOtherPlayersChose(() => true);
   };
 
+  const UpdateOtherPlayersWithoutSwitch = (
+    email: string,
+    cardsPlayed: string,
+  ) => {
+    if (gameSetter) {
+      const newGameSetter = gameSetter.map((item) => {
+        if (item.email === email) {
+          return {
+            ...item,
+            cardsPlayed: [...cardsPlayed],
+            choseCard: true,
+          };
+        }
+        return item;
+      });
+      setGameSetter(newGameSetter);
+    }
+  };
+
   return (
     <PlayContext.Provider
       value={{
@@ -228,6 +263,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         handleOtherPlayersChose,
         discoverCard,
         handleUpdateDiscover,
+        UpdateOtherPlayersWithoutSwitch,
       }}
     >
       {children}

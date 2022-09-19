@@ -150,24 +150,11 @@ export const UpdateInput = styled.input`
   }
 `;
 
-export const UpdateButton = styled.button`
+export const SubmitHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 3rem;
-  border-radius: 8px;
-  border: 1px solid #5959ac;
-  padding: 0rem 1rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #5959ac;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   margin-top: 1rem;
-
-  &:hover {
-    cursor: pointer;
-    border: 1px solid #8080c0;
-    transition: 0.2s;
-
-  }
 `;

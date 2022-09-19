@@ -20,3 +20,5 @@ export { default as PlayerPerfil } from "./PlayerPerfil";
 export { default as SigninBody } from "./SigninBody";
 export { default as GameRunning } from "./GameRunning";
 export { default as GameCenter } from "./GameCenter";
+export { default as Modal } from "./Modal";
+export { default as DiscoverCard } from "./DiscoverCard";

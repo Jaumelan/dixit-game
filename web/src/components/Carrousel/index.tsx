@@ -1,56 +1,72 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC, SetStateAction } from "react";
 import { usePlayContext } from "../../context/PlayContext";
 import { UserAuth } from "../../context/AuthContext";
+import { TurnType } from "../../@types/dixit";
 import * as S from "./styles";
 
-type Item = {
-  hand: string[];
-  username: string;
-};
-
 type Props = {
-  items: Item[];
-  activeItem: number;
-  setActiveItem: (activeItem: number) => void;
+  getSelectedImg: (e: any) => void;
 };
 
-const Carrousel = () => {
-  const [items, setItems] = useState<Item | null>(null);
-  const [ numberOfCards, setNumberOfCards ] = useState(6);
-  const [active, setActive] = useState(0);
-  const { cards } = usePlayContext();
+const Carrousel: FC<Props> = ({ getSelectedImg }) => {
+  const [items, setItems] = useState<TurnType | null>(null);
+  const [numberOfCards, setNumberOfCards] = useState(6);
+  const [cardsToShow, setCardsToShow] = useState<string[]>([]);
+  const { gameSetter } = usePlayContext();
   const { user } = UserAuth();
 
   useEffect(() => {
-    if (cards) {
-      const newItems = cards.filter((card) => card.username === user?.username);
-      setItems(newItems[0]);
+    if (gameSetter) {
+      const newItems = gameSetter.find(
+        (card) => card.username === user?.username
+      );
+      if (newItems) {
+        setItems(newItems);
+        console.log("new items ", newItems);
+        handleCardsToDisplay();
+      } else {
+        setItems(null);
+      }
+      
     }
-  }, [cards]);
+  }, [gameSetter]);
 
   const handleCardsToDisplay = () => {
     if (items) {
-      const cardsToDisplay = [];
-      for (let i = 0; i < numberOfCards; i++) {
-        cardsToDisplay.push(items.hand[i]);
+      console.log("handleCardsToDisplay");
+      //const cardsToDisplay = [];
+
+      const newArray: SetStateAction<string[]> = [];
+      while (newArray.length < 6) {
+        const randomItem =
+          items.hand[Math.floor(Math.random() * items.hand.length)];
+        if (!items.cardsPlayed.includes(randomItem) && !newArray.includes(randomItem)) {
+          newArray.push(randomItem);
+          //console.log("new array ", newArray);
+        }
       }
-      return cardsToDisplay;
+
+      //console.log(" new array 2 ", newArray);
+      setCardsToShow(newArray);
     }
-  }
+  };
+
+  useEffect(() => {
+    console.log("cards to show ", items);
+  }, [items]);
 
   return (
     <S.CarrouselContainer>
-      
-        {items && handleCardsToDisplay()?.map((item, index) => (
+      {items &&
+        cardsToShow.map((item, index) => (
           <S.CarrouselContent
             key={index}
             /* active={active === index}
             onClick={() => setActive(index)} */
           >
-            <S.CarrouselItem src={item} />
+            <S.CarrouselItem src={item} onClick={getSelectedImg} />
           </S.CarrouselContent>
         ))}
-      
     </S.CarrouselContainer>
   );
 };

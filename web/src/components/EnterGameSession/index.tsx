@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useRef } from "react";
+import { useState, useEffect, FC } from "react";
 import Loading from "../Loading";
 import * as S from "./styles";
 import Button from "../Button";
@@ -7,7 +7,7 @@ import { UserAuth } from "../../context/AuthContext";
 import { BUTTON_TYPE_CLASSES } from "../Button";
 import { IoCloseSharp } from "react-icons/io5";
 import { ImEnter } from "react-icons/im";
-import { PLAYERTYPE, PlayerType } from "../../@types/dixit";
+import { PlayerType } from "../../@types/dixit";
 import { useGameContext } from "../../context/GameContext";
 import { useSnackbar } from "notistack";
 //import { useSnackbar } from "notistack";
@@ -19,8 +19,12 @@ type Props = {
 const EnterGameSession: FC<Props> = ({ close }) => {
   const [gameSessions, setGameSessions] = useState<string[]>([]);
   const { user } = UserAuth();
-  const { handleGameSetter, handleSetError, handlePlayerSetter } =
-    useGameContext();
+  const {
+    handleGameDataSetter,
+    handleSetError,
+    handlePlayerSetter,
+    handleSendData,
+  } = useGameContext();
   const [selectedGameSession, setSelectedGameSession] = useState<string>("");
   const [error, setError] = useState(false);
   const [noRooms, setNoRooms] = useState<string | null>(null);
@@ -28,7 +32,6 @@ const EnterGameSession: FC<Props> = ({ close }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   //const [isSuccess, setIsSuccess] = useState(false);
-  const websocket = useRef<WebSocket | null>(null);
   //const { enqueueSnackbar } = useSnackbar();
 
   const getGameSessions = async () => {
@@ -46,7 +49,14 @@ const EnterGameSession: FC<Props> = ({ close }) => {
         );
         const res = await response.json();
         //console.log(res);
-        if (res.data.length === 0) {
+        if (res.messages.length > 0) {
+          if (res.messages[0] === "Invalid token") {
+            enqueueSnackbar("Faça login, sessão expirada", {
+              variant: "error",
+            });
+            navigate("/");
+          }
+        } else if (res.data.length === 0) {
           setIsLoading((prev) => !prev);
           setNoRooms("Nenhuma sessão disponível, para jogar crie uma sala");
         } else {
@@ -119,8 +129,9 @@ const EnterGameSession: FC<Props> = ({ close }) => {
           cards: res.data.cards,
           timePerTurn: res.data.timePerTurn,
         };
-        handleGameSetter(game);
+        handleGameDataSetter(game);
         handlePlayerSetter("NEW-PLAYER");
+        handleSendData(true);
         navigate(`/game/${selectedGameSession}`);
       }
     } catch (error) {

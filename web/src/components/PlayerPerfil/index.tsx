@@ -92,9 +92,11 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
               value={username}
               onChange={handleUsername}
             />
-            <S.UpdateButton type="button" onClick={handleSubmit}>
-              Atualizar
-            </S.UpdateButton>
+            <S.SubmitHolder>
+              <Button type="button" onClick={handleSubmit}>
+                Atualizar
+              </Button>
+            </S.SubmitHolder>
           </S.UpdateContainer>
         ) : (
           <>

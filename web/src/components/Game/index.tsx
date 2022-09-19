@@ -4,32 +4,37 @@ import { useNavigate } from "react-router-dom";
 import { GameCenter, Button } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
 import { useGameContext } from "../../context/GameContext";
-import { PLAYERTYPE, PlayerType } from "../../@types/dixit";
-
+import { usePlayContext } from "../../context/PlayContext";
 import * as S from "./styles";
 
 const Game = () => {
   const [waiting, setWaiting] = useState(true);
+  const [websocketSend, setWebsocketSend] = useState(false);
   const [open, setOpen] = useState(false);
   const { user } = UserAuth();
-  const { gameData, handleGameSetter, player } = useGameContext();
+
+  const {
+    gameData,
+    handleGameDataSetter,
+    player,
+    handleSendData,
+    handleSetComplete,
+    sendData,
+  } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
   const navigate = useNavigate();
+  const {
+    gameSetter,
+    handleDixitPlayed,
+    dixitPlayed,
+    handlePlayersSelectCards,
+    handleSetGame,
+    otherPlayersChose,
+    sendDiscover,
+    handleOtherPlayersChose,
+    handleSetSendDiscover,
+  } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
-
-  useEffect(() => {
-    if (gameData) {
-      let complete = true;
-      gameData.players.forEach((player) => {
-        if (player.username === "") {
-          complete = false;
-        }
-      });
-      if (complete) {
-        setWaiting(false);
-      }
-    }
-  }, [gameData]);
 
   useEffect(() => {
     websocket.current = new WebSocket(`ws://localhost:8081/${gameData?.id}`);
@@ -62,13 +67,18 @@ const Game = () => {
         const ans = JSON.parse(data);
 
         if (ans.action === "new-player") {
-          //console.log("players ", ans.data.players);
+          console.log("new player websocket received ", ans.data.players);
 
-          handleGameSetter({ ...gameData, players: ans.data.players } as any);
+          handleGameDataSetter({
+            ...gameData,
+            players: ans.data.players,
+          } as any);
+          setWebsocketSend(() => true);
         } else if (ans.action === "leave-room") {
           if (ans.message) {
             //console.log(ans.message);
           } else {
+            console.log("player left ", ans.data.playersString);
             const players: { username: string; email: string }[] = [];
             ans.data.playersString.split(",").forEach((player: string) => {
               if (player !== ":") {
@@ -78,8 +88,16 @@ const Game = () => {
                 players.push({ username: "", email: "" });
               }
             });
-            handleGameSetter({ ...gameData, players } as any);
+            handleGameDataSetter({ ...gameData, players } as any);
           }
+        } else if (ans.action === "update-turn") {
+          handleSetGame(ans.data.gameSetter);
+          handlePlayersSelectCards(true);
+          //handleTurnUpdated(false);
+        } else if (ans.action === "update-cards-played") {
+          handleSetGame(ans.data.gameSetter);
+        } else if (ans.action === "discover") {
+          handleSetGame(ans.data.gameSetter);
         }
         //console.log("do websoquete ", ans);
       }
@@ -93,40 +111,114 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    if (player === "NEW-PLAYER") {
-      //console.log("useEffect new player");
-      if (open) {
-        if (websocket.current?.readyState === 1) {
-          //console.log("entrou new player");
-          const data = {
-            action: "new-player",
-            payload: {
-              players: gameData?.players,
-              id: gameData?.id,
-            },
-          };
-
-          websocket.current?.send(JSON.stringify(data));
-        }
-      }
-    } else if (player === "CREATOR") {
-      if (open) {
-        //console.log("useEffect creator", websocket.current?.readyState);
-        if (websocket.current?.readyState === 1) {
-          const data = {
-            action: "creator",
-            payload: {
-              username: user?.username,
-              id: gameData?.id,
-              email: user?.email,
-            },
-          };
-          //console.log("entering game session");
-          websocket.current?.send(JSON.stringify(data));
+    if (gameData) {
+      if (websocketSend) {
+        let complete = true;
+        gameData.players.forEach((player) => {
+          if (player.username === "") {
+            complete = false;
+          }
+        });
+        if (complete) {
+          setWebsocketSend(() => false);
+          setWaiting(false);
+          handleSetComplete(true);
         }
       }
     }
-  }, [player, open]);
+  }, [gameData, websocketSend]);
+
+  useEffect(() => {
+    if (sendData) {
+      if (player === "NEW-PLAYER") {
+        //console.log("useEffect new player");
+        if (open) {
+          if (websocket.current?.readyState === 1) {
+            console.log("sending new player websocket");
+            const data = {
+              action: "new-player",
+              payload: {
+                players: gameData?.players,
+                id: gameData?.id,
+              },
+            };
+
+            websocket.current?.send(JSON.stringify(data));
+            handleSendData(false);
+            //setWebsocketSend(true);
+          }
+        }
+      } else if (player === "CREATOR") {
+        if (open) {
+          //console.log("useEffect creator", websocket.current?.readyState);
+          if (websocket.current?.readyState === 1) {
+            const data = {
+              action: "creator",
+              payload: {
+                username: user?.username,
+                id: gameData?.id,
+                email: user?.email,
+              },
+            };
+            //console.log("entering game session");
+            websocket.current?.send(JSON.stringify(data));
+            handleSendData(false);
+          }
+        }
+      }
+    }
+  }, [player, open, sendData]);
+
+  useEffect(() => {
+    if (otherPlayersChose) {
+      if (open) {
+        if (websocket.current?.readyState === 1) {
+          const data = {
+            action: "update-cards-played",
+            payload: {
+              id: gameData?.id,
+              gameSetter: gameSetter,
+            },
+          };
+          websocket.current?.send(JSON.stringify(data));
+          handleOtherPlayersChose(false);
+          
+        }
+      }
+    }
+  }, [otherPlayersChose, gameSetter]);
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameSetter) {
+        if (dixitPlayed) {
+          websocket.current?.send(
+            JSON.stringify({
+              action: "update-turn",
+              payload: { gameSetter: gameSetter, id: gameData.id },
+            })
+          );
+          handleDixitPlayed(false);
+        }
+      }
+    }
+  }, [dixitPlayed]);
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameSetter) {
+        if (sendDiscover) {
+          websocket.current?.send(
+            JSON.stringify({
+              action: "discover",
+              payload: { gameSetter: gameSetter, id: gameData.id },
+            })
+          );
+          handleSetSendDiscover(false);
+        }
+      }
+    }
+  }, [sendDiscover]);
 
   const handleLeaveGame = () => {
     const dataSocket = {
@@ -147,6 +239,9 @@ const Game = () => {
         {gameData?.players.map((player, index) => (
           <Player key={`${index}-${player}`} data={player} index={index} />
         ))}
+        <div>
+          <h2>Chat</h2>
+        </div>
       </S.SideContainer>
       <S.CenterContainer>
         <GameCenter waiting={waiting} />

@@ -36,7 +36,7 @@ function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
-    "color": "#000040",
+    color: "#000040",
   };
 }
 
@@ -89,7 +89,7 @@ const GameRules: FC<GameRulesProps> = ({ closeGameRules }) => {
             size={29}
             onClick={() => closeGameRules(false)}
             style={{ cursor: "pointer" }}
-            color='#000040'
+            color="#000040"
           />
         </Box>
         <TabPanel value={value} index={0}>
@@ -120,26 +120,25 @@ const GameRules: FC<GameRulesProps> = ({ closeGameRules }) => {
         <TabPanel value={value} index={1}>
           <S.Pontos>
             <h3>PONTUAÇÃO</h3>
-            <ul>
-              <li>
-                Caso todos jogadores ou nenhum deles acertem a carta do contador
-                de histórias, este não receberá nenhum ponto e todos os demais
-                recebem 2 pontos.
-              </li>
-              <li>
-                Caso o contador de história receba ao menos um voto mas não
-                todos, ele receberá 3 pontos.
-              </li>
-              <li>
-                Os jogadores que escolheram a carta correta também ganham 3
-                pontos.
-              </li>
-              <li>
-                Os jogadores, com excessão ao contador de histórias, que tiveram
-                sua carta escolhidas pelos demais jogadores ganham 1 ponto para
-                cada escolha.
-              </li>
-            </ul>
+
+            <p>
+              Caso todos jogadores ou nenhum deles acertem a carta do contador
+              de histórias, este não receberá nenhum ponto e todos os demais
+              recebem 2 pontos.
+            </p>
+            <p>
+              Caso o contador de história receba ao menos um voto mas não todos,
+              ele receberá 3 pontos.
+            </p>
+            <p>
+              Os jogadores que escolheram a carta correta também ganham 3
+              pontos.
+            </p>
+            <p>
+              Os jogadores, com excessão ao contador de histórias, que tiveram
+              sua carta escolhidas pelos demais jogadores ganham 1 ponto para
+              cada escolha.
+            </p>
           </S.Pontos>
         </TabPanel>
       </Box>

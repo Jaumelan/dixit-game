@@ -4,9 +4,8 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import { BsGearFill } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
-import { FC } from "react";
-import { GameRules, PlayerPerfil } from "../index";
-import { useState } from "react";
+import { FC, useState } from "react";
+import { Modal } from "../index";
 
 import {
   Container,
@@ -33,12 +32,20 @@ type NavbarProps = {
 
 const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
+  const [openModal, setOpenModal] = useState(false);
+  const [gameRules, setGameRules] = useState(false);
 
   const CustomNavbar = getNavbar(navbarType);
 
-  const [openGameRules, setOpenGameRules] = useState(false);
+  const handleOpenModalRules = () => {
+    setGameRules(true);
+    setOpenModal((prev) => !prev);
+  };
 
-  const [openPlayerPerfil, setOpenPlayerPerfil] = useState(false);
+  const handleOpenModalProfile = () => {
+    setGameRules(false);
+    setOpenModal((prev) => !prev);
+  };
 
   return (
     <CustomNavbar>
@@ -53,20 +60,20 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         <li>
           <IconContainer>
             <RiFilePaper2Line
-              onClick={() => {
-                setOpenGameRules(true);
-              }}
+              onClick={handleOpenModalRules}
               size={40}
               color={"white"}
             />
           </IconContainer>
-          
+
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
-      {openGameRules && <GameRules closeGameRules={setOpenGameRules} />}
-      {openPlayerPerfil && (
-        <PlayerPerfil closePlayerPerfil={setOpenPlayerPerfil} />
+      {openModal && (
+        <Modal
+          gameRules={gameRules}
+          closeModal={() => setOpenModal(false)}
+        />
       )}
       {(user && (
         <ul>
@@ -79,9 +86,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
           <li>
             <IconContainer>
               <ProfileImgSty
-                onClick={() => {
-                  setOpenPlayerPerfil(true);
-                }}
+                onClick={handleOpenModalProfile}
                 src={user.profilePicture}
                 alt="user profile"
               />

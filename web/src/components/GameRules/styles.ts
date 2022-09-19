@@ -48,14 +48,10 @@ export const Pontos = styled.div`
     line-height: 2.2rem;
     color: #000040;
   }
-
-ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
+  p {
     font-size: 1.5rem;
-}
+    align-self: flex-start;
+  }
+
   
 `;

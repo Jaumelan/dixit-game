@@ -46,7 +46,7 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
             enqueueSnackbar("Everyone has already played!", {
               variant: "info",
             });
-          } else if (myTurn.username === user?.username) {
+          } else if (myTurn.email === user?.email) {
             setHigherMessage("Sua vez de jogar! Escolha uma carta");
             setMyTurn(() => true);
             handleSetPlaying(false);

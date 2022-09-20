@@ -50,7 +50,7 @@ const DixitTurn = () => {
       <S.MessageContainer>
         <TextField
           id="outlined-basic"
-          label="Escolha uma mensagem"
+          label="Escreva uma mensagem"
           variant="outlined"
           color="secondary"
           sx={{ width: "60%", fontSize: "5rem" }}

@@ -11,7 +11,6 @@ type Props = {
 
 const Carrousel: FC<Props> = ({ getSelectedImg }) => {
   const [items, setItems] = useState<TurnType | null>(null);
-  const [numberOfCards, setNumberOfCards] = useState(6);
   const [cardsToShow, setCardsToShow] = useState<string[]>([]);
   const { gameSetter } = usePlayContext();
   const { complete } = useGameContext();

@@ -149,6 +149,14 @@ class WebSocketServices {
           message: '',
         };
         break;
+      case 'chat-message':
+        //console.log('cardsPlayed', cardsPlayed);
+        return {
+          action: 'chat-message',
+          data: { ...payload },
+          message: '',
+        };
+        break;
       default:
         return {
           action: 'error',

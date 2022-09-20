@@ -79,12 +79,12 @@ class WebSocketInitializer {
         const findRoomWithClient = Object.keys(this.rooms).find((room) => {
           return this.rooms[room].includes(this.websocketClients[userID]);
         });
-        console.log('room with client ', findRoomWithClient);
+        //console.log('room with client ', findRoomWithClient);
         if (findRoomWithClient) {
           const index = this.rooms[findRoomWithClient].indexOf(ws);
           this.rooms[findRoomWithClient].splice(index, 1);
           if (this.rooms[findRoomWithClient].length === 0) {
-            console.log('deletando sala');
+            //console.log('deletando sala');
             delete this.rooms[findRoomWithClient];
             await this.websocketservices.deleteGameSession(findRoomWithClient);
           }
@@ -96,7 +96,7 @@ class WebSocketInitializer {
         console.log('Client disconnected ' + userID);
 
         const findRoomWithClient = Object.keys(this.rooms).find((room) => {
-          return this.rooms[room].includes(ws);
+          return this.rooms[room].includes(this.websocketClients[userID]);
         });
         console.log('room with client ', findRoomWithClient);
         if (findRoomWithClient) {

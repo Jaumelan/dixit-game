@@ -25,7 +25,7 @@ export const Header = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 17rem;
+  height: 20rem;
   background: url(${Cloud});
   background-size: cover;
   background-repeat: no-repeat;
@@ -47,6 +47,20 @@ export const AvatarHolder = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @keyframes float {
+    0% {
+      box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+      transform: translatey(0px);
+    }
+    50% {
+      box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+      transform: translatey(-20px);
+    }
+    100% {
+      box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+      transform: translatey(0px);
+    }
+  }
 
   top: 11rem;
 `;
@@ -57,6 +71,8 @@ export const Avatar = styled.img`
   border-radius: 50%;
   border: 2px solid #fff;
   background: #8080c0;
+  transform: translatey(0px);
+  animation: float 6s ease-in-out infinite;
 `;
 
 export const AvatarName = styled.h1`
@@ -73,7 +89,7 @@ export const InfoContainer = styled.div`
   padding: 2rem;
   gap: 0.5rem;
   width: 100%;
-  height: 30rem;
+  height: 27rem;
 `;
 
 export const Info = styled.div`

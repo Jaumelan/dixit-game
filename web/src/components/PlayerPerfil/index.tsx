@@ -58,13 +58,14 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
   };
 
   return (
-    <S.Container>
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    <S.Container onClick={()=>{}}>
       <S.Header>
         <S.ButtonHolder>
           <AiOutlineCloseCircle
             onClick={() => closePlayerPerfil(false)}
             size={28}
-            color={"#8080c0"}
+            color='white'
             style={{ cursor: "pointer" }}
           />
         </S.ButtonHolder>
@@ -101,7 +102,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
         ) : (
           <>
             <S.Info>
-              <h2>Email</h2>
+              <h2>Email: </h2>
 
               <p>{user?.email}</p>
             </S.Info>

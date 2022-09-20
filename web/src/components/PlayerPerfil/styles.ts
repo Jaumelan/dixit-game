@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Cloud from "../../assets/images/cloud.jpg";
 
 export const Container = styled.div`
   margin-top: 1rem;
@@ -11,9 +12,8 @@ export const Container = styled.div`
   border-radius: 16px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  padding: 0rem 2rem;
 
-  z-index: 1;
+  z-index: 4;
   -webkit-animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-appear-in 2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   gap: 1rem;
@@ -22,11 +22,14 @@ export const Container = styled.div`
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-
-  padding-top: 1.5rem;
+  height: 17rem;
+  background: url(${Cloud});
+  background-size: cover;
+  position: relative;
+  //padding-top: 1.5rem;
   //background: rgba(255, 255, 255, 0.7);
 `;
 
@@ -34,19 +37,22 @@ export const ButtonHolder = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  padding: 1.5rem;
 `;
 
 export const AvatarHolder = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.4rem;
+
+  top: 11rem;
 `;
 
 export const Avatar = styled.img`
-  width: 7rem;
-  height: 7rem;
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   border: 2px solid #fff;
   background: #8080c0;
@@ -61,16 +67,12 @@ export const AvatarName = styled.h1`
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
-  padding: 1rem 1rem;
+  padding: 2rem;
   gap: 0.5rem;
   width: 100%;
-  height: 25rem;
-  background: rgba(91, 45, 216, 0.4);
-  border-radius: 0 0 16px 16px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  height: 30rem;
 `;
 
 export const Info = styled.div`
@@ -79,13 +81,12 @@ export const Info = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-
-  gap: 0.5rem;
+  gap: 0.2rem;
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-weight: 900;
-    color: black;
+    color: gray;
   }
 
   p {

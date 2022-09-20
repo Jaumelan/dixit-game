@@ -23,3 +23,4 @@ export { default as GameCenter } from "./GameCenter";
 export { default as Modal } from "./Modal";
 export { default as DiscoverCard } from "./DiscoverCard";
 export { default as ChatAccordion } from "./ChatAccordion";
+export { default as DixitTurn } from "./DixitTurn";

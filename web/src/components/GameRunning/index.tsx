@@ -2,7 +2,7 @@ import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
 import { TurnType } from "../../@types/dixit";
 import { UserAuth } from "../../context/AuthContext";
-import { Button, DiscoverCard } from "../../components";
+import { Button, DiscoverCard, DixitTurn } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
 import Carrousel from "../Carrousel";
@@ -238,17 +238,7 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
             <button onClick={submitOtherPlayersCard}>selecionar</button>
           </div>
         ) : myTurn ? (
-          <div>
-            <Carrousel getSelectedImg={getPlayersTurnSelectedImg} />
-            <div>
-              <input
-                type="text"
-                value={dixitMessage}
-                onChange={handleDixitChange}
-              />
-              <Button onClick={handleSubmitDixit}>Jogar</Button>
-            </div>
-          </div>
+          <DixitTurn />
         ) : (
           <Carrousel getSelectedImg={handleSelectPlayersCards} />
         )}

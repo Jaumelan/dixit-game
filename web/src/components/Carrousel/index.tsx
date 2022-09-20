@@ -40,7 +40,7 @@ const Carrousel: FC<Props> = ({ getSelectedImg }) => {
       //const cardsToDisplay = [];
 
       const newArray: SetStateAction<string[]> = [];
-      while (newArray.length < 6) {
+      while (newArray.length < 5) {
         const randomItem =
           items.hand[Math.floor(Math.random() * items.hand.length)];
         if (

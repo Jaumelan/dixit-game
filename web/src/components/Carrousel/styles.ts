@@ -1,17 +1,15 @@
 import styled from "styled-components";
 
 export const CarrouselContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 0.6rem;
+
+  width: 45%;
   height: 100%;
   overflow: hidden;
   position: relative;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 16px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+
   padding: 3rem;
   gap: 1rem;
 `;
@@ -20,54 +18,64 @@ export const CarrouselContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 10rem;
-  height: 12rem;
+  width: 9rem;
+  height: 10rem;
   overflow: hidden;
-  position: relative;
-  padding: 0.2rem;
+  //position: relative;
+  //padding: 0.2rem;
   background: #400080;
   transition: transform 0.5s ease-in-out;
-  transform: translateX(${(props) => props.translate}px);
+  &:hover {
+    cursor: pointer;
+    -webkit-animation: shadow-pop-tr 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+      both;
+    animation: shadow-pop-tr 0.3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+  }
 `;
 
 export const CarrouselItem = styled.img`
+  @-webkit-keyframes shadow-pop-tr {
+    0% {
+      -webkit-box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
+        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+      box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
+        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+      -webkit-transform: translateX(0) translateY(0);
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      -webkit-box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
+        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
+        8px -8px #3e3e3e;
+      box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
+        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
+        8px -8px #3e3e3e;
+      -webkit-transform: translateX(-8px) translateY(8px);
+      transform: translateX(-8px) translateY(8px);
+    }
+  }
+  @keyframes shadow-pop-tr {
+    0% {
+      -webkit-box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
+        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+      box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e,
+        0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+      -webkit-transform: translateX(0) translateY(0);
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      -webkit-box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
+        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
+        8px -8px #3e3e3e;
+      box-shadow: 1px -1px #3e3e3e, 2px -2px #3e3e3e, 3px -3px #3e3e3e,
+        4px -4px #3e3e3e, 5px -5px #3e3e3e, 6px -6px #3e3e3e, 7px -7px #3e3e3e,
+        8px -8px #3e3e3e;
+      -webkit-transform: translateX(-8px) translateY(8px);
+      transform: translateX(-8px) translateY(8px);
+    }
+  }
   width: 100%;
   cover: fit;
+
   
-  &:hover {
-    cursor: pointer;
-    border: 2px solid #400080;
-  }
-`;
-
-export const CarrouselItemActive = styled(CarrouselItem)`
-  opacity: 1;
-`;
-
-export const CarrouselButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  background: rgba(0, 0, 0, 0.5);
-`;
-
-export const CarrouselButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  z-index: 1;
-  font-size: 2rem;
-  color: #fff;
-  transition: color 0.5s ease-in-out;
-  &:hover {
-    color: #000;
-  }
 `;

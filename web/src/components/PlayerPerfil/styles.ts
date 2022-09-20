@@ -28,6 +28,7 @@ export const Header = styled.div`
   height: 17rem;
   background: url(${Cloud});
   background-size: cover;
+  background-repeat: no-repeat;
   position: relative;
   //padding-top: 1.5rem;
   //background: rgba(255, 255, 255, 0.7);

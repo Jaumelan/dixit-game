@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 
 type Props = {
   closePlayerPerfil: (d: boolean) => void;
+  //onClick: (e: any) => void;
 };
 
 const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {

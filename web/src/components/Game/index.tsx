@@ -40,6 +40,15 @@ const Game = () => {
     UpdateOtherPlayersWithoutSwitch,
     dixitSwitch,
     handleDixitSwitch,
+    handleUpdateDiscoverWithouSwitch,
+    everyonePlayed,
+    handleCloseSendDixitName,
+    playersName,
+    sendDixitName,
+    handleSetPlayersNameWithoutSocket,
+    handleUpdateScore,
+    handleSendScore,
+    sendScore,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -100,6 +109,16 @@ const Game = () => {
           handleSetGame(ans.data.gameSetter);
         } else if (ans.action === "chat-message") {
           handleSetChatMessages(ans.data.message);
+        } else if (ans.action === "dixit-choose") {
+          const { email, choosenCard } = ans.data;
+          handleUpdateDiscoverWithouSwitch({ email, choosenCard });
+        } else if (ans.action === "turns-name") {
+          const { playersName } = ans.data;
+          handleSetPlayersNameWithoutSocket(playersName);
+        } else if (ans.action === "score") {
+          const { score, user } = ans.data;
+          //console.log("score ", score);
+          handleUpdateScore( score, user);
         }
         //console.log("do websoquete ", ans);
       }
@@ -196,7 +215,7 @@ const Game = () => {
         payload: {
           id: gameData?.id,
           email: user?.email,
-          choosenCard: data?.cardsPlayed,
+          choosenCard: data?.choosenCard,
         },
       };
       websocket.current?.send(JSON.stringify(send));
@@ -245,6 +264,52 @@ const Game = () => {
       }
     }
   }, [dixitPlayed, gameSetter]);
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameSetter) {
+        if (sendDixitName) {
+          websocket.current?.send(
+            JSON.stringify({
+              action: "turns-name",
+              payload: { playersName, id: gameData.id },
+            })
+          );
+          handleCloseSendDixitName();
+        }
+      }
+    }
+  }, [sendDixitName]);
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameSetter) {
+        if (everyonePlayed) {
+          if (sendScore) {
+            const data = gameSetter?.map((player) => {
+              return {
+                email: player.email,
+                cardsPlayed: player.cardsPlayed,
+                choosenCard: player.choosenCard,
+              };
+            });
+            websocket.current?.send(
+              JSON.stringify({
+                action: "score",
+                payload: {
+                  data,
+                  id: gameData.id,
+                  playersName,
+                  user: user?.email,
+                },
+              })
+            );
+            handleSendScore(false);
+          }
+        }
+      }
+    }
+  }, [everyonePlayed, gameSetter, playersName, sendScore]);
 
   useEffect(() => {
     if (gameData) {

@@ -1,35 +1,29 @@
 import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
-import { TurnType } from "../../@types/dixit";
 import { UserAuth } from "../../context/AuthContext";
-import { Button, DiscoverDixit, DixitTurn, NonDixitCarrousel } from "../../components";
+import { DiscoverDixit, DixitTurn, NonDixitCarrousel, ScoreComponent } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
 import Carrousel from "../Carrousel";
 import * as S from "./styles";
 
-type Props = {
-  missing: number | undefined;
-};
-
-const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
+const GameRunning = () => {
   const [higherMessage, setHigherMessage] = useState<string>("");
   const { gameData } = useGameContext();
   const { user } = UserAuth();
   const {
     gameSetter,
+    playersName,
     handleSetGame,
-    handleUpdateDiscover,
-    handleUpdateGameSetter,
-    UpdateOtherPlayersGameSetter,
     playing,
     handleSetPlaying,
     playersSelectCards,
     discoverCard,
+    everyonePlayed,
+    handleSetPlayersName,
   } = usePlayContext();
   const [myTurn, setMyTurn] = useState(false);
-  const [cardSelected, setCardSelected] = useState("");
-  const [otherPlayersCard, setOtherPlayersCard] = useState("");
+
   const [turnCount, setTurnCount] = useState<number>(0);
   const [notification, setNotification] = useState<string>("");
   const [dixitMessage, setDixitMessage] = useState<string>("");
@@ -50,6 +44,7 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
             setHigherMessage("Sua vez de jogar! Escolha uma carta");
             setMyTurn(() => true);
             handleSetPlaying(false);
+            handleSetPlayersName(myTurn.email)
           } else {
             setHigherMessage("Aguarde sua vez de jogar");
             setMyTurn(() => false);
@@ -116,108 +111,10 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSelectPlayersCards = (e: any) => {
-    setOtherPlayersCard(e.target.src);
-  };
-
-  const submitOtherPlayersCard = () => {
-    if (user) {
-      const data = {
-        email: user?.email,
-        cardsPlayed: otherPlayersCard,
-      };
-      UpdateOtherPlayersGameSetter(data);
-    }
-  };
-
-  const handleDiscoverCard = (data: string) => {
-    const discoverCardData = {
-      email: user?.email as string,
-      choosenCard: data,
-    };
-    handleUpdateDiscover(discoverCardData);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getPlayersTurnSelectedImg = (e: any) => {
-    const card = e.target.src;
-    setCardSelected(card);
-  };
-
-  const handleDixitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDixitMessage(e.target.value);
-  };
-
-  /*const getInitialCards = () => {
-    //const playedCards = [];
-    if (gameData) {
-      for (let i = 0; i < gameData?.players.length; i++) {
-        const cards: { username: string; hand: string[] } = {
-          username: "",
-          hand: [],
-        };
-
-        cards.username = gameData?.players[i].username;
-
-        if (gameData?.numberOfPlayers) {
-          for (
-            let j = (6 + Number(gameData?.numberOfPlayers)) * i;
-            j < (6 + Number(gameData?.numberOfPlayers)) * (i + 1);
-            j++
-          ) {
-            cards.hand.push(gameData?.cards[j]);
-          }
-          playedCards.push(cards);
-        }
-        handleSetCards(playedCards);
-      }
-    }
-
-    
-    if (gameSetter) {
-      if (gameData) {
-        const newGameSet: TurnType[] = [];
-
-        gameSetter.forEach((gameSet, index) => {
-          const hand: string[] = [];
-
-          for (
-            let j = (6 + Number(gameData.numberOfPlayers)) * index;
-            j < (6 + Number(gameData.numberOfPlayers)) * (index + 1);
-            j++
-          ) {
-            hand.push(gameData.cards[j]);
-          }
-          //console.log("hand", hand);
-          newGameSet.push({ ...gameSet, hand: hand });
-          //console.log("newGameSet", newGameSet);
-        });
-
-        //console.log("newGameSet 2", newGameSet);
-
-        handleSetGame(newGameSet);
-      }
-    }
-  };
-  */
-
-  const handleSubmitDixit = () => {
-    if (user) {
-      const data = {
-        email: user?.email,
-        cardsPlayed: cardSelected,
-        message: dixitMessage,
-        //played: true,
-      };
-      handleUpdateGameSetter(data);
-    }
-  };
-
   useEffect(() => {
-    console.log(myTurn, "myTurn");
-    console.log("playersSelectCards ", playersSelectCards);
-  }, [myTurn, playersSelectCards]);
+    console.log("players name ", playersName);
+   
+  }, [playersName]);
 
   return (
     <>
@@ -227,15 +124,16 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
         </S.NotificationText>
       </S.NotificationContainer>
       <S.GameContainer>
-       
-        {discoverCard ? (
+        {everyonePlayed ? (
+          <ScoreComponent />
+        ) : discoverCard ? (
           <DiscoverDixit turn={myTurn} />
-        ) : !myTurn  ? (
+        ) : !myTurn ? (
           <NonDixitCarrousel />
         ) : myTurn ? (
           <DixitTurn />
         ) : (
-          <Carrousel getSelectedImg={handleSelectPlayersCards} />
+          <></>
         )}
       </S.GameContainer>
     </>

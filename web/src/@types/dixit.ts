@@ -80,8 +80,11 @@ export type PlayContextType = {
   playersSelectCards: boolean;
   playersName: string;
   otherPlayersChose: boolean;
+  sendDixitName: boolean;
   discoverCard: boolean;
   dixitSwitch: boolean;
+  everyonePlayed: boolean;
+  sendScore: boolean;
   handleSetGame: (data: TurnType[] | null) => void;
   handleSetCards: (data: { username: string; hand: string[] }[]) => void;
   UpdateOtherPlayersGameSetter: (data: {
@@ -96,7 +99,21 @@ export type PlayContextType = {
   handleOtherPlayersChose: (data: boolean) => void;
   handleUpdateDiscover: (data: { email: string; choosenCard: string }) => void;
   handleSetSendDiscover: (data: boolean) => void;
-  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string[]) => void;
+  UpdateOtherPlayersWithoutSwitch: (
+    email: string,
+    cardsPlayed: string[]
+  ) => void;
   handleDixitSelection: (data: { email: string; card: string }) => void;
   handleDixitSwitch: (data: boolean) => void;
+  handleCloseSendDixitName: () => void;
+  handleUpdateDiscoverWithouSwitch: (data: {
+    email: string;
+    choosenCard: string;
+  }) => void;
+  handleSetPlayersNameWithoutSocket: (data: string) => void;
+  handleUpdateScore: (
+    data: { email: string; score: number }[],
+    user: string
+  ) => void;
+  handleSendScore: (data: boolean) => void;
 };

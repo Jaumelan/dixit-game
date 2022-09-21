@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { usePlayContext } from "../../context/PlayContext";
 import { Button } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
@@ -34,8 +34,8 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
       <h2>Espere os outros jogadores escolherem uma carta</h2>
       <S.CardsContainer>
         {gameSetter &&
-          gameSetter.map((card) => (
-            <S.CardContainer key={`chosen-${card.email}`}>
+          gameSetter.map((card, index) => (
+            <S.CardContainer key={`turn-${index}`}>
               <S.Card src={card.cardsPlayed[card.cardsPlayed.length - 1]} />
             </S.CardContainer>
           ))}
@@ -52,10 +52,11 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
         <S.ImageOptions>
           <S.ImagesCarrousel>
             {gameSetter &&
-              gameSetter.map((card) =>
+              gameSetter.map((card, index) =>
                 card.email !== user?.email ? (
                   <S.CardContainer
-                    key={`chosen-${card.email}`}
+                    key={`${index}-discover`}
+                    id={`${index}-discover`}
                     onClick={selectCard}
                   >
                     <S.Card

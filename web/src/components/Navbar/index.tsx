@@ -6,7 +6,8 @@ import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
 import { FC, useState, useMemo } from "react";
 import { Modal } from "../index";
-import som from "../../assets/sounds/soundBG.mp3"
+import Tooltip from "@mui/material/Tooltip";
+import som from "../../assets/sounds/soundBG.mp3";
 
 const audio = new Audio(som);
 
@@ -24,10 +25,10 @@ export enum NAVBAR_TYPE_CLASSES {
 }
 
 const getNavbar = (navbarType = NAVBAR_TYPE_CLASSES.base): typeof Container =>
-({
-  [NAVBAR_TYPE_CLASSES.base]: Container,
-  [NAVBAR_TYPE_CLASSES.game]: NavGame,
-}[navbarType]);
+  ({
+    [NAVBAR_TYPE_CLASSES.base]: Container,
+    [NAVBAR_TYPE_CLASSES.game]: NavGame,
+  }[navbarType]);
 
 type NavbarProps = {
   navbarType?: NAVBAR_TYPE_CLASSES;
@@ -37,7 +38,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
   const [openModal, setOpenModal] = useState(false);
   const [gameRules, setGameRules] = useState(false);
-  const [toggle, setToggle] = useState(false)
+  const [toggle, setToggle] = useState(false);
   // const url = "../../assets/sounds/soundBG.mp3";
 
   const CustomNavbar = getNavbar(navbarType);
@@ -53,45 +54,46 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   };
 
   const handleToggle = () => {
-    setToggle(!toggle)
+    setToggle(!toggle);
 
-    audio.volume = 0.05
-        if(!toggle) {
-          setToggle(true)
-            audio.play() 
-        }else{
-          setToggle(false)
-          audio.pause()
-        }
-  }
+    audio.volume = 0.05;
+    if (!toggle) {
+      setToggle(true);
+      audio.play();
+    } else {
+      setToggle(false);
+      audio.pause();
+    }
+  };
 
   return (
     <CustomNavbar>
       <ul>
         <li>
-          <IconContainer>
-            <Link to="/">
-              <AiOutlineHome size={40} color={"white"} />
-            </Link>
-          </IconContainer>
+          <Tooltip title="HOME">
+            <IconContainer>
+              <Link to="/">
+                <AiOutlineHome size={40} color={"white"} />
+              </Link>
+            </IconContainer>
+          </Tooltip>
         </li>
         <li>
-          <IconContainer>
-            <RiFilePaper2Line
-              onClick={handleOpenModalRules}
-              size={40}
-              color={"white"}
-            />
-          </IconContainer>
+          <Tooltip title="REGRAS">
+            <IconContainer>
+              <RiFilePaper2Line
+                onClick={handleOpenModalRules}
+                size={40}
+                color={"white"}
+              />
+            </IconContainer>
+          </Tooltip>
 
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
       </ul>
       {openModal && (
-        <Modal
-          gameRules={gameRules}
-          closeModal={() => setOpenModal(false)}
-        />
+        <Modal gameRules={gameRules} closeModal={() => setOpenModal(false)} />
       )}
       {(user && (
         <ul>
@@ -105,32 +107,39 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
           </li>
 
           <li>
-            <IconContainer>
-              <ProfileImgSty
-                onClick={handleOpenModalProfile}
-                src={user.profilePicture}
-                alt="user profile"
-              />
-            </IconContainer>
+            <Tooltip title="PERFIL">
+              <IconContainer>
+                <ProfileImgSty
+                  onClick={handleOpenModalProfile}
+                  src={user.profilePicture}
+                  alt="user profile"
+                />
+              </IconContainer>
+            </Tooltip>
           </li>
         </ul>
       )) || (
-          <ul id="rightNav">
-            <li>
-              <IconContainer>
-                {
-                  (toggle === false) ? <BsVolumeMute onClick={handleToggle} size={40} color={"white"} /> :
-                    <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
-                }
-              </IconContainer>
-            </li>
-            <li>
-              <LinkT to="/signin">
-                <Button>LOGIN</Button>
-              </LinkT>
-            </li>
-          </ul>
-        )}
+        <ul id="rightNav">
+          <li>
+            <IconContainer>
+              {toggle === false ? (
+                <BsVolumeMute
+                  onClick={handleToggle}
+                  size={40}
+                  color={"white"}
+                />
+              ) : (
+                <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
+              )}
+            </IconContainer>
+          </li>
+          <li>
+            <LinkT to="/signin">
+              <Button>LOGIN</Button>
+            </LinkT>
+          </li>
+        </ul>
+      )}
     </CustomNavbar>
   );
 };

@@ -2,6 +2,7 @@ import GameServices from './game-services';
 import Game from '../clients/dao/redis';
 import websocket from 'ws';
 import crypto from 'crypto';
+import { scoreCalculator } from '../utils';
 
 class WebSocketServices {
   private Game = Game;
@@ -150,10 +151,33 @@ class WebSocketServices {
         };
         break;
       case 'chat-message':
-        //console.log('cardsPlayed', cardsPlayed);
         return {
           action: 'chat-message',
           data: { ...payload },
+          message: '',
+        };
+        break;
+      case 'dixit-choose':
+        return {
+          action: 'dixit-choose',
+          data: { ...payload },
+          message: '',
+        };
+        break;
+      case 'turns-name':
+        return {
+          action: 'turns-name',
+          data: { ...payload },
+          message: '',
+        };
+        break;
+      case 'score':
+        const { data, playersName, user } = payload;
+        const score = scoreCalculator(data, playersName);
+
+        return {
+          action: 'score',
+          data: { id: payload.id, score, user },
           message: '',
         };
         break;

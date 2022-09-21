@@ -25,3 +25,4 @@ export { default as DiscoverDixit } from "./DiscoverDixit";
 export { default as ChatAccordion } from "./ChatAccordion";
 export { default as DixitTurn } from "./DixitTurn";
 export { default as NonDixitCarrousel } from "./NonDixitCarrousel";
+export { default as ScoreComponent } from "./Score";

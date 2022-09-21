@@ -1,4 +1,5 @@
 import { usePlayContext } from "../../context/PlayContext";
+import {AiFillStar} from 'react-icons/ai'
 import * as S from "./styles";
 
 const ScoreComponent = () => {
@@ -11,7 +12,13 @@ const ScoreComponent = () => {
   return (
     <S.Container>
       {gameSetter &&
-        scoresOrdered?.map((game, index) => (
+        scoresOrdered?.map((game, index) => index ===0 ? (
+          <S.ScoreHolder key={`score-${index}`}>
+            <AiFillStar size={30} color="#FFD700"/>
+            <S.GamePlayer>{game.name}</S.GamePlayer>
+            <S.Score>{game.score}</S.Score>
+          </S.ScoreHolder>
+        ) : (
           <S.ScoreHolder key={`score-${index}`}>
             <S.GamePlayer>{game.name}</S.GamePlayer>
             <S.Score>{game.score}</S.Score>

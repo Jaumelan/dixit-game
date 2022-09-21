@@ -98,7 +98,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
           <li>
             <IconContainer>
               {
-                (toggle === false) ? <BsVolumeMute onClick={() =>{handleToggle}} size={40} color={"white"} /> :
+                (toggle === false) ? <BsVolumeMute onClick={handleToggle} size={40} color={"white"} /> :
                   <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
               }
             </IconContainer>

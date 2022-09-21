@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiFilePaper2Line } from "react-icons/ri";
-import { BsGearFill } from "react-icons/bs";
+import { BsVolumeUp, BsVolumeMute } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
-import { FC, useState } from "react";
+import { FC, useState, useMemo } from "react";
 import { Modal } from "../index";
+import som from "../../assets/sounds/soundBG.mp3"
+
+const audio = new Audio(som);
 
 import {
   Container,
@@ -21,10 +24,10 @@ export enum NAVBAR_TYPE_CLASSES {
 }
 
 const getNavbar = (navbarType = NAVBAR_TYPE_CLASSES.base): typeof Container =>
-  ({
-    [NAVBAR_TYPE_CLASSES.base]: Container,
-    [NAVBAR_TYPE_CLASSES.game]: NavGame,
-  }[navbarType]);
+({
+  [NAVBAR_TYPE_CLASSES.base]: Container,
+  [NAVBAR_TYPE_CLASSES.game]: NavGame,
+}[navbarType]);
 
 type NavbarProps = {
   navbarType?: NAVBAR_TYPE_CLASSES;
@@ -34,6 +37,8 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
   const { user } = UserAuth();
   const [openModal, setOpenModal] = useState(false);
   const [gameRules, setGameRules] = useState(false);
+  const [toggle, setToggle] = useState(false)
+  // const url = "../../assets/sounds/soundBG.mp3";
 
   const CustomNavbar = getNavbar(navbarType);
 
@@ -46,6 +51,19 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
     setGameRules(false);
     setOpenModal((prev) => !prev);
   };
+
+  const handleToggle = () => {
+    setToggle(!toggle)
+
+    audio.volume = 0.05
+        if(!toggle) {
+          setToggle(true)
+            audio.play() 
+        }else{
+          setToggle(false)
+          audio.pause()
+        }
+  }
 
   return (
     <CustomNavbar>
@@ -79,7 +97,10 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
         <ul>
           <li>
             <IconContainer>
-              <BsGearFill size={40} color={"white"} />
+              {
+                (toggle === false) ? <BsVolumeMute onClick={() =>{handleToggle}} size={40} color={"white"} /> :
+                  <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
+              }
             </IconContainer>
           </li>
 
@@ -94,19 +115,22 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
           </li>
         </ul>
       )) || (
-        <ul id="rightNav">
-          <li>
-            <IconContainer>
-              <BsGearFill size={40} color={"white"} />
-            </IconContainer>
-          </li>
-          <li>
-            <LinkT to="/signin">
-              <Button>LOGIN</Button>
-            </LinkT>
-          </li>
-        </ul>
-      )}
+          <ul id="rightNav">
+            <li>
+              <IconContainer>
+                {
+                  (toggle === false) ? <BsVolumeMute onClick={handleToggle} size={40} color={"white"} /> :
+                    <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
+                }
+              </IconContainer>
+            </li>
+            <li>
+              <LinkT to="/signin">
+                <Button>LOGIN</Button>
+              </LinkT>
+            </li>
+          </ul>
+        )}
     </CustomNavbar>
   );
 };

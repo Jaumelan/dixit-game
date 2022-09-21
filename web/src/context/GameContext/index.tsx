@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, FC, useEffect } from "react";
-import { GameContextType, GameDataType, PLAYERTYPE } from "../../@types/dixit";
+import { GameContextType, GameDataType } from "../../@types/dixit";
 
 type ContextType = {
   gameData: GameDataType | null;

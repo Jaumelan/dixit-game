@@ -28,6 +28,12 @@ const ChatAccordion = () => {
     }
   };
 
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   const listMessages = chatMessages.map((message, index) => {
     return (
       <div key={index}>
@@ -61,7 +67,7 @@ const ChatAccordion = () => {
       <AccordionDetails>
         <S.ChatMessages>{listMessages}</S.ChatMessages>
         <div>
-          <input type="text" value={message} onChange={handleSetMessage} />
+          <input type="text" value={message} onChange={handleSetMessage} onKeyDown={handleKeyPress} />
           <button onClick={sendMessage}>Enviar</button>
         </div>
       </AccordionDetails>

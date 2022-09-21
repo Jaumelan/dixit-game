@@ -1,12 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, createContext, useContext, FC, useEffect } from "react";
+import {
+  useState,
+  createContext,
+  useContext,
+  FC,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import {
   GameContextType,
   TurnType,
   PlayContextType,
   UpdateGameSetterType,
 } from "../../@types/dixit";
+import { UserAuth } from "../AuthContext";
 import { useGameContext } from "../GameContext";
 
 const defaultPlayContext = {
@@ -19,6 +28,7 @@ const defaultPlayContext = {
   playersName: "",
   otherPlayersChose: false,
   discoverCard: false,
+  dixitSwitch: false,
   handleSetGame: (data: TurnType[] | null) => {},
 
   UpdateOtherPlayersGameSetter: (data: {
@@ -35,11 +45,13 @@ const defaultPlayContext = {
   handleSetPlaying: (data: boolean) => {},
 
   handlePlayersSelectCards: (data: boolean) => {},
-  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string) => {},
+  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string[]) => {},
   handleSetPlayersName: (data: string) => {},
   handleSetSendDiscover: (data: boolean) => {},
   handleOtherPlayersChose: (data: boolean) => {},
   handleUpdateDiscover: (data: { email: string; choosenCard: string }) => {},
+  handleDixitSelection: (data: { email: string; card: string }) => {},
+  handleDixitSwitch: (data: boolean) => {},
 };
 
 const PlayContext = createContext<PlayContextType>(defaultPlayContext);
@@ -56,9 +68,13 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const [otherPlayersChose, setOtherPlayersChose] = useState(false);
   //switch to true when dixit played chose card and message
   const [dixitPlayed, setDixitPlayed] = useState(false);
+  const [dixitSwitch, setDixitSwitch] = useState(false);
   const [playersSelectCards, setPlayersSelectCards] = useState<boolean>(false);
   const [discoverCard, setDiscoverCard] = useState<boolean>(false);
+  //const [checkCardSelected, setCheckCardSelected] = useState<boolean>(false);
   const [everyonePlayed, setEveryonePlayed] = useState<boolean>(false);
+  const { user } = UserAuth();
+  const gameSetRef = useRef(gameSetter);
 
   useEffect(() => {
     if (gameData) {
@@ -96,7 +112,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
             };
             gameSet.push(playerData);
           });
-          setGameSetter(gameSet);
+          handleSetGame(gameSet);
           setPlaying(() => true);
         }
       }
@@ -104,20 +120,28 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   }, [gameData, complete]);
 
   useEffect(() => {
-    if (gameSetter) {
-      const count = gameSetter.reduce((acc, player) => {
+    EveryoneChoose();
+  }, [gameSetter]);
+
+  const EveryoneChoose = useCallback(() => {
+    if (gameSetRef.current) {
+      const count = gameSetRef.current.reduce((acc, player) => {
         if (player.choseCard) {
           acc += 1;
         }
         return acc;
       }, 0);
-      if (count === gameSetter.length - 1) {
-        setDiscoverCard(true);
+
+      console.log("conta quantos escolheram", count);
+      if (count === gameSetRef.current.length - 1) {
+        handleSetDiscoverCard(true);
       }
     }
-  }, [gameSetter]);
+  }, [gameSetRef.current]);
 
   useEffect(() => {
+    console.log(" atualiza gamesetter ", gameSetter);
+
     if (gameSetter) {
       const count = gameSetter.reduce((acc, player) => {
         if (player.choosenCard !== "") {
@@ -126,14 +150,22 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         return acc;
       }, 0);
       if (count === gameSetter.length - 1) {
-        setEveryonePlayed(true);
+        handleEveryonePlayed(true);
       }
     }
-    console.log(" atualiza gamesetter ", gameSetter);
   }, [gameSetter]);
+
+  const handleSetDiscoverCard = (data: boolean) => {
+    setDiscoverCard(data);
+  };
+
+  const handleEveryonePlayed = (data: boolean) => {
+    setEveryonePlayed(data);
+  };
 
   const handleSetGame = (data: TurnType[] | null) => {
     setGameSetter(data);
+    gameSetRef.current = data;
   };
 
   const handleUpdateDiscover = (data: {
@@ -150,7 +182,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         }
         return player;
       });
-      setGameSetter(newGameSetter);
+      handleSetGame(newGameSetter);
       setSendDiscover(() => true);
     }
   };
@@ -161,6 +193,10 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
 
   const handleSetSendDiscover = (data: boolean) => {
     setSendDiscover(data);
+  };
+
+  const handleDixitSwitch = (data: boolean) => {
+    setDixitSwitch(data);
   };
 
   const handleSetPlaying = (data: boolean) => {
@@ -184,7 +220,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         }
         return item;
       });
-      setGameSetter(newTurn);
+      handleSetGame(newTurn);
       setDixitPlayed(() => true);
     }
   };
@@ -198,6 +234,23 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
 
   const handleSetCards = (data: { username: string; hand: string[] }[]) => {
     setCards(data);
+  };
+
+  const handleDixitSelection = (data: { email: string; card: string }) => {
+    if (gameSetter) {
+      const newGameSetter = gameSetter.map((player) => {
+        if (player.email === data.email) {
+          return {
+            ...player,
+            choseCard: true,
+            choosenCard: data.card,
+          };
+        }
+        return player;
+      });
+      handleSetGame(newGameSetter);
+      setDixitSwitch(() => true);
+    }
   };
 
   const UpdateOtherPlayersGameSetter = (data: {
@@ -215,30 +268,37 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         }
         return item;
       });
-      setGameSetter(newGameSetter);
+      handleSetGame(newGameSetter);
+      console.log("before switch ", newGameSetter);
     }
 
     setOtherPlayersChose(() => true);
   };
 
-  const UpdateOtherPlayersWithoutSwitch = (
+  const UpdateOtherPlayersWithoutSwitch = useCallback((
     email: string,
-    cardsPlayed: string,
+    cardsPlayed: string[]
   ) => {
-    if (gameSetter) {
-      const newGameSetter = gameSetter.map((item) => {
-        if (item.email === email) {
-          return {
-            ...item,
-            cardsPlayed: [...cardsPlayed],
-            choseCard: true,
-          };
-        }
-        return item;
-      });
-      setGameSetter(newGameSetter);
+    if (user?.email !== email) {
+      console.log("GameSetter ", gameSetter);
+      if (gameSetRef.current) {
+        console.log("função without switch");
+        const newGameSetter = gameSetRef.current.map((item) => {
+          if (item.email === email) {
+            return {
+              ...item,
+              cardsPlayed: [...cardsPlayed],
+              choseCard: true,
+            };
+          }
+          return item;
+        });
+        console.log("newGameSetter", newGameSetter);
+        handleSetGame(newGameSetter as TurnType[]);
+        //setCheckCardSelected(() => true);
+      }
     }
-  };
+  }, [gameSetter, user]);
 
   return (
     <PlayContext.Provider
@@ -247,6 +307,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         handleSetGame,
         handleSetCards,
         cards,
+        dixitSwitch,
         playing,
         sendDiscover,
         otherPlayersChose,
@@ -264,6 +325,8 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         discoverCard,
         handleUpdateDiscover,
         UpdateOtherPlayersWithoutSwitch,
+        handleDixitSelection,
+        handleDixitSwitch,
       }}
     >
       {children}

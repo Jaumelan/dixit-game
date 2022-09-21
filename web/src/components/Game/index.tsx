@@ -38,6 +38,8 @@ const Game = () => {
     handleOtherPlayersChose,
     handleSetSendDiscover,
     UpdateOtherPlayersWithoutSwitch,
+    dixitSwitch,
+    handleDixitSwitch,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -47,17 +49,6 @@ const Game = () => {
       //console.log("WebSocket connection established em Game");
       setOpen(true);
     };
-    /*  websocket.current.onopen = () => {
-      const dataSocket = {
-        action: "enter-room",
-        payload: {
-          id: gameData?.id,
-          username: user?.username,
-        },
-      };
-      console.log("entering game session");
-      websocket.current?.send(JSON.stringify(dataSocket));
-    }; */
 
     websocket.current.onmessage = (event) => {
       const data = event.data;
@@ -102,11 +93,13 @@ const Game = () => {
           //handleTurnUpdated(false);
         } else if (ans.action === "update-cards-played") {
           const { email, cardsPlayed } = ans.data;
+          //console.log(ans.data);
+
           UpdateOtherPlayersWithoutSwitch(email, cardsPlayed);
         } else if (ans.action === "discover") {
           handleSetGame(ans.data.gameSetter);
-        } else if( ans.action === 'chat-message') {
-          handleSetChatMessages(ans.data.message)
+        } else if (ans.action === "chat-message") {
+          handleSetChatMessages(ans.data.message);
         }
         //console.log("do websoquete ", ans);
       }
@@ -196,6 +189,23 @@ const Game = () => {
   }, [player, open, sendData]);
 
   useEffect(() => {
+    if (dixitSwitch) {
+      const data = gameSetter?.find((game) => game.email === user?.email);
+      const send = {
+        action: "dixit-choose",
+        payload: {
+          id: gameData?.id,
+          email: user?.email,
+          choosenCard: data?.cardsPlayed,
+        },
+      };
+      websocket.current?.send(JSON.stringify(send));
+      //handleDixitPlayed(false);
+      handleDixitSwitch(false);
+    }
+  }, [dixitSwitch]);
+
+  useEffect(() => {
     if (otherPlayersChose) {
       if (open) {
         if (websocket.current?.readyState === 1) {
@@ -213,11 +223,11 @@ const Game = () => {
             },
           };
           websocket.current?.send(JSON.stringify(data));
-          handleOtherPlayersChose(false);
+          //handleOtherPlayersChose(false);
         }
       }
     }
-  }, [otherPlayersChose, gameSetter]);
+  }, [otherPlayersChose, gameData, open]);
 
   useEffect(() => {
     if (gameData) {
@@ -276,7 +286,7 @@ const Game = () => {
             <ChatAccordion />
           </div>
         ) : (
-          <div></div>
+          <></>
         )}
       </S.SideContainer>
       <S.CenterContainer>

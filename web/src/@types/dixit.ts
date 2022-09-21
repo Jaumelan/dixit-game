@@ -81,6 +81,7 @@ export type PlayContextType = {
   playersName: string;
   otherPlayersChose: boolean;
   discoverCard: boolean;
+  dixitSwitch: boolean;
   handleSetGame: (data: TurnType[] | null) => void;
   handleSetCards: (data: { username: string; hand: string[] }[]) => void;
   UpdateOtherPlayersGameSetter: (data: {
@@ -95,5 +96,7 @@ export type PlayContextType = {
   handleOtherPlayersChose: (data: boolean) => void;
   handleUpdateDiscover: (data: { email: string; choosenCard: string }) => void;
   handleSetSendDiscover: (data: boolean) => void;
-  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string) => void;
+  UpdateOtherPlayersWithoutSwitch: (email: string, cardsPlayed: string[]) => void;
+  handleDixitSelection: (data: { email: string; card: string }) => void;
+  handleDixitSwitch: (data: boolean) => void;
 };

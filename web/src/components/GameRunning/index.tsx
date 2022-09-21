@@ -2,7 +2,7 @@ import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
 import { TurnType } from "../../@types/dixit";
 import { UserAuth } from "../../context/AuthContext";
-import { Button, DiscoverCard, DixitTurn, NonDixitCarrousel } from "../../components";
+import { Button, DiscoverDixit, DixitTurn, NonDixitCarrousel } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
 import Carrousel from "../Carrousel";
@@ -227,9 +227,9 @@ const GameRunning: FC /* <Props> */ = (/* { missing } */) => {
         </S.NotificationText>
       </S.NotificationContainer>
       <S.GameContainer>
-        {/* <h3>{notification}</h3> */}
-        {discoverCard && !myTurn ? (
-          <DiscoverCard getSelectedImg={handleDiscoverCard} />
+       
+        {discoverCard ? (
+          <DiscoverDixit turn={myTurn} />
         ) : !myTurn  ? (
           <NonDixitCarrousel />
         ) : myTurn ? (

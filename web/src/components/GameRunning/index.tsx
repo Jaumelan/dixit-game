@@ -1,7 +1,7 @@
 import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
-import { DiscoverDixit, DixitTurn, NonDixitCarrousel } from "../../components";
+import { DiscoverDixit, DixitTurn, NonDixitCarrousel, ScoreComponent } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
 import Carrousel from "../Carrousel";
@@ -125,15 +125,7 @@ const GameRunning = () => {
       </S.NotificationContainer>
       <S.GameContainer>
         {everyonePlayed ? (
-          <div>
-            <h1>Pontuação</h1>
-            {gameSetter?.map((gameSet, index) => (
-              <div key={`score${gameSet.email}`}>
-                <h3>{gameSet.username}</h3>
-                <h3>{gameSet.score}</h3>
-              </div>
-            ))}
-          </div>
+          <ScoreComponent />
         ) : discoverCard ? (
           <DiscoverDixit turn={myTurn} />
         ) : !myTurn ? (

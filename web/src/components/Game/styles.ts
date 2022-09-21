@@ -43,3 +43,13 @@ export const CenterContainer = styled.div`
   height: 100%;
 `;
 
+export const PlayersChatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  align-items: center;
+  width: 35rem;
+  height: 80%;
+  gap: 2rem;
+`;

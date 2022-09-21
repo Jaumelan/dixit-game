@@ -111,9 +111,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
               <IconContainer>
                 {toggle === false ? (
                   <BsVolumeMute
-                    onClick={() => {
-                      handleToggle;
-                    }}
+                    onClick={handleToggle}
                     size={40}
                     color={"white"}
                   />

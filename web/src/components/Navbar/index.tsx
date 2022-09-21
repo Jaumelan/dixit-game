@@ -6,7 +6,8 @@ import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
 import { FC, useState, useMemo } from "react";
 import { Modal } from "../index";
-import Tooltip from "@mui/material/Tooltip";
+import { styled } from '@mui/material/styles';
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import som from "../../assets/sounds/soundBG.mp3";
 
 const audio = new Audio(som);
@@ -23,6 +24,14 @@ export enum NAVBAR_TYPE_CLASSES {
   base = "base",
   game = "game",
 }
+
+const BiggerTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    fontSize: 14,
+  },
+}));
 
 const getNavbar = (navbarType = NAVBAR_TYPE_CLASSES.base): typeof Container =>
   ({
@@ -70,16 +79,16 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
     <CustomNavbar>
       <ul>
         <li>
-          <Tooltip title="HOME">
+          <BiggerTooltip title="HOME">
             <IconContainer>
               <Link to="/">
                 <AiOutlineHome size={40} color={"white"} />
               </Link>
             </IconContainer>
-          </Tooltip>
+          </BiggerTooltip>
         </li>
         <li>
-          <Tooltip title="REGRAS">
+          <BiggerTooltip title="REGRAS">
             <IconContainer>
               <RiFilePaper2Line
                 onClick={handleOpenModalRules}
@@ -87,7 +96,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
                 color={"white"}
               />
             </IconContainer>
-          </Tooltip>
+          </BiggerTooltip>
 
           {/* <img src={GameRules} alt="game rules" /> */}
         </li>
@@ -98,16 +107,27 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
       {(user && (
         <ul>
           <li>
-            <IconContainer>
-              {
-                (toggle === false) ? <BsVolumeMute onClick={handleToggle} size={40} color={"white"} /> :
-                  <BsVolumeUp onClick={handleToggle} size={40} color={"white"} />
-              }
-            </IconContainer>
+            <BiggerTooltip title="SOM">
+              <IconContainer>
+                {toggle === false ? (
+                  <BsVolumeMute
+                    onClick={handleToggle}
+                    size={40}
+                    color={"white"}
+                  />
+                ) : (
+                  <BsVolumeUp
+                    onClick={handleToggle}
+                    size={40}
+                    color={"white"}
+                  />
+                )}
+              </IconContainer>
+            </BiggerTooltip>
           </li>
 
           <li>
-            <Tooltip title="PERFIL" sx={{fontSize: "16px"}}>
+            <BiggerTooltip title="PERFIL" sx={{ fontSize: "16px" }}>
               <IconContainer>
                 <ProfileImgSty
                   onClick={handleOpenModalProfile}
@@ -115,7 +135,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
                   alt="user profile"
                 />
               </IconContainer>
-            </Tooltip>
+            </BiggerTooltip>
           </li>
         </ul>
       )) || (

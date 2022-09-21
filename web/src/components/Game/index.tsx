@@ -342,6 +342,7 @@ const Game = () => {
   return (
     <S.Container>
       <S.SideContainer>
+        <S.PlayersChatContainer>
         <S.PlayersTitle>Jogadores</S.PlayersTitle>
         {gameData?.players.map((player, index) => (
           <Player key={`${index}-${player}`} data={player} index={index} />
@@ -353,13 +354,15 @@ const Game = () => {
         ) : (
           <></>
         )}
+        </S.PlayersChatContainer>
+        <Button onClick={handleLeaveGame}>Sair do Jogo</Button>
       </S.SideContainer>
       <S.CenterContainer>
         <GameCenter waiting={waiting} />
       </S.CenterContainer>
-      <S.SideContainer>
+      {/* <S.SideContainer>
         <Button onClick={handleLeaveGame}>Sair do Jogo</Button>
-      </S.SideContainer>
+      </S.SideContainer> */}
     </S.Container>
   );
 };

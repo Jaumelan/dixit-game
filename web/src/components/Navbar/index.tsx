@@ -120,7 +120,7 @@ const Navbar: FC<NavbarProps> = ({ navbarType }) => {
           </li>
 
           <li>
-            <Tooltip title="PERFIL">
+            <Tooltip title="PERFIL" sx={{fontSize: "16px"}}>
               <IconContainer>
                 <ProfileImgSty
                   onClick={handleOpenModalProfile}

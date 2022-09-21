@@ -11,6 +11,7 @@ type Props = {
 
 const Carrousel: FC<Props> = ({ getSelectedImg }) => {
   const [items, setItems] = useState<TurnType | null>(null);
+  const [handDrawn, setHandDrawn] = useState<boolean>(false);
   const [cardsToShow, setCardsToShow] = useState<string[]>([]);
   const { gameSetter } = usePlayContext();
   const { complete } = useGameContext();
@@ -24,7 +25,7 @@ const Carrousel: FC<Props> = ({ getSelectedImg }) => {
         );
         if (newItems) {
           setItems(newItems);
-          console.log("new items ", newItems);
+          //console.log("new items ", newItems);
           //handleCardsToDisplay();
         } else {
           setItems(null);
@@ -35,26 +36,28 @@ const Carrousel: FC<Props> = ({ getSelectedImg }) => {
 
   useEffect(() => {
     if (items) {
-      console.log("handleCardsToDisplay");
-      //const cardsToDisplay = [];
+      if (!handDrawn) {
+        console.log("handleCardsToDisplay");
+        //const cardsToDisplay = [];
 
-      const newArray: SetStateAction<string[]> = [];
-      while (newArray.length < 5) {
-        const randomItem =
-          items.hand[Math.floor(Math.random() * items.hand.length)];
-        if (
-          !items.cardsPlayed.includes(randomItem) &&
-          !newArray.includes(randomItem)
-        ) {
-          newArray.push(randomItem);
-          //console.log("new array ", newArray);
+        const newArray: SetStateAction<string[]> = [];
+        while (newArray.length < 5) {
+          const randomItem =
+            items.hand[Math.floor(Math.random() * items.hand.length)];
+          if (
+            !items.cardsPlayed.includes(randomItem) &&
+            !newArray.includes(randomItem)
+          ) {
+            newArray.push(randomItem);
+            //console.log("new array ", newArray);
+          }
         }
-      }
 
-      //console.log(" new array 2 ", newArray);
-      setCardsToShow(() => newArray);
+        setHandDrawn(() => true);
+        setCardsToShow(() => newArray);
+      }
     }
-  }, [items]);
+  }, [items, handDrawn]);
 
   /* useEffect(() => {
     console.log("cards to show ", cardsToShow);

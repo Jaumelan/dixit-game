@@ -118,7 +118,7 @@ const Game = () => {
         } else if (ans.action === "score") {
           const { score, user } = ans.data;
           //console.log("score ", score);
-          handleUpdateScore( score, user);
+          handleUpdateScore(score, user);
         }
         //console.log("do websoquete ", ans);
       }
@@ -342,24 +342,27 @@ const Game = () => {
   return (
     <S.Container>
       <S.SideContainer>
-        <S.PlayersTitle>Jogadores</S.PlayersTitle>
-        {gameData?.players.map((player, index) => (
-          <Player key={`${index}-${player}`} data={player} index={index} />
-        ))}
-        {!waiting ? (
-          <div>
-            <ChatAccordion />
-          </div>
-        ) : (
-          <></>
-        )}
+        <S.PlayersChatContainer>
+          <S.PlayersTitle>Jogadores</S.PlayersTitle>
+          {gameData?.players.map((player, index) => (
+            <Player key={`${index}-${player}`} data={player} index={index} />
+          ))}
+          {!waiting ? (
+            <div>
+              <ChatAccordion />
+            </div>
+          ) : (
+            <></>
+          )}
+        </S.PlayersChatContainer>
+        <Button onClick={handleLeaveGame}>Sair do Jogo</Button>
       </S.SideContainer>
       <S.CenterContainer>
         <GameCenter waiting={waiting} />
       </S.CenterContainer>
-      <S.SideContainer>
+      {/* <S.SideContainer>
         <Button onClick={handleLeaveGame}>Sair do Jogo</Button>
-      </S.SideContainer>
+      </S.SideContainer> */}
     </S.Container>
   );
 };

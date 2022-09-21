@@ -8,6 +8,7 @@ import * as S from "./styles";
 
 const NonDixitCarrousel = () => {
   const [selectedImg, setSelectedImg] = useState<string>(Pattern);
+  const [selected, setSelected] = useState(false);
   const { user } = UserAuth();
   const { playersSelectCards, UpdateOtherPlayersGameSetter } = usePlayContext();
 
@@ -23,19 +24,26 @@ const NonDixitCarrousel = () => {
         cardsPlayed: selectedImg,
       };
       UpdateOtherPlayersGameSetter(data);
+      setSelected(() => true);
     }
   };
 
   return playersSelectCards ? (
     <S.Container>
-      <S.EveryImagesContainer>
-        <S.IncreasedImageContainer>
-          <S.IncreasedImage src={selectedImg} alt="selectedImg" />
-        </S.IncreasedImageContainer>
+      {selected ? (
+        <div>Enviado</div>
+      ) : (
+        <>
+          <S.EveryImagesContainer>
+            <S.IncreasedImageContainer>
+              <S.IncreasedImage src={selectedImg} alt="selectedImg" />
+            </S.IncreasedImageContainer>
 
-        <Carrousel getSelectedImg={getSelectedImg} />
-      </S.EveryImagesContainer>
-      <Button onClick={submitOtherPlayersCard}>Selecionar Imagem</Button>
+            <Carrousel getSelectedImg={getSelectedImg} />
+          </S.EveryImagesContainer>
+          <Button onClick={submitOtherPlayersCard}>Selecionar Imagem</Button>
+        </>
+      )}
     </S.Container>
   ) : (
     <S.Container>

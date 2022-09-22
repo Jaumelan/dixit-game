@@ -181,6 +181,13 @@ class WebSocketServices {
           message: '',
         };
         break;
+      case 'continue':
+        return {
+          action: 'continue',
+          data: { ...payload },
+          message: '',
+        };
+        break;
       default:
         return {
           action: 'error',

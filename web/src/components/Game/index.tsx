@@ -49,6 +49,9 @@ const Game = () => {
     handleUpdateScore,
     handleSendScore,
     sendScore,
+    constinueSocket,
+    handleContinueSocket,
+    handleContinuePlaying,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -119,6 +122,8 @@ const Game = () => {
           const { score, user } = ans.data;
           //console.log("score ", score);
           handleUpdateScore( score, user);
+        } else if (ans.action === "continue") {
+          handleContinuePlaying(true);
         }
         //console.log("do websoquete ", ans);
       }
@@ -242,7 +247,7 @@ const Game = () => {
             },
           };
           websocket.current?.send(JSON.stringify(data));
-          //handleOtherPlayersChose(false);
+          handleOtherPlayersChose(false);
         }
       }
     }
@@ -326,6 +331,22 @@ const Game = () => {
       }
     }
   }, [sendDiscover]);
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameSetter) {
+        if (constinueSocket) {
+          websocket.current?.send(
+            JSON.stringify({
+              action: "continue",
+              payload: { id: gameData.id },
+            })
+          );
+          handleContinueSocket(false);
+        }
+      }
+    }
+  }, [constinueSocket])
 
   const handleLeaveGame = () => {
     const dataSocket = {

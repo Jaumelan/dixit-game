@@ -11,7 +11,8 @@ const DixitTurn = () => {
   const [dixitMessage, setDixitMessage] = useState("");
   const [dixitImage, setDixitImage] = useState(Pattern);
   const { user } = UserAuth();
-  const { handleUpdateGameSetter, playersSelectCards } = usePlayContext();
+  const { handleUpdateGameSetter, playersSelectCards, continuePlaying } =
+    usePlayContext();
 
   const handleDixitChange = (e: any) => {
     setDixitMessage(e.target.value);

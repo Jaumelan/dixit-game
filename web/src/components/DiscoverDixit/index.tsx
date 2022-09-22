@@ -55,8 +55,7 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
               gameSetter.map((card, index) =>
                 card.email !== user?.email ? (
                   <S.CardContainer
-                    key={`${index}-discover`}
-                    id={`${index}-discover`}
+                    key={`${index}--${index + 1}`}
                     onClick={selectCard}
                   >
                     <S.Card

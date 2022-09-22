@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { UserAuth } from "../../context/AuthContext";
@@ -10,8 +10,14 @@ const NonDixitCarrousel = () => {
   const [selectedImg, setSelectedImg] = useState<string>(Pattern);
   const [selected, setSelected] = useState(false);
   const { user } = UserAuth();
-  const { playersSelectCards, UpdateOtherPlayersGameSetter } = usePlayContext();
+  const { playersSelectCards, UpdateOtherPlayersGameSetter, continuePlaying } =
+    usePlayContext();
 
+  useEffect(() => {
+    if (continuePlaying) {
+      setSelected(false);
+    }
+  }, [continuePlaying]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSelectedImg = (e: any) => {
     setSelectedImg(e.target.src);
@@ -31,7 +37,9 @@ const NonDixitCarrousel = () => {
   return playersSelectCards ? (
     <S.Container>
       {selected ? (
-        <div>Enviado</div>
+        <div>
+          <S.Sent>Enviado</S.Sent>
+        </div>
       ) : (
         <>
           <S.EveryImagesContainer>

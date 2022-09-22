@@ -32,6 +32,8 @@ const defaultPlayContext = {
   everyonePlayed: false,
   sendDixitName: false,
   sendScore: true,
+  continuePlaying: false,
+  constinueSocket: false,
   handleSetGame: (data: TurnType[] | null) => {},
 
   UpdateOtherPlayersGameSetter: (data: {
@@ -66,6 +68,10 @@ const defaultPlayContext = {
     user: string
   ) => {},
   handleSendScore: (data: boolean) => {},
+  handleSetDiscoverCard: (data: boolean) => {},
+  handleEveryonePlayed: (data: boolean) => {},
+  handleContinuePlaying: (data: boolean) => {},
+  handleContinueSocket: (data: boolean) => {},
 };
 
 const PlayContext = createContext<PlayContextType>(defaultPlayContext);
@@ -80,6 +86,8 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const [playing, setPlaying] = useState(false);
   const [sendDiscover, setSendDiscover] = useState(false);
   const [otherPlayersChose, setOtherPlayersChose] = useState(false);
+  const [continuePlaying, setContinuePlaying] = useState(false);
+  const [constinueSocket, setContinueSocket] = useState(false);
   //switch to true when dixit played chose card and message
   const [dixitPlayed, setDixitPlayed] = useState(false);
   const [dixitSwitch, setDixitSwitch] = useState(false);
@@ -170,12 +178,40 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
     }
   }, [gameSetter]);
 
+  useEffect(() => {
+    if (continuePlaying) {
+      handleSetPlaying(true);
+      handleSetDiscoverCard(false);
+      resetEveyonePlayed();
+      handleEveryonePlayed(false);
+      handlePlayersSelectCards(false);
+      handleContinuePlaying(false);
+    }
+  }, [continuePlaying]);
+
   const handleSetDiscoverCard = (data: boolean) => {
     setDiscoverCard(data);
   };
 
+  const resetEveyonePlayed = () => {
+    if (gameSetRef.current) {
+      const newGameSet = gameSetRef.current.map((player) => {
+        return {
+          ...player,
+          choseCard: false,
+          choosenCard: "",
+        };
+      });
+      handleSetGame(newGameSet);
+    }
+  }
+
   const handleEveryonePlayed = (data: boolean) => {
     setEveryonePlayed(data);
+  };
+
+  const handleContinueSocket = (data: boolean) => {
+    setContinueSocket(data);
   };
 
   const handleSetGame = (data: TurnType[] | null) => {
@@ -224,6 +260,10 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
 
   const handleOtherPlayersChose = (data: boolean) => {
     setOtherPlayersChose(data);
+  };
+
+  const handleContinuePlaying = (data: boolean) => {
+    setContinuePlaying(data);
   };
 
   const handleSetSendDiscover = (data: boolean) => {
@@ -389,6 +429,8 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         playersSelectCards,
         playersName,
         dixitPlayed,
+        continuePlaying,
+        constinueSocket,
         UpdateOtherPlayersGameSetter,
         handleSetSendDiscover,
         handleUpdateGameSetter,
@@ -408,6 +450,10 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         handleUpdateScore,
         handleSendScore,
         sendScore,
+        handleSetDiscoverCard,
+        handleEveryonePlayed,
+        handleContinuePlaying,
+        handleContinueSocket,
       }}
     >
       {children}

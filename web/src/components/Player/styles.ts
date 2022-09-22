@@ -11,6 +11,11 @@ export const Container = styled.div`
   box-shadow: 0 0 0.5rem 0.5rem rgba(255, 255, 255, 0.2);
 `;
 
+export const PlayingContainter = styled(Container)`
+  background: rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+`;
+
 export const IndexContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,4 +35,8 @@ export const Name = styled.span`
   font-weight: bold;
   color: #ffffff;
   margin-left: 1rem;
+`;
+
+export const PlayingName = styled(Name)`
+  color: #000000;
 `;

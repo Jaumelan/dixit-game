@@ -1,5 +1,6 @@
 import { useState, FC, useEffect } from "react";
 import PlayerSpinner from "../PlayerSpinner";
+import { usePlayContext } from "../../context/PlayContext";
 import * as S from "./styles";
 
 type PlayerProps = {
@@ -12,6 +13,7 @@ type PlayerProps = {
 
 const Player: FC<PlayerProps> = ({ data, index }) => {
   const [loading, setLoading] = useState(true);
+  const { playersName } = usePlayContext();
 
   useEffect(() => {
     if (data.username !== "") {
@@ -25,6 +27,11 @@ const Player: FC<PlayerProps> = ({ data, index }) => {
 
   return loading ? (
     <PlayerSpinner />
+  ) : playersName === data.email ?(
+    <S.PlayingContainter>
+      <S.IndexContainer>{index + 1}</S.IndexContainer>
+      <S.PlayingName>{data.username}</S.PlayingName>
+    </S.PlayingContainter>
   ) : (
     <S.Container>
       <S.IndexContainer>{index + 1}</S.IndexContainer>

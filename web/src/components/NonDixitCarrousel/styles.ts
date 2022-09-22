@@ -46,3 +46,9 @@ export const IncreasedImage = styled.img`
   height: 100%;
   object-fit: contain;
 `;
+
+export const Sent = styled.h1`
+  font-size: 3rem;
+  color: #000080;
+  text-align: center;
+`;

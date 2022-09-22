@@ -4,7 +4,6 @@ import { UserAuth } from "../../context/AuthContext";
 import { DiscoverDixit, DixitTurn, NonDixitCarrousel, ScoreComponent } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
-import Carrousel from "../Carrousel";
 import * as S from "./styles";
 
 const GameRunning = () => {
@@ -26,7 +25,7 @@ const GameRunning = () => {
 
   const [turnCount, setTurnCount] = useState<number>(0);
   const [notification, setNotification] = useState<string>("");
-  const [dixitMessage, setDixitMessage] = useState<string>("");
+  
   const [endGame, setEndGame] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 

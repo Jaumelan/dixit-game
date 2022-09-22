@@ -34,7 +34,7 @@ export const NotificationContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30rem;
+  width: 45rem;
   height: 10rem;
   border-radius: 1rem;
   padding: 0.6rem;

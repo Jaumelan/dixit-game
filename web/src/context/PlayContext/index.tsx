@@ -204,7 +204,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
       });
       handleSetGame(newGameSet);
     }
-  }
+  };
 
   const handleEveryonePlayed = (data: boolean) => {
     setEveryonePlayed(data);

@@ -121,7 +121,7 @@ const Game = () => {
         } else if (ans.action === "score") {
           const { score, user } = ans.data;
           //console.log("score ", score);
-          handleUpdateScore( score, user);
+          handleUpdateScore(score, user);
         } else if (ans.action === "continue") {
           handleContinuePlaying(true);
         }
@@ -346,7 +346,7 @@ const Game = () => {
         }
       }
     }
-  }, [constinueSocket])
+  }, [constinueSocket]);
 
   const handleLeaveGame = () => {
     const dataSocket = {
@@ -357,6 +357,8 @@ const Game = () => {
       },
     };
     websocket.current?.send(JSON.stringify(dataSocket));
+    handleGameDataSetter(null);
+    handleSetGame(null);
     navigate("/");
   };
 
@@ -379,9 +381,7 @@ const Game = () => {
       <S.CenterContainer>
         <GameCenter waiting={waiting} />
       </S.CenterContainer>
-      <S.SideContainer>
-        
-      </S.SideContainer>
+      <S.SideContainer></S.SideContainer>
     </S.Container>
   );
 };

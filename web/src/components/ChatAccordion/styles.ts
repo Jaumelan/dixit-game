@@ -9,6 +9,11 @@ export const ChatMessages = styled.div`
   padding: 0.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+  @media screen and (max-height: 600px) {
+    height: 5rem;
+  }
+
+  
 `;
 
 export const UserMessage = styled.span`

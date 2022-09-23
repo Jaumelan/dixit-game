@@ -14,6 +14,11 @@ export const Container = styled.div`
   width: 95%;
   height: 90%;
   padding: 0.5rem;
+
+  @media (min-width: 768px) {
+    width: 100%;
+    height: 80%;
+  }
 `;
 
 export const EveryImagesContainer = styled.div`

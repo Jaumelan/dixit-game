@@ -138,6 +138,8 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
           handleSetGame(gameSet);
           setPlaying(() => true);
         }
+      } else {
+        setPlaying(() => false);
       }
     }
   }, [gameData, complete]);

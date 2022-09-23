@@ -96,7 +96,7 @@ const GameRules: FC<GameRulesProps> = ({ closeGameRules }) => {
           <S.RulesContainer>
             <h3>Regras do Jogo</h3>
             <p>
-              Cada Jogador recebe 6 Cartas aleatórias. A cada rodada teremos um
+              Cada Jogador recebe 5 Cartas aleatórias. A cada rodada teremos um
               jogador que será o contador de histórias. O contador de histórias
               tem a função de selecionar uma de suas cartas e descrever essa
               carta em uma palavra ou frase.{" "}

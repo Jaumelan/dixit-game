@@ -22,6 +22,7 @@ const ChatAccordion = () => {
       const data = {
         username: user?.username as string,
         message: message,
+        email: user?.email as string,
       };
       handleSetMyMessage(data);
       setMessage("");
@@ -35,7 +36,12 @@ const ChatAccordion = () => {
   };
 
   const listMessages = chatMessages.map((message, index) => {
-    return (
+    return message.email === user?.email ? (
+      <S.MyMessage key={index}>
+        <S.MyUserName>{message.username}: </S.MyUserName>
+        <S.Message>{message.message}</S.Message>
+      </S.MyMessage>
+    ) : (
       <div key={index}>
         <S.UserMessage>{message.username}: </S.UserMessage>
         <S.Message>{message.message}</S.Message>
@@ -67,7 +73,12 @@ const ChatAccordion = () => {
       <AccordionDetails>
         <S.ChatMessages>{listMessages}</S.ChatMessages>
         <div>
-          <input type="text" value={message} onChange={handleSetMessage} onKeyDown={handleKeyPress} />
+          <input
+            type="text"
+            value={message}
+            onChange={handleSetMessage}
+            onKeyDown={handleKeyPress}
+          />
           <button onClick={sendMessage}>Enviar</button>
         </div>
       </AccordionDetails>

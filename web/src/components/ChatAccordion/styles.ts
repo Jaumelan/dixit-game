@@ -12,8 +12,21 @@ export const ChatMessages = styled.div`
   @media screen and (max-height: 600px) {
     height: 5rem;
   }
+`;
 
-  
+export const MyMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+export const MyUserName = styled.span`
+  color: #fff;
+  background-color: #800080;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  display: inline-block;
 `;
 
 export const UserMessage = styled.span`

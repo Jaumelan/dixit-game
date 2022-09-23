@@ -9,15 +9,17 @@ type ContextType = {
   sendData: boolean;
   sendMessSocket: boolean;
   myMessage: { username: string; message: string };
-  chatMessages: { username: string; message: string }[];
+  chatMessages: {
+    email: string | undefined; username: string; message: string 
+}[];
   handleGameDataSetter: (gameData: GameDataType | null) => void;
   handleSetError: (error: boolean) => void;
   handlePlayerSetter: (player: string) => void;
   handleSetComplete: (complete: boolean) => void;
   handleSendData: (sendData: boolean) => void;
-  handleSetMyMessage: (data: { username: string; message: string }) => void;
+  handleSetMyMessage: (data: { username: string; message: string, email: string }) => void;
   handleChatSocket: (sendMessSocket: boolean) => void;
-  handleSetChatMessages: (data: { username: string; message: string }) => void;
+  handleSetChatMessages: (data: { username: string; message: string, email: string }) => void;
 };
 
 const defaultGameContext = {
@@ -41,11 +43,11 @@ const defaultGameContext = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   handleSendData: (sendData: boolean) => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-  handleSetMyMessage: (data: { username: string; message: string }) => {},
+  handleSetMyMessage: (data: { username: string; message: string, email: string }) => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   handleChatSocket: (data: boolean) => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-  handleSetChatMessages: (data: { username: string; message: string }) => {},
+  handleSetChatMessages: (data: { username: string; message: string , email: string}) => {},
 };
 
 const GameContext = createContext<ContextType>(defaultGameContext);
@@ -59,9 +61,10 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
   const [myMessage, setMyMessage] = useState<{
     username: string;
     message: string;
-  }>({ username: "", message: "" });
+    email: string;
+  }>({ username: "", message: "", email: "" });
   const [chatMessages, setChatMessages] = useState<
-    { username: string; message: string }[]
+    { username: string; message: string, email: string }[]
   >([]);
   const [gameData, setGameData] = useState<GameDataType | null>(
     defaultGameContext.gameData
@@ -84,6 +87,7 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
   const handleSetChatMessages = (data: {
     username: string;
     message: string;
+    email: string;
   }) => {
     setChatMessages((prev) => [...prev, data]);
   };
@@ -96,7 +100,7 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
     setSendMessSocket(data);
   };
 
-  const handleSetMyMessage = (data: { username: string; message: string }) => {
+  const handleSetMyMessage = (data: { username: string; message: string, email: string }) => {
     setMyMessage(data);
     setSendMessSocket(() => true);
   };

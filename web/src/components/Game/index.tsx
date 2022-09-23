@@ -52,6 +52,8 @@ const Game = () => {
     constinueSocket,
     handleContinueSocket,
     handleContinuePlaying,
+    handleSetDiscoverCard,
+    handleEveryonePlayed,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -359,6 +361,9 @@ const Game = () => {
     websocket.current?.send(JSON.stringify(dataSocket));
     handleGameDataSetter(null);
     handleSetGame(null);
+    handleSetDiscoverCard(false);
+    handleEveryonePlayed(false);
+    handlePlayersSelectCards(false);
     navigate("/");
   };
 
@@ -381,7 +386,7 @@ const Game = () => {
       <S.CenterContainer>
         <GameCenter waiting={waiting} />
       </S.CenterContainer>
-      <S.SideContainer></S.SideContainer>
+      {/* <S.SideContainer></S.SideContainer> */}
     </S.Container>
   );
 };

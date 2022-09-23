@@ -5,8 +5,9 @@ export const CarrouselContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 0.6rem;
 
-  width: 45%;
+  width: 100%;
   height: 100%;
+  max-width: 100rem;
   overflow: hidden;
   position: relative;
 
@@ -20,6 +21,9 @@ export const CarrouselContent = styled.div`
   align-items: center;
   width: 9rem;
   height: 10rem;
+
+  max-width: 20rem;
+  max-height: 22rem;
   overflow: hidden;
   //position: relative;
   //padding: 0.2rem;
@@ -31,6 +35,28 @@ export const CarrouselContent = styled.div`
       both;
     animation: shadow-pop-tr 0.3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
   }
+/* 
+  @media only screen and (min-width: 425px) {
+    width: 12rem;
+    height: 14rem;
+  }
+
+  @media only screen and (min-width: 768px) and (min-height: 561px) {
+    width: 8rem;
+    height: 10rem;
+  }
+
+  @media only screen and (min-width: 768px) {
+    width: 16rem;
+    height: 19rem;
+  }
+
+  @media only screen and (min-width: 1025px) {
+    width: 60%;
+    height: 90%;
+  }
+ */
+
 `;
 
 export const CarrouselItem = styled.img`

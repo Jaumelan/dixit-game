@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import { useGameContext } from "../context/GameContext";
 import LandingPage from "../pages/LandingPage";
 import Home from "../pages/Home";
 import SignIn from "../pages/SignIn";

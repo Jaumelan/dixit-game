@@ -124,4 +124,5 @@ export type PlayContextType = {
   handleEveryonePlayed: (data: boolean) => void;
   handleContinuePlaying:(data: boolean) => void;
   handleContinueSocket: (data: boolean) => void;
+  nextRound: () => void;
 };

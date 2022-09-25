@@ -6,6 +6,7 @@ import {
   DixitTurn,
   NonDixitCarrousel,
   ScoreComponent,
+  Podium,
 } from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
@@ -13,7 +14,7 @@ import * as S from "./styles";
 
 const GameRunning = () => {
   const [higherMessage, setHigherMessage] = useState<string>("");
-  const { handleSetTurns } = useGameContext();
+  const { handleSetTurns, checkTurns, turns } = useGameContext();
   const { user } = UserAuth();
   const {
     gameSetter,
@@ -25,6 +26,7 @@ const GameRunning = () => {
     discoverCard,
     everyonePlayed,
     handleSetPlayersName,
+    nextRound,
   } = usePlayContext();
   const [myTurn, setMyTurn] = useState(false);
 
@@ -92,11 +94,26 @@ const GameRunning = () => {
         return acc;
       }, 0);
       if (countTurnsCompleted === gameSetter.length) {
-        setHigherMessage("Acabou a rodada! Quer jogar novamente?");
-        setMyTurn(() => false);
+        nextRound();
+        /* setHigherMessage("Acabou a rodada! Quer jogar novamente?");
+        setMyTurn(() => false); */
       }
     }
   }, [turnCount]);
+
+  useEffect(() => {
+    if (checkTurns === true) {
+      console.log("turns jogados", turns);
+      if (turns === 2) {
+        setEndGame(true);
+        setHigherMessage("O jogo acabou!");
+      }
+      /* handleSetPlaying(true);
+      handleSetDiscoverCard(false);
+      handleEveryonePlayed(false);
+      handleContinueSocket(true); */
+    }
+  }, [checkTurns, turns]);
 
   const handlePlayAgain = () => {
     setTurnCount(0);
@@ -125,7 +142,9 @@ const GameRunning = () => {
         </S.NotificationText>
       </S.NotificationContainer>
       <S.GameContainer>
-        {everyonePlayed ? (
+        {endGame ? (
+          <Podium />
+        ) : everyonePlayed ? (
           <ScoreComponent />
         ) : discoverCard ? (
           <DiscoverDixit turn={myTurn} />

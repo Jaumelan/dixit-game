@@ -1,16 +1,17 @@
+import { useState } from "react";
 import { usePlayContext } from "../../context/PlayContext";
 import { Button } from "../../components";
 import { AiFillStar } from "react-icons/ai";
 import * as S from "./styles";
 
 const ScoreComponent = () => {
+  const [endGame, setEndGame] = useState(false);
   const {
     gameSetter,
-    handleSetPlaying,
-    handleSetDiscoverCard,
-    handleEveryonePlayed,
     handleContinueSocket,
   } = usePlayContext();
+
+  
 
   const scoresOrdered = gameSetter
     ?.sort((a, b) => b.score - a.score)
@@ -53,10 +54,10 @@ const ScoreComponent = () => {
         scoresOrdered?.map((game, index) =>
           index === 0 ? (
             <S.ScoreHolder key={`score-${index}`}>
-              <div>
+              <S.StarName>
                 <AiFillStar size={30} color="#FFD700" />
                 <S.GamePlayer>{game.name}</S.GamePlayer>
-              </div>
+              </S.StarName>
 
               <S.Score>{game.score}</S.Score>
             </S.ScoreHolder>
@@ -67,7 +68,9 @@ const ScoreComponent = () => {
             </S.ScoreHolder>
           )
         )}
-      <Button onClick={handleNextPlayer}>Seguinte Jogador</Button>
+      
+        <Button onClick={handleNextPlayer}>Próximo</Button>
+     
     </S.Container>
   );
 };

@@ -91,11 +91,16 @@ const DixitTurn = () => {
             sx={{ width: "60%" }}
             value={dixitMessage}
             onChange={handleDixitChange}
+            inputProps={{ maxLength: 50 }}
           />
         </ThemeProvider>
 
-        {/* <input type="text" value={dixitMessage} onChange={handleDixitChange} /> */}
-        <Button onClick={handleDixitSubmit}>Dixit</Button>
+        {dixitMessage.length > 3 ? (
+         <Button onClick={handleDixitSubmit}>Dixit</Button>
+        ) : (
+          <Button disabled>Dixit</Button>
+        )}
+        
       </S.MessageContainer>
     </S.Container>
   );

@@ -72,6 +72,7 @@ const defaultPlayContext = {
   handleEveryonePlayed: (data: boolean) => {},
   handleContinuePlaying: (data: boolean) => {},
   handleContinueSocket: (data: boolean) => {},
+  nextRound: () => {},
 };
 
 const PlayContext = createContext<PlayContextType>(defaultPlayContext);
@@ -116,8 +117,9 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
             const handPlayer = [];
 
             for (
-              let j = (6 + Number(gameData.numberOfPlayers)) * index;
-              j < (6 + Number(gameData.numberOfPlayers)) * (index + 1);
+              let j = (gameData.cards.length / gameData.players.length) * index;
+              j <
+              (gameData.cards.length / gameData.players.length) * (index + 1);
               j++
             ) {
               handPlayer.push(gameData.cards[j]);
@@ -237,6 +239,27 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
       });
       handleSetGame(newGameSetter);
       setSendDiscover(() => true);
+    }
+  };
+
+  const nextRound = () => {
+    if (gameSetter) {
+      const newGameSetter = gameSetter.map((player) => {
+        return {
+          ...player,
+          played: false,
+          messages: [],
+          choseCard: false,
+          choosenCard: "",
+        };
+      });
+      handleSetGame(newGameSetter);
+      handleSetPlaying(true);
+      handleSetDiscoverCard(false);
+      resetEveyonePlayed();
+      handleEveryonePlayed(false);
+      handlePlayersSelectCards(false);
+      handleContinuePlaying(false);
     }
   };
 
@@ -456,6 +479,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         handleEveryonePlayed,
         handleContinuePlaying,
         handleContinueSocket,
+        nextRound,
       }}
     >
       {children}

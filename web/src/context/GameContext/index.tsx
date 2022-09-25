@@ -7,7 +7,9 @@ type ContextType = {
   error: boolean;
   complete: boolean;
   sendData: boolean;
+  checkTurns: boolean;
   sendMessSocket: boolean;
+  turns: number;
   myMessage: { username: string; message: string };
   chatMessages: {
     email: string | undefined; username: string; message: string 
@@ -30,6 +32,8 @@ const defaultGameContext = {
   complete: false,
   sendData: false,
   sendMessSocket: false,
+  checkTurns: false,
+  turns: 0,
   myMessage: { username: "", message: "" },
   chatMessages: [],
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
@@ -57,6 +61,8 @@ const GameContext = createContext<ContextType>(defaultGameContext);
 
 export const GameContextProvider: FC<GameContextType> = ({ children }) => {
   const [error, setError] = useState<boolean>(false);
+  const [ checkTurns, setCheckTurns ] = useState<boolean>(false);
+  const [ checkScore, setCheckScore ] = useState<boolean>(false);
   const [ turns, setTurns ] = useState<number>(0);
   const [player, setPlayer] = useState<string>("NULL");
   const [sendData, setSendData] = useState<boolean>(false);
@@ -73,6 +79,19 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
   const [gameData, setGameData] = useState<GameDataType | null>(
     defaultGameContext.gameData
   );
+
+  useEffect(() => {
+    if (gameData) {
+      if (gameData.turns !== 0) {
+        setCheckTurns(true);
+      } else if (gameData.pointsToWin !== 0) {
+        setCheckScore(true);
+      } else {
+        setCheckTurns(false);
+        setCheckScore(false);
+      }
+    }
+  }, [gameData]);
 
   const handleGameDataSetter = (data: GameDataType | null) => {
     console.log("data in context ", data);
@@ -129,10 +148,12 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
         gameData,
         sendMessSocket,
         myMessage,
+        checkTurns,
         chatMessages,
         handleGameDataSetter,
         handleSetError,
         error,
+        turns,
         player,
         handlePlayerSetter,
         handleSetComplete,

@@ -48,20 +48,6 @@ export const Container = styled.div`
   animation: scale-in-center 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
-export const PlayersImgHolder = styled.div`
-display: flex;
-flex-direction: row;
-gap: 1rem;
-`;
-
-
-export const PlayerImg = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-`;
-
 export const ScoreHolder = styled.div`
   display: flex;
   align-items: center;

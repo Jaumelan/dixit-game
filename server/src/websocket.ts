@@ -81,6 +81,7 @@ class WebSocketInitializer {
         });
         //console.log('room with client ', findRoomWithClient);
         if (findRoomWithClient) {
+          //console.log('room with client ', findRoomWithClient);
           const index = this.rooms[findRoomWithClient].indexOf(ws);
           this.rooms[findRoomWithClient].splice(index, 1);
           if (this.rooms[findRoomWithClient].length === 0) {

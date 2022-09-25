@@ -94,7 +94,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const [dixitSwitch, setDixitSwitch] = useState(false);
   const [playersSelectCards, setPlayersSelectCards] = useState<boolean>(false);
   const [discoverCard, setDiscoverCard] = useState<boolean>(false);
-  const [sendScore, setSendScore] = useState<boolean>(true);
+  const [sendScore, setSendScore] = useState<boolean>(false);
   const [sendDixitName, setSendDixitName] = useState<boolean>(false);
   const [everyonePlayed, setEveryonePlayed] = useState<boolean>(false);
   const { user } = UserAuth();
@@ -178,9 +178,22 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
       }, 0);
       if (count === gameSetter.length - 1) {
         handleEveryonePlayed(true);
+        //handleSendScore(true);
       }
     }
   }, [gameSetter]);
+
+  useEffect(() => {
+    let count = 0;
+    if (everyonePlayed && count ===0) {
+      
+      handleSendScore(true);
+      count += 1;
+    } else if (!everyonePlayed) {
+      count = 0;
+    }
+
+  }, [everyonePlayed]);
 
   useEffect(() => {
     if (continuePlaying) {
@@ -392,6 +405,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   ) => {
     console.log("data score", data);
     if (gameSetRef.current) {
+      console.log("gameSetRef.current sem score ", gameSetRef.current);
       if (userEmail === user?.email) {
         const newGameSetter = gameSetRef.current.map((item) => {
           const update = data.find(
@@ -403,6 +417,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
             score: Number(item.score) + Number(update?.score),
           };
         });
+        console.log("newGameSetter com scores", newGameSetter);
         handleSetGame(newGameSetter);
         console.log("atualiza score", newGameSetter);
       }

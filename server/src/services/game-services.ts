@@ -136,7 +136,7 @@ class GameServices {
     // console.log('players', players);
     if (players > 3 || players < 7) {
       const numbersArray: number[] = [];
-      while (numbersArray.length < (6 + players) * players) {
+      while (numbersArray.length < (5 + players * 2) * players) {
         const number: number = Math.floor(Math.random() * 53) + 1;
         if (!numbersArray.includes(number)) {
           numbersArray.push(number);

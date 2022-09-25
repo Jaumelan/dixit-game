@@ -4,7 +4,7 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import { BsVolumeUp, BsVolumeMute } from "react-icons/bs";
 import { UserAuth } from "../../context/AuthContext";
 import Button from "../Button";
-import { FC, useState, useMemo } from "react";
+import { FC, useState } from "react";
 import { Modal } from "../index";
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";

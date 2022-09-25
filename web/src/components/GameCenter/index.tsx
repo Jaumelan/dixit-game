@@ -61,7 +61,7 @@ const GameCenter: FC<GameContextType> = ({ waiting }) => {
         </>
       ) : (
         <>
-          <GameRunning /* missing={missingPlayers} */ />
+          <GameRunning />
         </>
       )}
     </S.Container>

@@ -45,6 +45,8 @@ export type GameDataType = {
   timePerTurn: number;
   players: PlayerType[];
   cards: string[];
+  pointsToWin: number;
+  turns: number;
 };
 
 export type TurnType = {

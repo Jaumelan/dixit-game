@@ -1,14 +1,19 @@
 import { useState, useEffect, FC } from "react";
 import { useGameContext } from "../../context/GameContext";
 import { UserAuth } from "../../context/AuthContext";
-import { DiscoverDixit, DixitTurn, NonDixitCarrousel, ScoreComponent } from "../../components";
+import {
+  DiscoverDixit,
+  DixitTurn,
+  NonDixitCarrousel,
+  ScoreComponent,
+} from "../../components";
 import { usePlayContext } from "../../context/PlayContext";
 import { useSnackbar } from "notistack";
 import * as S from "./styles";
 
 const GameRunning = () => {
   const [higherMessage, setHigherMessage] = useState<string>("");
-  const { gameData } = useGameContext();
+  const { handleSetTurns } = useGameContext();
   const { user } = UserAuth();
   const {
     gameSetter,
@@ -25,7 +30,7 @@ const GameRunning = () => {
 
   const [turnCount, setTurnCount] = useState<number>(0);
   const [notification, setNotification] = useState<string>("");
-  
+
   const [endGame, setEndGame] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -36,14 +41,12 @@ const GameRunning = () => {
           const myTurn = gameSetter.find((turn) => turn.played === false);
 
           if (!myTurn) {
-            enqueueSnackbar("Everyone has already played!", {
-              variant: "info",
-            });
+            handleSetTurns(1);
           } else if (myTurn.email === user?.email) {
             setHigherMessage("Sua vez de jogar! Escolha uma carta");
             setMyTurn(() => true);
             handleSetPlaying(false);
-            handleSetPlayersName(myTurn.email)
+            handleSetPlayersName(myTurn.email);
           } else {
             setHigherMessage("Aguarde sua vez de jogar");
             setMyTurn(() => false);
@@ -112,7 +115,6 @@ const GameRunning = () => {
 
   useEffect(() => {
     console.log("players name ", playersName);
-   
   }, [playersName]);
 
   return (

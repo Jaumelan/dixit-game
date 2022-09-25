@@ -10,6 +10,7 @@ type ContextType = {
   checkTurns: boolean;
   sendMessSocket: boolean;
   turns: number;
+  checkScore: boolean;
   myMessage: { username: string; message: string };
   chatMessages: {
     email: string | undefined; username: string; message: string 
@@ -36,6 +37,7 @@ const defaultGameContext = {
   turns: 0,
   myMessage: { username: "", message: "" },
   chatMessages: [],
+  checkScore: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   handleGameDataSetter: (data: GameDataType | null) => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
@@ -155,6 +157,7 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
         error,
         turns,
         player,
+        checkScore,
         handlePlayerSetter,
         handleSetComplete,
         handleSendData,

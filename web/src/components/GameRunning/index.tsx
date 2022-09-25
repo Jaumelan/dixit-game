@@ -14,7 +14,8 @@ import * as S from "./styles";
 
 const GameRunning = () => {
   const [higherMessage, setHigherMessage] = useState<string>("");
-  const { handleSetTurns, checkTurns, turns } = useGameContext();
+  const { handleSetTurns, checkTurns, turns, checkScore, gameData } =
+    useGameContext();
   const { user } = UserAuth();
   const {
     gameSetter,
@@ -102,18 +103,28 @@ const GameRunning = () => {
   }, [turnCount]);
 
   useEffect(() => {
-    if (checkTurns === true) {
-      console.log("turns jogados", turns);
+    if (checkTurns) {
+      //console.log("turns jogados", turns);
       if (turns === 2) {
         setEndGame(true);
         setHigherMessage("O jogo acabou!");
       }
-      /* handleSetPlaying(true);
-      handleSetDiscoverCard(false);
-      handleEveryonePlayed(false);
-      handleContinueSocket(true); */
+    } else if (checkScore) {
+      const scoresOrdered: { score: number; name: string }[] | undefined =
+        gameSetter
+          ?.sort((a, b) => b.score - a.score)
+          .map((player) => ({
+            score: player.score,
+            name: player.username,
+          }));
+      if (scoresOrdered) {
+        if (gameData?.pointsToWin == scoresOrdered[0].score) {
+          setEndGame(true);
+          setHigherMessage(`O jogo acabou! O vencedor foi ${scoresOrdered[0].name}`);
+        }
+      }
     }
-  }, [checkTurns, turns]);
+  }, [checkTurns, turns, checkScore, gameData]);
 
   const handlePlayAgain = () => {
     setTurnCount(0);

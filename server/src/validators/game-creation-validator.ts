@@ -2,7 +2,8 @@ import {
   NumberOfPlayersValidator,
   GameIdValidator,
   PlayersValidator,
-  TimePerTurnValidator,
+  TurnsValidator,
+  VictoryPointsValidator,
 } from '.';
 import { GameSessionI } from '../models';
 
@@ -16,7 +17,9 @@ class GameCreationValidator {
 
   private PlayersValidator = PlayersValidator;
 
-  private TimePerTurnValidator = TimePerTurnValidator;
+  private TurnsValidator = TurnsValidator;
+
+  private VictoryPointsValidator = VictoryPointsValidator;
 
   public constructor(gameSession: GameSessionI) {
     this.errors = '';
@@ -24,26 +27,30 @@ class GameCreationValidator {
   }
 
   private validate(gameSession: GameSessionI): GameSessionI {
-    const { id, numberOfPlayers, players, timePerTurn } = gameSession;
+    const { id, numberOfPlayers, players, turns, pointsToWin } = gameSession;
 
     const numberOfPlayersValidated = new this.NumberOfPlayersValidator(
       numberOfPlayers,
     );
     const gameIdValidated = new this.GameIdValidator(id);
     const playersValidated = new this.PlayersValidator(players);
-    const timePerTurnValidated = new this.TimePerTurnValidator(timePerTurn);
+    const turnsValidated = new this.TurnsValidator(turns);
+    const victoryPointsValidated = new this.VictoryPointsValidator(pointsToWin);
 
     this.errors =
       numberOfPlayersValidated.errors +
       gameIdValidated.errors +
       playersValidated.errors +
-      timePerTurnValidated.errors;
+      turnsValidated.errors +
+      victoryPointsValidated.errors;
 
     const gameSessionValidated: GameSessionI = {
       id: gameIdValidated.gameId,
       numberOfPlayers: numberOfPlayersValidated.numberOfPlayers,
       players: playersValidated.players,
-      timePerTurn: timePerTurnValidated.timePerTurn,
+      turns: turnsValidated.turns,
+      pointsToWin: victoryPointsValidated.victoryPoints,
+      email: gameSession.email,
     };
 
     return gameSessionValidated;

@@ -7,7 +7,8 @@ class Game {
 
   public async insert(gameSession: GameSessionDB): Promise<APIResponse> {
     const redis = RedisClient.getInstance();
-    const { id, players, numberOfPlayers, timePerTurn, cards } = gameSession;
+    const { id, players, numberOfPlayers, turns, pointsToWin, cards } =
+      gameSession;
     const status = GameStatus.waiting;
 
     const gameSessionExists = await redis.hgetall(id);
@@ -30,7 +31,8 @@ class Game {
       numberOfPlayers,
       playersString,
       status,
-      timePerTurn,
+      turns,
+      pointsToWin,
       cards,
     });
 

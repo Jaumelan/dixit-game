@@ -10,3 +10,5 @@ export { TimePerTurnValidator } from './time-per-turn-validator';
 export { GameCreationValidator } from './game-creation-validator';
 export { PlayerNameValidator } from './player-name-validator';
 export { PlayerEmailValidator } from './player-email-validator';
+export { TurnsValidator } from './turns-validator';
+export { VictoryPointsValidator } from './victory-points';

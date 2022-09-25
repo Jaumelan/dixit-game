@@ -5,7 +5,6 @@ import {
   GameSessionDB,
   UpdateGame,
 } from '../models';
-import AuthService from '../middleware/auth';
 import { images } from '../assets/images-src';
 import Game from '../clients/dao/redis/game';
 
@@ -19,6 +18,7 @@ class GameServices {
   public async createGameSession(
     gameSession: GameSessionI,
   ): Promise<APIResponse> {
+    console.log('gameSession', gameSession);
     const gameSessionValidated = new this.gameValidator(gameSession);
 
     if (gameSessionValidated.errors) {
@@ -37,6 +37,8 @@ class GameServices {
     const cards = await this.getCards(gameSession.numberOfPlayers);
 
     gameSession.cards = cards.data;
+
+    delete gameSession.email;
 
     const gameSessionCreated = await this.game.insert(
       gameSession as GameSessionDB,

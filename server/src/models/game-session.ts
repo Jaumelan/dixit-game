@@ -2,6 +2,7 @@ export interface GameSessionDB {
   id: string;
   numberOfPlayers: number;
   players: { username: string; email: string }[];
-  timePerTurn: number;
+  turns: number;
+  pointsToWin: number;
   cards: string;
 }

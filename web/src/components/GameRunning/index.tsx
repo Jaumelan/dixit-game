@@ -104,7 +104,7 @@ const GameRunning = () => {
 
   useEffect(() => {
     if (checkTurns) {
-      //console.log("turns jogados", turns);
+      console.log("turns jogados", turns);
       if (turns === 2) {
         setEndGame(true);
         setHigherMessage("O jogo acabou!");

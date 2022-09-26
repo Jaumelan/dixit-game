@@ -34,6 +34,7 @@ const defaultPlayContext = {
   sendScore: true,
   continuePlaying: false,
   constinueSocket: false,
+  finishDixitSocket: false,
   handleSetGame: (data: TurnType[] | null) => {},
 
   UpdateOtherPlayersGameSetter: (data: {
@@ -73,6 +74,7 @@ const defaultPlayContext = {
   handleContinuePlaying: (data: boolean) => {},
   handleContinueSocket: (data: boolean) => {},
   nextRound: () => {},
+  handleFinishSocket: (data: boolean) => {},
 };
 
 const PlayContext = createContext<PlayContextType>(defaultPlayContext);
@@ -90,6 +92,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const [continuePlaying, setContinuePlaying] = useState(false);
   const [constinueSocket, setContinueSocket] = useState(false);
   //switch to true when dixit played chose card and message
+  const [ finishDixitSocket, setFinishDixitSocket ] = useState(false);
   const [dixitPlayed, setDixitPlayed] = useState(false);
   const [dixitSwitch, setDixitSwitch] = useState(false);
   const [playersSelectCards, setPlayersSelectCards] = useState<boolean>(false);
@@ -322,6 +325,10 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
     setSendDixitName(() => true);
   };
 
+  const handleFinishSocket = (data: boolean) => {
+    setFinishDixitSocket(data);
+  };
+
   const handleSetPlayersNameWithoutSocket = (data: string) => {
     console.log("seta nome do player", data);
     setPlayersName(data);
@@ -471,6 +478,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         dixitPlayed,
         continuePlaying,
         constinueSocket,
+        finishDixitSocket,
         UpdateOtherPlayersGameSetter,
         handleSetSendDiscover,
         handleUpdateGameSetter,
@@ -495,6 +503,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         handleContinuePlaying,
         handleContinueSocket,
         nextRound,
+        handleFinishSocket,
       }}
     >
       {children}

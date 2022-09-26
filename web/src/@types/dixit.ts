@@ -89,6 +89,7 @@ export type PlayContextType = {
   sendScore: boolean;
   continuePlaying: boolean;
   constinueSocket: boolean;
+  finishDixitSocket: boolean;
   handleSetGame: (data: TurnType[] | null) => void;
   handleSetCards: (data: { username: string; hand: string[] }[]) => void;
   UpdateOtherPlayersGameSetter: (data: {
@@ -125,4 +126,5 @@ export type PlayContextType = {
   handleContinuePlaying:(data: boolean) => void;
   handleContinueSocket: (data: boolean) => void;
   nextRound: () => void;
+  handleFinishSocket: (data: boolean) => void;
 };

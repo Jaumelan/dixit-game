@@ -2,9 +2,14 @@ import { usePlayContext } from "../../context/PlayContext";
 
 import { AiFillStar } from "react-icons/ai";
 import * as S from "./styles";
+import { useEffect } from "react";
 
 const Podium = () => {
-  const { gameSetter } = usePlayContext();
+  const { gameSetter, handleFinishSocket } = usePlayContext();
+
+  useEffect(() => {
+    handleFinishSocket(true);
+  }, []);
 
   const scoresOrdered = gameSetter
     ?.sort((a, b) => b.score - a.score)
@@ -31,18 +36,18 @@ const Podium = () => {
             </S.ScoreHolder>
           ) : index === 1 ? (
             <S.ScoreHolder key={`score-${index}`}>
-                <S.StarName>
-                    <AiFillStar size={30} color="#C0C0C0" />
-                    <S.GamePlayer>{game.name}</S.GamePlayer>
-                </S.StarName>
+              <S.StarName>
+                <AiFillStar size={30} color="#C0C0C0" />
+                <S.GamePlayer>{game.name}</S.GamePlayer>
+              </S.StarName>
               <S.Score>{game.score}</S.Score>
             </S.ScoreHolder>
           ) : (
             <S.ScoreHolder key={`score-${index}`}>
-                <S.StarName>
-                    <AiFillStar size={30} color="#CD7F32" />
-                    <S.GamePlayer>{game.name}</S.GamePlayer>
-                </S.StarName>
+              <S.StarName>
+                <AiFillStar size={30} color="#CD7F32" />
+                <S.GamePlayer>{game.name}</S.GamePlayer>
+              </S.StarName>
               <S.Score>{game.score}</S.Score>
             </S.ScoreHolder>
           )

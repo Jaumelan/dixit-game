@@ -25,6 +25,7 @@ type ContextType = {
   handleChatSocket: (sendMessSocket: boolean) => void;
   handleSetChatMessages: (data: { username: string; message: string, email: string }) => void;
   handleSetTurns: (turns: number) => void;
+  resetTurns: () => void;
 };
 
 const defaultGameContext = {
@@ -59,6 +60,8 @@ const defaultGameContext = {
   handleSetChatMessages: (data: { username: string; message: string , email: string}) => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   handleSetTurns: (turns: number) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  resetTurns: () => {},
 };
 
 const GameContext = createContext<ContextType>(defaultGameContext);
@@ -141,6 +144,10 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
     setTurns((prev) => prev + turns);
   };
 
+  const resetTurns = () => {
+    setTurns(0);
+  };
+
   useEffect(() => {
     console.log("player in context", player);
   }, [player]);
@@ -169,6 +176,7 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
         handleChatSocket,
         handleSetChatMessages,
         handleSetTurns,
+        resetTurns,
       }}
     >
       {children}

@@ -24,6 +24,7 @@ const Game = () => {
     sendMessSocket,
     handleChatSocket,
     handleSetChatMessages,
+    resetTurns,
   } = useGameContext();
   const websocket = useRef<WebSocket | null>(null);
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ const Game = () => {
     handleContinuePlaying,
     handleSetDiscoverCard,
     handleEveryonePlayed,
+    finishDixitSocket,
+    handleFinishSocket,
   } = usePlayContext();
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
@@ -350,6 +353,20 @@ const Game = () => {
     }
   }, [constinueSocket]);
 
+  useEffect(() => {
+    if (finishDixitSocket) {
+      if(gameData){
+        websocket.current?.send(
+          JSON.stringify({
+            action: "end-session",
+            payload: { id: gameData.id}
+          })
+        )
+        handleFinishSocket(false)
+      }
+    }
+  }, [finishDixitSocket])
+
   const handleLeaveGame = () => {
     const dataSocket = {
       action: "leave-room",
@@ -364,6 +381,7 @@ const Game = () => {
     handleSetDiscoverCard(false);
     handleEveryonePlayed(false);
     handlePlayersSelectCards(false);
+    resetTurns();
     navigate("/");
   };
 

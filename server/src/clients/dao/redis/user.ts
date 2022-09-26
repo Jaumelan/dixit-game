@@ -25,27 +25,6 @@ class User {
     //console.log(Object.keys(result).length);
     return result;
   }
-  /*
-    return new Promise((resolve, reject) => {
-      redis.hgetall(id, (err, value) => {
-        if (err) reject(err);
-        else {
-          console.log('value', value);
-          resolve(value);
-        }
-      });
-    });
-    /*
-    const result = await redis.hgetall(id, (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-
-      return res;
-    });
-    return result; 
-  }
-  */
 
   public async delete(id: string): Promise<any> {
     const redis = RedisClient.getInstance();

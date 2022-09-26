@@ -73,7 +73,7 @@ class GameServices {
 
     if (gameData.status !== GameStatus.waiting) {
       throw new Error(
-        `400: game session with id ${id} is not in waiting status`,
+        `400: game session with id ${id} is not in waiting for players`,
       );
     }
 
@@ -110,6 +110,18 @@ class GameServices {
       return player;
     });
 
+    let newComplete = true;
+    newPlayers.find((player) => {
+      if (player === ':') {
+        newComplete = false;
+      }
+    });
+
+    if (newComplete) {
+      await this.game.updateStatus(id, GameStatus.started);
+      await this.game.deleteGameFromList(id);
+    }
+
     console.log(newPlayers);
 
     await this.game.updatePlayers(id, newPlayers);
@@ -134,10 +146,10 @@ class GameServices {
 
   public async getCards(players: number /*, gameid: string */) {
     // console.log('players', players);
-    if (players > 3 || players < 7) {
+    if (players >= 3 && players < 7) {
       const numbersArray: number[] = [];
       while (numbersArray.length < (5 + players * 2) * players) {
-        const number: number = Math.floor(Math.random() * 53) + 1;
+        const number: number = Math.floor(Math.random() * 63) + 1;
         if (!numbersArray.includes(number)) {
           numbersArray.push(number);
         }
@@ -190,24 +202,3 @@ class GameServices {
 }
 
 export default GameServices;
-
-/*
-if (quantity === 1) {
-      const numbersArray: number[] = [];
-      while (numbersArray.length < quantity * players) {
-        const number: number = Math.floor(Math.random() * 53) + 1;
-        if (!numbersArray.includes(number)) {
-          numbersArray.push(number);
-        }
-      }
-
-      const cardsString = numbersArray.join(',');
-      await this.game.updateCards(gameid, cardsString);
-      const cards: string[] = [];
-      numbersArray.forEach((item) => {
-        cards.push(images[item]);
-      });
-      return { data: { cardsString, cards }, messages: [] };
-    }
-    return { data: null, messages: [] };
-    */

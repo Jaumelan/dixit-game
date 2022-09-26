@@ -19,8 +19,8 @@ export const CarrouselContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 9rem;
-  height: 10rem;
+  width: 14rem;
+  height: 20rem;
 
   max-width: 20rem;
   max-height: 22rem;
@@ -102,6 +102,4 @@ export const CarrouselItem = styled.img`
   }
   width: 100%;
   cover: fit;
-
-  
 `;

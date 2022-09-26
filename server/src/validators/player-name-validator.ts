@@ -13,19 +13,21 @@ class PlayerNameValidator {
   private validate(playerName: string): string {
     if (playerName !== '') {
       if (!this.onlyLettersRegex.test(playerName)) {
-        this.errors += 'Player name can only contain letters. ';
+        this.errors += 'O nome do jogador deve conter só letras. ';
       }
 
       if (playerName.length < 3) {
-        this.errors += 'Player name must contain at least 3 characters. ';
+        this.errors +=
+          'O nome do jogador deve conter pelo menos 3 caracteres. ';
       }
 
-      if (playerName.length > 10) {
-        this.errors += 'Player name must contain at most 10 characters. ';
+      if (playerName.length > 12) {
+        this.errors +=
+          'O nome do jogador não deve conter mais de 12 caracteres. ';
       }
 
       if (!playerName.trim()) {
-        this.errors += 'Player name cannot contain only spaces. ';
+        this.errors += 'O nome do jogador não deve estar vazio. ';
       }
 
       return playerName.trim();

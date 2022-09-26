@@ -16,7 +16,7 @@ class GetUserController {
         request.headers['x-access-token'] as string,
       );
 
-      console.log('data', data);
+      //('data', data);
       if (data.email !== request.params.id) {
         throw new Error('401: Invalid token');
       }

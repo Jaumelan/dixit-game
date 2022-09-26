@@ -103,7 +103,7 @@ class Game {
         }
       });
 
-      console.log('playersString', playersString);
+      //console.log('playersString', playersString);
 
       const gameSession = await redis.hset(id, 'playersString', playersString);
       return gameSession;

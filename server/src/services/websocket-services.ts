@@ -50,7 +50,7 @@ class WebSocketServices {
         const roomID = payload.id.match(numberRegex);
         if (roomID) {
           const data = await this.GameServices.getGameSession(roomID[0]);
-          console.log('data enter room', data);
+          //console.log('data enter room', data);
           //console.log('enter room data', data);
           return {
             action: 'enter-room',
@@ -71,7 +71,7 @@ class WebSocketServices {
         const userEmail = payload.email;
         if (leaveroomID) {
           const data = await this.GameServices.getGameSession(leaveroomID[0]);
-          console.log(data);
+          //console.log(data);
 
           if (Object.entries(data.data).length !== 0) {
             const { playersString } = data.data;

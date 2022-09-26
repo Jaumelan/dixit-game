@@ -56,7 +56,10 @@ class WebSocketInitializer {
           } else if (action === 'leave-room') {
             if (this.rooms[data.id]) {
               const index = this.rooms[data.id].indexOf(ws);
-              this.rooms[data.id].splice(index, 1);
+              if (index > -1) {
+                this.rooms[data.id].splice(index, 1);
+              }
+              //this.rooms[data.id].splice(index, 1);
             }
           }
           //console.log('rooms', this.rooms);
@@ -87,6 +90,7 @@ class WebSocketInitializer {
           if (this.rooms[findRoomWithClient].length === 0) {
             //console.log('deletando sala');
             delete this.rooms[findRoomWithClient];
+
             await this.websocketservices.deleteGameSession(findRoomWithClient);
           }
         }

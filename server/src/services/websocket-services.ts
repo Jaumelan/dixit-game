@@ -71,56 +71,64 @@ class WebSocketServices {
         const userEmail = payload.email;
         if (leaveroomID) {
           const data = await this.GameServices.getGameSession(leaveroomID[0]);
+          console.log(data);
 
-          const { playersString } = data.data;
+          if (Object.entries(data.data).length !== 0) {
+            const { playersString } = data.data;
+            const players = playersString.split(',');
 
-          const players = playersString.split(',');
-          //console.log(players);
-          const newPlayers = players.map((player) => {
-            if (player.includes(userEmail)) {
-              return ':';
+            const newPlayers = players.map((player) => {
+              if (player.includes(userEmail)) {
+                return ':';
+              }
+              return player;
+            });
+
+            const noPlayers = newPlayers.filter((player) => {
+              return player !== ':';
+            });
+
+            if (newPlayers == players) {
+              return {
+                action: 'leave-room',
+                data: { ...data.data, id: leaveroomID[0] },
+                message: 'Player not found',
+              };
+            } else if (noPlayers.length === 0) {
+              await this.GameServices.deleteGameSession(payload.id);
+              console.log('delete game session');
+              return {
+                action: 'leave-room',
+                data: { ...data.data, id: leaveroomID[0] },
+                message: '',
+              };
+            } else {
+              await this.GameServices.updatePlayers(
+                leaveroomID[0],
+                newPlayers as string[],
+              );
+              console.log(' data ', data);
+              return {
+                action: 'leave-room',
+                data: {
+                  ...data.data,
+                  playersString: newPlayers.join(','),
+                  id: leaveroomID[0],
+                },
+                message: '',
+              };
             }
-            return player;
-          });
-          const noPlayers = newPlayers.filter((player) => {
-            return player !== ':';
-          });
-          console.log('noPlayers', noPlayers);
-          //console.log(newPlayers);
-          if (newPlayers == players) {
-            return {
-              action: 'leave-room',
-              data: { ...data.data, id: leaveroomID[0] },
-              message: 'Player not found',
-            };
-          } else if (noPlayers.length === 0) {
-            await this.GameServices.deleteGameSession(payload.id);
-            console.log('delete game session');
-            return {
-              action: 'leave-room',
-              data: { ...data.data, id: leaveroomID[0] },
-              message: '',
-            };
           } else {
-            await this.GameServices.updatePlayers(
-              leaveroomID[0],
-              newPlayers as string[],
-            );
-            console.log(' data ', data);
             return {
               action: 'leave-room',
-              data: {
-                ...data.data,
-                playersString: newPlayers.join(','),
-                id: leaveroomID[0],
-              },
+              data: { id: leaveroomID[0] },
               message: '',
             };
           }
         } else {
           return {
             action: 'leave-room',
-            data: { id: leaveroomID[0] },
+            data: null,
             message: 'Room ID not found',
           };
         }
@@ -188,6 +196,19 @@ class WebSocketServices {
           message: '',
         };
         break;
+      case 'end-session':
+        const game = await this.GameServices.getGameSession(payload.id);
+        console.log('game', game);
+        if (game.data) {
+          await this.GameServices.deleteGameSession(payload.id);
+        }
+
+        return {
+          action: 'end-session',
+          data: 'game deleted',
+          message: '',
+        };
+        break;
       default:
         return {
           action: 'error',
@@ -198,7 +219,10 @@ class WebSocketServices {
   }
 
   public async deleteGameSession(id: string) {
-    await this.GameServices.deleteGameSession(id);
+    const game = await this.GameServices.getGameSession(id);
+    if (game.data) {
+      await this.GameServices.deleteGameSession(id);
+    }
   }
 }
 

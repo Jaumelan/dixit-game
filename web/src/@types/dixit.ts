@@ -42,7 +42,7 @@ export type GameContextType = {
 export type GameDataType = {
   id: string;
   numberOfPlayers: number;
-  timePerTurn: number;
+  //timePerTurn: number;
   players: PlayerType[];
   cards: string[];
   pointsToWin: number;

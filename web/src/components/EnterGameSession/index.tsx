@@ -127,7 +127,9 @@ const EnterGameSession: FC<Props> = ({ close }) => {
           players: players,
           numberOfPlayers: res.data.numberOfPlayers,
           cards: res.data.cards,
-          timePerTurn: res.data.timePerTurn,
+          pointsToWin: res.data.pointsToWin,
+          turns: res.data.turns,
+          
         };
         handleGameDataSetter(game);
         handlePlayerSetter("NEW-PLAYER");

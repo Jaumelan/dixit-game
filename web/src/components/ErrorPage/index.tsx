@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 //import SVG from "../../assets/images/error.svg";
 
 const ErrorPa = () => {
-  const { handleGameSetter } = useGameContext();
+  const { handleGameDataSetter } = useGameContext();
   const navigate = useNavigate();
   const handleGoBack = () => {
     
-    handleGameSetter(null);
+    handleGameDataSetter(null);
     navigate("/");
   };
 

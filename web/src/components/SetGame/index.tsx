@@ -93,7 +93,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
           enqueueSnackbar(res.messages[0], { variant: "error" });
           return;
         }
-        console.log("res.data", res.data);
+        //console.log("res.data", res.data);
         handleGameDataSetter({ ...data, cards: res.data.cardsSrc } as any);
         handlePlayerSetter("CREATOR");
         handleSendData(true);

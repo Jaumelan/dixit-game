@@ -10,6 +10,7 @@ type Props = {
 };
 
 const DiscoverDixit: FC<Props> = ({ turn }) => {
+  const [playerSelected, setPlayerSelected] = useState<boolean>(false);
   const [cardSelected, setCardSelected] = useState(Pattern);
   const { gameSetter, handleDixitSelection } = usePlayContext();
   const { user } = UserAuth();
@@ -26,10 +27,20 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
         card: cardSelected,
       };
       handleDixitSelection(data);
+      setPlayerSelected(true);
     }
   };
 
-  return turn ? (
+  return playerSelected ? (
+    <S.CarrouselContainer>
+      <h2>Seu Chute Dixit foi</h2>
+      <S.CardsContainer>
+        <S.SelectedCardContainer>
+          <S.IncreasedImage src={cardSelected} alt="" />
+        </S.SelectedCardContainer>
+      </S.CardsContainer>
+    </S.CarrouselContainer>
+  ) : turn ? (
     <S.CarrouselContainer>
       <h2>Espere os outros jogadores escolherem uma carta</h2>
       <S.CardsContainer>
@@ -43,7 +54,7 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
     </S.CarrouselContainer>
   ) : (
     <S.CarrouselContainer>
-      <h2>Escolha uma carta</h2>
+      <h2>Qual carta será a Dixit?</h2>
       <S.CardsContainer>
         <S.SelectedCardContainer>
           <S.IncreasedImage src={cardSelected} alt="" />

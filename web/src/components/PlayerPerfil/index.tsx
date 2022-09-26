@@ -44,7 +44,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data.data);
+          //console.log(data.data);
           if (data.messages.length === 0) {
             setUpdate(false);
             handleSetUser({

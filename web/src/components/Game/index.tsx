@@ -74,13 +74,13 @@ const Game = () => {
         reader.readAsText(data);
         reader.onload = () => {
           const received = JSON.parse(reader.result as string);
-          console.log("from websocket ", received);
+          //console.log("from websocket ", received);
         };
       } else {
         const ans = JSON.parse(data);
 
         if (ans.action === "new-player") {
-          console.log("new player websocket received ", ans.data.players);
+          //console.log("new player websocket received ", ans.data.players);
 
           handleGameDataSetter({
             ...gameData,
@@ -91,7 +91,7 @@ const Game = () => {
           if (ans.message) {
             //console.log(ans.message);
           } else {
-            console.log("player left ", ans.data.playersString);
+            //console.log("player left ", ans.data.playersString);
             const players: { username: string; email: string }[] = [];
             ans.data.playersString.split(",").forEach((player: string) => {
               if (player !== ":") {
@@ -104,7 +104,7 @@ const Game = () => {
             handleGameDataSetter({ ...gameData, players } as any);
           }
         } else if (ans.action === "update-turn") {
-          console.log("update turn ", ans.data);
+          //console.log("update turn ", ans.data);
           handleSetGame(ans.data.gameSetter);
           handlePlayersSelectCards(true);
           //handleTurnUpdated(false);
@@ -182,7 +182,7 @@ const Game = () => {
         //console.log("useEffect new player");
         if (open) {
           if (websocket.current?.readyState === 1) {
-            console.log("sending new player websocket");
+            //console.log("sending new player websocket");
             const data = {
               action: "new-player",
               payload: {
@@ -268,7 +268,7 @@ const Game = () => {
               payload: { gameSetter: gameSetter, id: gameData.id },
             })
           );
-          console.log("update turn sent");
+          //console.log("update turn sent");
           handleDixitPlayed(false);
         }
       }

@@ -162,7 +162,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         return acc;
       }, 0);
 
-      console.log("conta quantos escolheram", count);
+      //console.log("conta quantos escolheram", count);
       if (count === gameSetRef.current.length - 1) {
         handleSetDiscoverCard(true);
       }
@@ -170,7 +170,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   }, [gameSetRef.current]);
 
   useEffect(() => {
-    console.log(" atualiza gamesetter ", gameSetter);
+    //console.log(" atualiza gamesetter ", gameSetter);
 
     if (gameSetter) {
       const count = gameSetter.reduce((acc, player) => {
@@ -320,7 +320,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   };
 
   const handleSetPlayersName = (data: string) => {
-    console.log("seta nome do player", data);
+    //console.log("seta nome do player", data);
     setPlayersName(data);
     setSendDixitName(() => true);
   };
@@ -330,7 +330,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   };
 
   const handleSetPlayersNameWithoutSocket = (data: string) => {
-    console.log("seta nome do player", data);
+   // console.log("seta nome do player", data);
     setPlayersName(data);
   };
 
@@ -400,7 +400,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
         return item;
       });
       handleSetGame(newGameSetter);
-      console.log("before switch ", newGameSetter);
+      //console.log("before switch ", newGameSetter);
     }
 
     setOtherPlayersChose(() => true);
@@ -410,9 +410,9 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
     data: { email: string; score: number }[],
     userEmail: string
   ) => {
-    console.log("data score", data);
+    //console.log("data score", data);
     if (gameSetRef.current) {
-      console.log("gameSetRef.current sem score ", gameSetRef.current);
+      //console.log("gameSetRef.current sem score ", gameSetRef.current);
       if (userEmail === user?.email) {
         const newGameSetter = gameSetRef.current.map((item) => {
           const update = data.find(
@@ -424,9 +424,9 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
             score: Number(item.score) + Number(update?.score),
           };
         });
-        console.log("newGameSetter com scores", newGameSetter);
+        //console.log("newGameSetter com scores", newGameSetter);
         handleSetGame(newGameSetter);
-        console.log("atualiza score", newGameSetter);
+        //console.log("atualiza score", newGameSetter);
       }
     }
   };
@@ -434,9 +434,9 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
   const UpdateOtherPlayersWithoutSwitch = useCallback(
     (email: string, cardsPlayed: string[]) => {
       if (user?.email !== email) {
-        console.log("GameSetter ", gameSetter);
+        //console.log("GameSetter ", gameSetter);
         if (gameSetRef.current) {
-          console.log("função without switch");
+          //console.log("função without switch");
           const newGameSetter = gameSetRef.current.map((item) => {
             if (item.email === email) {
               return {
@@ -447,7 +447,7 @@ export const PlayContextProvider: FC<GameContextType> = ({ children }) => {
             }
             return item;
           });
-          console.log("newGameSetter", newGameSetter);
+          //console.log("newGameSetter", newGameSetter);
           handleSetGame(newGameSetter as TurnType[]);
           //setCheckCardSelected(() => true);
         }

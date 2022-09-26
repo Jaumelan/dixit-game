@@ -24,7 +24,7 @@ const GameCenter: FC<GameContextType> = ({ waiting }) => {
     }
   };
   useEffect(() => {
-    console.log("waiting ", waiting);
+    //console.log("waiting ", waiting);
   }, [waiting]);
 
   useEffect(() => {

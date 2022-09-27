@@ -59,8 +59,16 @@ export const MessageContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  height: 80px;
   gap: 1rem;
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: 77px;
+  
+`;
 

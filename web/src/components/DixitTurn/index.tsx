@@ -3,6 +3,8 @@ import Carrousel from "../../components/Carrousel";
 import Pattern from "../../assets/images/pattern.jpg";
 import { Button } from "../../components";
 import { UserAuth } from "../../context/AuthContext";
+import { styled } from "@mui/material/styles";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
 import { usePlayContext } from "../../context/PlayContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,6 +23,14 @@ const theme = createTheme({
     fontWeightBold: 900,
   },
 });
+
+const BiggerTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(() => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    fontSize: 14,
+  },
+}));
 
 declare module "@mui/material/styles" {
   interface Palette {
@@ -42,12 +52,17 @@ declare module "@mui/material/TextField" {
 
 const DixitTurn = () => {
   const [dixitMessage, setDixitMessage] = useState("");
+  //const [ error, setError ] = useState(false);
   const [dixitImage, setDixitImage] = useState(Pattern);
   const { user } = UserAuth();
-  const { handleUpdateGameSetter, playersSelectCards, continuePlaying } =
-    usePlayContext();
+  const { handleUpdateGameSetter, playersSelectCards } = usePlayContext();
 
   const handleDixitChange = (e: any) => {
+    /* if(e.target.value.length > 3) {
+      setError(false);
+    } else {
+      setError(true);
+    } */
     setDixitMessage(e.target.value);
   };
 
@@ -88,19 +103,26 @@ const DixitTurn = () => {
             label="Escreva uma mensagem"
             variant="outlined"
             color="secondary"
+            /* error={error} */
             sx={{ width: "60%" }}
             value={dixitMessage}
             onChange={handleDixitChange}
             inputProps={{ maxLength: 50 }}
+            /* helperText={error ? "Mensagem deve ter no mínimo 3 caracteres" : ""} */
           />
         </ThemeProvider>
 
         {dixitMessage.length > 3 ? (
-         <Button onClick={handleDixitSubmit}>Dixit</Button>
+          <S.ButtonContainer>
+            <Button onClick={handleDixitSubmit}>Dixit</Button>
+          </S.ButtonContainer>
         ) : (
-          <Button disabled>Dixit</Button>
+          <BiggerTooltip title="Mensagem deve ter no mínimo 3 caracteres">
+            <div>
+              <Button disabled>Dixit</Button>
+            </div>
+          </BiggerTooltip>
         )}
-        
       </S.MessageContainer>
     </S.Container>
   );

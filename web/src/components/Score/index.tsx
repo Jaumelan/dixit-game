@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePlayContext } from "../../context/PlayContext";
 import { Button } from "../../components";
 import { AiFillStar } from "react-icons/ai";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import * as S from "./styles";
 
 const ScoreComponent = () => {
   const [endGame, setEndGame] = useState(false);
+  const [ progress, setProgress ] = useState(0);
   const {
     gameSetter,
     handleContinueSocket,
   } = usePlayContext();
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          return 0;
+        }
+        const diff = Math.random() * 10;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   
 
   const scoresOrdered = gameSetter
@@ -68,8 +86,12 @@ const ScoreComponent = () => {
             </S.ScoreHolder>
           )
         )}
+        <Box sx={{ width: '100%' }}>
+          <h3>Próximo Jogador</h3>
+        <LinearProgress variant="determinate" value={progress} />
+        </Box>
       
-        <Button onClick={handleNextPlayer}>Próximo</Button>
+        
      
     </S.Container>
   );

@@ -128,6 +128,7 @@ const Game = () => {
           //console.log("score ", score);
           handleUpdateScore(score, user);
         } else if (ans.action === "continue") {
+          console.log("continue");
           handleContinuePlaying(true);
         }
         //console.log("do websoquete ", ans);

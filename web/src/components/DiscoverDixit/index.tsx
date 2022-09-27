@@ -78,8 +78,9 @@ const DiscoverDixit: FC<Props> = ({ turn }) => {
                 )
               )}
           </S.ImagesCarrousel>
-
-          <Button onClick={handleSubmit}>Selecionar</Button>
+         
+            <Button onClick={handleSubmit}>Selecionar</Button>
+          
         </S.ImageOptions>
       </S.CardsContainer>
     </S.CarrouselContainer>

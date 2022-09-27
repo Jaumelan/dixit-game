@@ -56,6 +56,8 @@ export const ImagesCarrousel = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const IncreasedImage = styled.img`

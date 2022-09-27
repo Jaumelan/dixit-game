@@ -79,7 +79,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (user) {
-        const response = await fetch(`http://68.232.175.134:8080/game/create`, {
+        const response = await fetch(`http://localhost:8080/game/create`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

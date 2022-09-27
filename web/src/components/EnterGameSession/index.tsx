@@ -38,7 +38,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
     try {
       if (user) {
         const response = await fetch(
-          `http://68.232.175.134:8080/game/availables/${user.email}`,
+          `http://localhost:8080/game/availables/${user.email}`,
           {
             method: "GET",
             headers: {
@@ -96,7 +96,7 @@ const EnterGameSession: FC<Props> = ({ close }) => {
         email: user?.email,
       };
       const response = await fetch(
-        `http://68.232.175.134:8080/update/${selectedGameSession}`,
+        `http://localhost:8080/update/${selectedGameSession}`,
         {
           method: "PUT",
           headers: {

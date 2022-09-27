@@ -68,7 +68,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   };
 
   const registerUser = async (data: IRegisterUser) => {
-    fetch("http://68.232.175.134:8080/user/register", {
+    fetch("http://localhost:8080/user/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export const AuthContextProvider: React.FC<UserAuth> = ({ children }) => {
   };
 
   const loginUser = async (data: ILoginUser) => {
-    fetch("http://68.232.175.134:8080/user/login", {
+    fetch("http://localhost:8080/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

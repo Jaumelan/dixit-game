@@ -16,7 +16,7 @@ const BoxBody = () => {
     try {
       if (user) {
         const response = await fetch(
-          `http://68.232.175.134:8080/room/${user.email}`,
+          `http://localhost:8080/room/${user.email}`,
           {
             method: "GET",
             headers: {

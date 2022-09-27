@@ -19,7 +19,7 @@ class WebSocketInitializer {
   constructor() {
     this.wss = new websocket.Server({
       port: Number(config.port) + 1 || 8081,
-      host: 'localhost',
+      host: '68.232.175.134',
     });
   }
 

@@ -148,9 +148,9 @@ export const GameContextProvider: FC<GameContextType> = ({ children }) => {
     setTurns(0);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("player in context", player);
-  }, [player]);
+  }, [player]); */
 
   return (
     <GameContext.Provider

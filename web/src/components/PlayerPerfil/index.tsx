@@ -34,7 +34,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (user) {
-      fetch("http://localhost:8080/user/update", {
+      fetch("http://68.232.175.134:8080/user/update", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

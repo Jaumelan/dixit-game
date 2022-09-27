@@ -61,7 +61,7 @@ const Game = () => {
   //const [players, setPlayers] = useState<PlayerType[]>([]);
 
   useEffect(() => {
-    websocket.current = new WebSocket(`ws://localhost:8081/${gameData?.id}`);
+    websocket.current = new WebSocket(`ws://68.232.175.134:8081/${gameData?.id}`);
     websocket.current.onopen = () => {
       //console.log("WebSocket connection established em Game");
       setOpen(true);

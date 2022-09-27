@@ -36,3 +36,5 @@ lerna-debug.log*
 
 # lock files
 *.lock
+
+.env

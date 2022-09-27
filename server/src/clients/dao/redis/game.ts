@@ -151,6 +151,70 @@ class Game {
     const games = await redis.flushall();
     return games;
   }
+
+  public async addGameTimeToContinue(id: string, timeToContinue: number) {
+    const redis = RedisClient.getInstance();
+    const games = await redis.hmset(`${id}-time`, { timeToContinue, id });
+    //console.log('games', games);
+    return games;
+  }
+
+  public async getGameTimeToContinue(id: string) {
+    const redis = RedisClient.getInstance();
+    //const games = await redis.hgetall(`${id}-time`);
+    const games = await redis.hgetall(id);
+    return games;
+  }
+
+  public async deleteGameTimeToContinue(id: string) {
+    const redis = RedisClient.getInstance();
+    const games = await redis.del(`${id}-time`);
+    return games;
+  }
+
+  public async getTimeToContinueWithout(id: string) {
+    const redis = RedisClient.getInstance();
+    const games = await redis.hgetall(`${id}-time`);
+    return games;
+  }
+
+  public async addtimeToList(id: string) {
+    const redis = RedisClient.getInstance();
+    const list = await redis.lrange('time-list', 0, -1);
+
+    if (list.length !== 0) {
+      //console.log('list.length !== 0');
+      let alreadyInList = false;
+      list.forEach((item) => {
+        if (item === `${id}-time`) {
+          //console.log('item === `${id}-time`');
+          alreadyInList = true;
+        }
+      });
+
+      if (!alreadyInList) {
+        //console.log('!alreadyInList');
+        const games = await redis.rpush('time-list', `${id}-time`);
+        return games;
+      }
+      return;
+    } else {
+      const games = await redis.rpush('time-list', `${id}-time`);
+      return games;
+    }
+  }
+
+  public async deleteTimeFromList(id: string) {
+    const redis = RedisClient.getInstance();
+    const gameSession = await redis.lrem('time-list', 0, `${id}-time`);
+    return gameSession;
+  }
+
+  public async getTimeToList() {
+    const redis = RedisClient.getInstance();
+    const games = await redis.lrange('time-list', 0, -1);
+    return games;
+  }
 }
 
 export default Game;

@@ -1,6 +1,6 @@
 import websocket from 'ws';
 import { config } from './config';
-import { WebSocketServices } from './services';
+import { WebSocketServices, GameServices } from './services';
 import crypto from 'crypto';
 
 //const rooms: any = {};
@@ -10,7 +10,10 @@ class WebSocketInitializer {
 
   public websocketClients: any = {};
 
+  private GameServices = new GameServices();
+
   public rooms: any = {};
+
   private websocketservices = new WebSocketServices();
 
   constructor() {
@@ -120,6 +123,37 @@ class WebSocketInitializer {
         console.log('Client error');
       });
     });
+  }
+
+  public async runNexPlayer() {
+    setInterval(async () => {
+      const timeNow = new Date().getTime();
+      //console.log('time now', timeNow);
+      const timeToContinueArray =
+        await this.GameServices.getTimeToContinueArray();
+      if (timeToContinueArray.length > 0) {
+        //console.log('timeToContinueArray', timeToContinueArray);
+        timeToContinueArray.forEach(async (timeIndex) => {
+          const data = await this.GameServices.getTimeToContinue(timeIndex);
+          //console.log('data', data);
+          if (Number(data.timeToContinue) < timeNow) {
+            //console.log('time to continue');
+            if (this.rooms[data.id]) {
+              this.rooms[data.id].forEach((client: websocket) => {
+                const answer = {
+                  action: 'continue',
+                  payload: {
+                    id: data.id,
+                  },
+                };
+                client.send(JSON.stringify(answer));
+              });
+            }
+            await this.GameServices.deleteTimeToContinue(data.id);
+          }
+        });
+      }
+    }, 1000);
   }
 }
 

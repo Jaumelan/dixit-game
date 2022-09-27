@@ -6,6 +6,7 @@ import { WebSocketInitializer } from './websocket';
 
 const webSocketInitializer = new WebSocketInitializer();
 webSocketInitializer.initialize();
+webSocketInitializer.runNexPlayer();
 
 /* const options = {
   key: fs.readFileSync('key.pem'),

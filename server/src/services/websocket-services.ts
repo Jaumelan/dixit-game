@@ -9,6 +9,8 @@ class WebSocketServices {
 
   public websocketClients: any = {};
 
+  public timerNextPlayer: any = {};
+
   public room: any = {};
 
   private GameServices = new GameServices();
@@ -182,6 +184,10 @@ class WebSocketServices {
       case 'score':
         const { data, playersName, user } = payload;
         const score = scoreCalculator(data, playersName);
+
+        //console.log('score', payload);
+
+        this.GameServices.insertTimeToContinueArray(payload.id);
 
         return {
           action: 'score',

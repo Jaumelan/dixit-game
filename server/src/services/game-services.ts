@@ -158,16 +158,6 @@ class GameServices {
       const cardsString = numbersArray.join(',');
 
       return { data: cardsString, messages: [] };
-
-      /*
-        await this.game.updateCards(gameid, cardsString);
-
-        const cards: string[] = [];
-        numbersArray.forEach((item) => {
-          cards.push(images[item]);
-        });
-        return { data: { cardsString, cards }, messages: [] };
-        */
     } else {
       throw new Error('400: invalid number of players');
     }
@@ -198,6 +188,36 @@ class GameServices {
     await this.game.deleteGameFromList(id);
     //console.log('gameSession', gameSession);
     return gameSession;
+  }
+
+  public async insertTimeToContinueArray(id: string) {
+    //console.log('insertTimeToContinueArray', id);
+    const exist = await this.game.getTimeToContinueWithout(id);
+    //console.log('exists ', exist);
+    if (Object.keys(exist).length !== 0) {
+      return;
+    }
+    console.log('insertTimeToContinueArray', id);
+    const timeInterval = new Date().setSeconds(new Date().getSeconds() + 10);
+    await this.game.addGameTimeToContinue(id, timeInterval);
+    const gameSession = await this.game.addtimeToList(id);
+    return gameSession;
+  }
+
+  public async getTimeToContinueArray() {
+    const timeToContinueArray = await this.game.getTimeToList();
+    return timeToContinueArray;
+  }
+
+  public async getTimeToContinue(id: string) {
+    const timeToContinue = await this.game.getGameTimeToContinue(id);
+    return timeToContinue;
+  }
+
+  public async deleteTimeToContinue(id: string) {
+    const timeToContinue = await this.game.deleteGameTimeToContinue(id);
+    await this.game.deleteTimeFromList(id);
+    return timeToContinue;
   }
 }
 

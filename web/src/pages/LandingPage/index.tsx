@@ -1,6 +1,6 @@
 import { Navbar } from "../../components";
 import { LandingBox } from "../../components";
-import video from "../../assets/videos/Background.mp4";
+import video from "../../assets/videos/background.mp4";
 import * as S from "./styles";
 //import "./style.css"
 

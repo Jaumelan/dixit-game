@@ -33,7 +33,7 @@ export const RulesContainer = styled.div`
     line-height: 2.2rem;
     color: #000040;
   }
-  p {
+  span {
     font-size: 1.5rem;
   }
 `;

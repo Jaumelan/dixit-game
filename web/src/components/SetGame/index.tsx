@@ -179,6 +179,7 @@ const SetGame: FC<SetGameProps> = ({ close, gameID }) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                sx={{ input:{color: '#004080'}}}
                 variant="outlined"
                 name="numberOfPlayers"
                 value={game.numberOfPlayers}

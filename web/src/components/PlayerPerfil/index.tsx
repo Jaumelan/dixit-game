@@ -66,7 +66,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
           <AiOutlineCloseCircle
             onClick={() => closePlayerPerfil(false)}
             size={28}
-            color='white'
+            color='#cfb521'
             style={{ cursor: "pointer" }}
           />
         </S.ButtonHolder>
@@ -83,7 +83,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
               <h3>Atualizar Nome</h3>
               <IoArrowBackCircleOutline
                 size={25}
-                color={"#5959ac"}
+                color={"#cfb521"}
                 style={{ cursor: "pointer" }}
                 onClick={handleUpdate}
               />
@@ -108,7 +108,7 @@ const PlayerPerfil: FC<Props> = ({ closePlayerPerfil }) => {
               <p>{user?.email}</p>
             </S.Info>
             <S.UpdateTitle onClick={handleUpdate}>
-              Deseja atualizar o username
+              Deseja atualizar o nome?
             </S.UpdateTitle>
           </>
         )}

@@ -78,7 +78,7 @@ export const Avatar = styled.img`
 export const AvatarName = styled.h1`
   font-size: 3rem;
   font-weight: 900;
-  color: #5959ac;
+  color: #004080;
 `;
 
 export const InfoContainer = styled.div`
@@ -109,19 +109,19 @@ export const Info = styled.div`
   p {
     font-size: 2.5rem;
     font-weight: 500;
-    color: #5959ac;
+    color: #004080;
   }
 `;
 
 export const UpdateTitle = styled.h2`
   font-size: 2rem;
   font-weight: 900;
-  color: #5959ac;
+  color: #004080;
   align-self: center;
 
   &:hover {
     cursor: pointer;
-    color: #8080c0;
+    color: #005cb9;
   }
 `;
 
@@ -144,7 +144,7 @@ export const UpdateTitleHolder = styled.div`
   h3 {
     font-size: 1.5rem;
     font-weight: 900;
-    color: #5959ac;
+    color: #004080;
   }
 `;
 

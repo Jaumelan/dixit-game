@@ -49,10 +49,10 @@ export const TitleContainer = styled.div`
   padding: 1rem;
 
   h2 {
-    color: #cfb521;
-    font-size: 2.4rem;
+    color: #004080;
+    font-size: 2.5rem;
     font-weight: 900;
-    line-height: 2rem;
+    line-height: 1rem;
   }
   color: #cfb521;
 `;
@@ -95,7 +95,7 @@ export const IndividualSetter = styled.div`
   background-color: none;
   padding: 0.5rem;
   h2 {
-    color: #cfb521;
+    color: #004080;
     font-size: 1.8rem;
     font-weight: 900;
     line-height: 0.4rem;

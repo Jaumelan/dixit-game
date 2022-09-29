@@ -3,8 +3,6 @@ import { config } from './config';
 import { WebSocketServices, GameServices } from './services';
 import crypto from 'crypto';
 
-//const rooms: any = {};
-
 class WebSocketInitializer {
   public wss: websocket.Server;
 
